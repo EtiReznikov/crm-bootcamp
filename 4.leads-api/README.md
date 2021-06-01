@@ -1,6 +1,5 @@
-
-
-
+# Leads API
+REST API for CRUD of "Leads" entity.
 
 ### Database prerequisites
 In order to have MySql docker up and running don't forget to start it.
