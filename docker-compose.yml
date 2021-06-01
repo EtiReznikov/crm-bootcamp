@@ -1,9 +1,9 @@
 version: '3.9'
 services:
   mysql:
-    container_name: mysql
+    container_name: bootcamp-mysql
     networks:
-      web:
+      bootcamp-web:
     image: mysql:5.7
     command: mysqld --sql_mode=""
     environment:
@@ -16,7 +16,7 @@ services:
 
   mongodb:
     image: mongo
-    container_name: mongodb
+    container_name: bootcamp-mongodb
     ports:
       - "27017:27017"
     environment:
@@ -24,15 +24,15 @@ services:
 
   redis:
     image: redis
-    container_name: redis
+    container_name: bootcamp-redis
     ports:
       - "6379:6379"
 
   kibana:
     image: docker.elastic.co/kibana/kibana:5.1.2
-    container_name: kibana
+    container_name: bootcamp-kibana
     networks:
-     web:
+     bootcamp-web:
     domainname: local.com
     hostname: kibana
     ports:
@@ -43,9 +43,10 @@ services:
           - "ELASTICSEARCH_URL=http://elasticsearch:9200"
 
   php:
-    build:
-      context: ./6.crud-php
-    container_name: crud-php
+    image: php:7-apache
+    networks:
+      bootcamp-web:
+    container_name: bootcamp-php
     volumes:
       - type: bind
         source: ./6.crud-php
@@ -58,9 +59,9 @@ services:
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.1.2
-    container_name: elasticsearch
+    container_name: bootcamp-elasticsearch
     networks:
-      web:
+      bootcamp-web:
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
@@ -74,4 +75,4 @@ services:
       - 9200:9200
 
 networks:
-  web:
+  bootcamp-web:
