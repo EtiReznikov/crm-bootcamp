@@ -1,7 +1,0 @@
-{
-    "deno.enable": false,
-    "cSpell.words": [
-        "devtools",
-        "immer"
-    ]
-}

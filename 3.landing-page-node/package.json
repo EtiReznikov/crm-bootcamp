@@ -10,7 +10,7 @@
     "yarn": "1.22"
   },
   "scripts": {
-    "dev": "NODE_ENV=development nodemon --watch 'src/**/*.js",
+    "dev": "NODE_ENV=development nodemon --watch 'src/**/*.js'",
     "start": "NODE_ENV=production node src/index.js",
     "test": "NODE_ENV=test jest"
   },

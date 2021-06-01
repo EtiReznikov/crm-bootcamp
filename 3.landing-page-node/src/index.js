@@ -1,1 +1,8 @@
-require('dotenv-flow')
+require('dotenv-flow').config()
+
+const {main} = require('./app')
+
+main()
+
+
+
