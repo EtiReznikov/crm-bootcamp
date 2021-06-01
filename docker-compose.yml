@@ -43,7 +43,8 @@ services:
           - "ELASTICSEARCH_URL=http://elasticsearch:9200"
 
   php:
-    image: php:7-apache
+    build:
+      context: ./6.crud-php
     networks:
       bootcamp-web:
     container_name: bootcamp-php
@@ -56,6 +57,7 @@ services:
       - 80:80
     tty: true
     stdin_open: true
+
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.1.2
