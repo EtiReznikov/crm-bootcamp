@@ -1,27 +1,17 @@
-# Leads API
-REST API for CRUD of "Leads" entity.
-
+# Landing Page NodeJS Web Application
+Web application with server-side rendering (SSR) dynamic templates using Jade.
 ## Getting Started
-### Install **yarn** (If Not Installed Already)
-```
-npm i -g yarn
-```
-
 ### Install This Project Dependencies
 ```
-yarn install
+npm install express --save
 ```
 
-### Database prerequisites
-In order to have MySql docker up and running don't forget to start it.
-
+### Install Mysql Client 
+https://www.npmjs.com/package/mysql
 ```
-docker compose up mysql -d
+npm install mysql --save
 ```
-
+### start
 ```
-docker compose ps
+npm start
 ```
-
-To check what is running, both commands from root folder where `docker-compose.yml` file is located.
-
