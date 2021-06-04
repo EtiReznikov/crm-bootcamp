@@ -1,20 +1,23 @@
 # Landing Page NodeJS Web Application
 Web application with server-side rendering (SSR) dynamic templates using Jade.
 ## Getting Started
-### Install **yarn** (If Not Installed Already)
+### Install This Project Dependencies
 ```
-npm i -g yarn
+npm install express --save
 ```
 
 ### Install This Project Dependencies
-```
-yarn install
-```
-
-### Add Mustache Template Engine
 First, have a look at: [Mustache Documentation](https://github.com/janl/mustache.js)
-
-then:
 ```
-yarn add mustache
+npm install mustache --save
+```
+
+### mustache express 
+```
+npm i mustache-express
+```
+
+### mustache express 
+```
+npm start
 ```
