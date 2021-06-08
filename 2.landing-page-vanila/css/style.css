@@ -1,1 +1,55 @@
-body {background-color:gold}
+#leftHalf, #slogan1{
+    display: flex;
+    background: center/cover url('74892116_446195389606894_2599800381605835077_n.jpg');
+    width: 50%;
+    position: absolute;
+    left: 0px;
+    height: 100%; 
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+
+#rightHalf {
+    display: flex;
+    background: center/cover url('94942499_234474357646928_6566161882684989842_n.jpg');
+    width: 50%;
+    position: absolute;
+    right: 0px;
+    height: 100%;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+ }
+.container {
+    display: flex;
+    justify-content: center;
+    font-family: 'Baloo Tammudu 2', cursive;
+    font-size: 30px;
+    color:#e9ecef;
+
+}
+.slogan ,#btn{
+    font-family: 'Staatliches', cursive;
+}
+#slogan1{
+    display: flex;
+    align-content: end;
+    font-size: 150px;
+    color: #495057;
+}
+#slogan2{
+    font-size: 50px;
+}
+#form{
+   display: flex;
+   flex-direction: column; 
+   align-content: center;
+    padding-left: 20%;
+   /* align-items: flex-end; */ 
+    
+}
+#gender{
+    display: flex;
+    flex-direction: row;
+}
