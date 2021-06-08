@@ -1,23 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta name="description" content="Webpage description goes here" />
-        <meta charset="utf-8">
-        <title>Change_me</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<head>
+    <meta name="description" content="Webpage description goes here" />
+    <meta charset="utf-8">
+    <title>Lea Edri - Personal Trainer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="">
 
     <link rel="stylesheet" href="css/style.css">
-    
-    </head>
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
 
-    <body>
-    
-        <div class="container">
-            <h1>Hello Workiz Academy</h1>
-            <button onclick='testfunction()'>Test Script</button>
-        </div>
+</head>
 
-    </body>
-    <script src="scripts/test.js"></script>
-</html>
+<body>
+
+    <div class="container">
+        <form action="thankYou.html">
+            <p>
+                <label for="name">Name:</label>
+                <input type="=text" placeholder="Name" id="name" minlength="2" />
+                <div id="name-error"></div>
+            </p>
+            <!-- Ask Yonatan if phoneNumber or phone_number -->
+            <p>
+                <label for="phone">Phone Number:</label>
+                <!-- <input type="phoneNumber" id="phone" name="phone" placeholder="Phone Number" pattern="[0-9]{3}-[0-9]{7}"
+                    required> -->
+                <input type="phone-number" id="phone" name="phone" placeholder="Phone Number" required>
+            </p>
+            <p>
+                <label for="email">Email Address</label>
+                <input type="=email" placeholder="Email Address" id="email" required/>
+            </p>
+            <button>Submit</button>
+
+        </form>
+    </div>
+</body>
+<!-- <script src="scripts/test.js"></script> -->
+
+</html> 
