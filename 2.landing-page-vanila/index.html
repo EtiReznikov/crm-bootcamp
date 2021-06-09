@@ -12,23 +12,36 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Mukta:wght@500&family=Odibee+Sans&family=Oxygen&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Mukta:wght@500&family=Odibee+Sans&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
     <div class="container">
-        <div id=leftHalf></div>
-        <div id=rightHalf>
+        <div id=left-half>
+            <div id="background-image-left">
+            </div>
+        </div>
+
+        <div id=right-half> 
+            <div id="background-image-right"></div>
+            <div class=inner-upper></div>
+            <div class=inner-lower>
             <form action="thankYou.html" id=form>
-                <p>
-                    <label for="name">Name:</label>
-                    <input type="=text" class="input" placeholder="Name" id="name" />
-                <div id="name-error"></div>
-                </p>
-                <p>
-                    <label for="phone">Phone Number:</label>
+
+
+                
+
+                <label class="label" for="name">Name:</label>
+                <input type="=text" class="input" placeholder="Name" id="name" />
+                
+
+
+                <label class="label" for="phone">Phone Number:</label>
+                <div id="phone-number-wrapper">
                     <select name="area-code" class="input" id="area-code">
                         <option value="050">050</option>
                         <option value="052">052</option>
@@ -39,54 +52,47 @@
                         <option value="058">058</option>
                         <option value="059">059</option>
                     </select>
-                    <input type="phone-number" class="input" id="phone" name="phone" placeholder="Phone Number" />
-                </p>
-                <p>
-                    <label for="email">Email Address</label>
-                    <input type="=email" class="input" placeholder="Email Address" id="email"  />
-                </p>
-                <p id="gender">
-                <div>Gender:
-                    <label for="male">
-                        <input type="radio" class="input" id="male" name="gender" value="male">
+                    <input type="phone-number"  onkeyup="phoneValidation()" class="input" id="phone" name="phone" placeholder="Phone Number" />
+                </div>
+                <div id="phone-error"></div>
+
+
+
+                <label class="label" for="email">Email Address</label>
+                <input type="=email" class="input" placeholder="Email Address" id="email" />
+
+
+                <div class="row-wrapper" id="gender">Gender:
+                    <label class="label" for="male">
+                        <input type="radio" class="input" id="male" value="male">
                         Male
                     </label>
 
-                    <label for="female">
-                        <input type="radio" class="input" id="female" name="gender" value="female">
+                    <label class="label" for="female">
+                        <input type="radio" class="input" id="female" value="female">
                         Female
                     </label>
                 </div>
-                </p>
-                <p>
-                    <label for="more-info">Something that you want us to know:</label>
-                    <input type="=text" class="input" placeholder="Something that you want us to know" id="more-info" />
-                </p>
+                <label class="label" for="more-info">Something that you want us to know:</label>
+                <textarea type="=textarea" id="more-info" row="3" col="50">Something that you want us to know </textarea>
 
-                <label for="email-permission">
+                <label class="label" for="email-permission">
                     <input type="checkbox" class="input" id="email-permission">
                     Get updates and special offers- promise not to spam you!
 
                 </label>
+<p></p>
                 <button id="btn">
-                    <div>
-                        Later = Never!
-                    </div>
-                    <div>
-                        Do it now!
-                    </div>
+                   Submit
                 </button>
-
             </form>
+        </div>
         </div>
         <div id=slogans>
             <div id=slogan1>
-                <div>Don't</div>
-                <div>wish</div>
-                <div>for</div>
-                <div>results - </div>
+                <div>Don't wish for results -</div>
+                <div> </div>
             </div>
-
             <div id=slogan2>work for it!</div>
         </div>
 
