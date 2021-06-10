@@ -84,7 +84,13 @@ function emailValidation() {
 
 
 }
+/***
+ * Erase the text in the text area when the user is clicking
+ */
 
+function eraseText() {
+    document.getElementById("more-info").innerHTML = "";
+}
 /**
  * check that the all form fill is valid, when the user submit it
  */

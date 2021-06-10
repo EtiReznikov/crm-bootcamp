@@ -71,12 +71,12 @@
                     <div class="wrapper">
                         <div class="row-wrapper" id="gender">Gender:
                             <label class="label" for="male">
-                                <input type="radio" class="input" id="male" value="male">
+                                <input type="radio" name="gender" class="input" id="male" value="male">
                                 Male
                             </label>
 
                             <label class="label" for="female">
-                                <input type="radio" class="input" id="female" value="female">
+                                <input type="radio" name="gender" class="input" id="female" value="female">
                                 Female
                             </label>
                         </div>
@@ -84,7 +84,7 @@
                     <div class="wrapper
                     ">
                         <label class="label" for="more-info" id="updates">Something that you want us to know:</label>
-                        <textarea type="textarea" id="more-info" row="3" col="50">Something that you want us to know </textarea>
+                        <textarea type="textarea" id="more-info" onclick="eraseText()">Something that you want us to know </textarea>
                     </div>
                     <div class="wrapper
                         ">
