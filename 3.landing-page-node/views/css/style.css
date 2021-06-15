@@ -1,0 +1,245 @@
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-family: 'Fjalla One', sans-serif;
+    font-family: 'Mukta', sans-serif;
+    font-family: 'Odibee Sans', cursive;
+    font-family: 'Oxygen', sans-serif;
+}
+
+#left-half {
+    background-color: #edb600;
+    display: flex;
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    height: 100%;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+#right-half {
+    background-color: #edb600;
+    display: flex;
+    background-repeat: no-repeat;
+    flex: 1;
+    width: 50%;
+    position: absolute;
+    right: 0px;
+    height: 100%;
+    flex-direction: column;
+}
+
+#background-image-left {
+    background: url('BG1.png');
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+}
+
+.inner-right {
+    width: 80%;
+    height: 80%;
+    padding: 15% 10%;
+}
+
+#slogans {
+    font-style: normal;
+}
+
+#slogan1 {
+    padding-left: 40px;
+    font-family: Poppins;
+    font-size: 32px;
+    padding: 3% 89px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+#slogan2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    font-weight: bold;
+    font-size: 40px;
+    color: #1a2527;
+    padding: 0 30%;
+}
+
+#slogans,
+form {
+    background-color: #fff0a5;
+}
+
+#form-background {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    opacity: 10%;
+    margin: 0 auto;
+    border-radius: 2px;
+    padding-top: 50%;
+    z-index: -1;
+}
+
+#form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: nowrap;
+    color: #070707;
+    font-weight: bold;
+    font-size: 17px;
+    z-index: 10;
+    padding: 10px 25%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#label {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    border-radius: 4px;
+}
+
+.input {
+    padding: 3px;
+    font-size: 75%;
+    border-width: 1px;
+    width: 250px;
+    background-color: #ffffff;
+    color: #020303;
+    border-style: solid;
+    border-radius: 4px;
+    box-shadow: 0px 0px 2px rgba(66, 66, 66, .75);
+}
+
+.input:focus {
+    outline: none;
+}
+
+#area-code {
+    width: 60px;
+}
+
+#male,
+#female,
+#email-permission {
+    all: revert;
+}
+
+#btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 100%;
+    width: fit-content;
+    /* text-shadow: 0 0 3px #d3d3d3, 0 0 5px; */
+    background-color: #FD2348;
+    border-radius: 13px;
+    border: 1px solid #211f1f;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    color: #000000;
+    padding: 5px 10px;
+}
+
+#btn:hover {
+    background-color: #e4e4e4;
+}
+
+#btn:active {
+    position: relative;
+    top: 1px;
+}
+
+#Thank-You-page {
+    display: flex;
+    background-color: #c6ced1;
+    background-image: url('72971807_2423326977922002_260967650391795822_n.jpg');
+    display: flex;
+    position: absolute;
+    background-size: auto;
+    height: 100%;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+#Thank-You-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 60%;
+    flex-wrap: wrap;
+    font-size: 500%;
+    color: #2f3032;
+    text-shadow: 0 0 5px #d3d3d3, 0 0 3px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+}
+
+#Thank-You-page:nth-of-type(2) {
+    flex-grow: 2;
+}
+
+.area-code {
+    width: 30px;
+    height: 30px;
+}
+
+::placeholder {
+    color: black;
+}
+
+textarea {
+    font-family: 'Fjalla One', sans-serif;
+    font-family: 'Mukta', sans-serif;
+    font-family: 'Odibee Sans', cursive;
+    font-family: 'Oxygen', sans-serif;
+}
+
+radio {
+    font-size: 70%;
+}
+
+.inner-upper {
+    display: flex;
+    flex: 1;
+    background-color: rgba(255, 255, 255, .3);
+}
+
+.error {
+    font-size: 75%;
+    color: #d81313;
+}
+
+#more-info {
+    width: 250px;
+    height: 120px;
+}
+
+textarea {
+    border-radius: 4px;
+}
+
+#phone {
+    width: 186px;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+#updates {
+    width: 267px;
+}
+
+#btn-wrapper {
+    padding: inherit;
+}

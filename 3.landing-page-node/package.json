@@ -1,14 +1,18 @@
 {
-  "name": "landing-page-express",
-  "version": "1.0.0",
-  "description": "Web application with server-side rendering (SSR) dynamic templates using Jade. ## Getting Started ### Install **yarn** (If Not Installed Already) ``` npm i -g yarn ```",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "export PORT=8003 && node index.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-  }
+    "name": "landing-page-express",
+    "version": "1.0.0",
+    "description": "Web application with server-side rendering (SSR) dynamic templates using Jade. ## Getting Started ### Install **yarn** (If Not Installed Already) ``` npm i -g yarn ```",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "export PORT=8003 && nodemon index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "experss": "0.0.1-security",
+        "express": "^4.17.1",
+        "mustache": "^4.2.0",
+        "mustache-express": "^1.3.1"
+    }
 }

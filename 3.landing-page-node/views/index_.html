@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="description" content="Webpage description goes here" />
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Mukta:wght@500&family=Odibee+Sans&family=Oxygen&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Mukta:wght@500&family=Odibee+Sans&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Mukta:wght@500&family=Odibee+Sans&family=Oxygen&family=Poppins:wght@200&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div id=left-half>
+            <div id="background-image-left">
+            </div>
+        </div>
+        <div id=right-half>
+            <div id="background-image-right"></div>
+            <div class=inner-right>
+                <div id=slogans>
+                    <div id=slogan1>{{slogan1}}</div>
+                    <div id=slogan2>{{slogan2}}</div>
+                </div>
+                <form id=form action="thankYou.html?name={{name}}" onsubmit="formValidation(event)">
+                    <div class="wrapper
+                    ">
+                        <label class="label" for="name">{{Name}}:</label>
+                        <input type="=text" class="input" placeholder={{Name}} id="name" onkeyup="nameValidation()" />
+                        <div class=error id="name-error"></div>
+                    </div>
+                    <div class="wrapper
+                    ">
+                        <label class="label" for="phone">{{phone-number}}:</label>
+                        <div id="phone-number-wrapper">
+                            <select name="area-code" class="input" id="area-code">
+                                {{#area-codes}}
+                                <option>{{area-code}}</option>
+                                {{/area-codes}}
+                            </select>
+                            <input type="phone-number" onkeyup="phoneValidation()" class="input" id="phone" name="phone" placeholder="{{phone-number}}" />
+                        </div>
+                        <div class=error id="phone-error"></div>
+                    </div>
+                    <div class="wrapper
+                    ">
+                        <label class="label" for="email">{{email}}:</label>
+                        <input type="=email" class="input" placeholder="{{email}}" id="email" />
+                        <div class=error id="email-error"></div>
+                    </div>
+                    <div class="wrapper">
+                        <div class="row-wrapper" id="gender">
+                            Gender: {{#genders}}
+                            <label class="label" for={{gender}}>
+                            <input type="radio" name="gender" class="input" id={{gender}} value={{gender}}> {{gender}}
+                            </label> {{/genders}}
+                        </div>
+                    </div>
+                    <div class="wrapper
+                    ">
+                        <label class="label" for="more-info" id="updates">{{more-info}}:</label>
+                        <textarea type="textarea" placeholder="{{more-info}}" id="more-info" onclick="eraseText()"></textarea>
+                    </div>
+                    <div class="wrapper
+                        ">
+                        <label class="label" for="email-permission">
+                            <input type="checkbox" class="input" id="email-permission">
+                            {{updates-slogan}}
+                        </label>
+                    </div>
+                    <div id=btn-wrapper>
+                        <button id="btn">
+                       {{btn-txt}}
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- <script src="...tools.js"></script> -->
+
+</html>
