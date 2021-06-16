@@ -34,7 +34,7 @@
                     <div id=slogan1>{{slogan1}}</div>
                     <div id=slogan2>{{slogan2}}</div>
                 </div>
-                <form id=form action="thankYou.html?name={{name}}" onsubmit="formValidation(event)">
+                <form id=form onsubmit="formValidation(event)">
                     <div class="wrapper
                     ">
                         <label class="label" for="name">{{Name}}:</label>
@@ -85,12 +85,15 @@
                        {{btn-txt}}
                         </button>
                     </div>
-
+                    <div class=error id="form-error"></div>
                 </form>
             </div>
         </div>
     </div>
 </body>
-<!-- <script src="...tools.js"></script> -->
+<script src="./js/tools.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+</script>
 
 </html>
