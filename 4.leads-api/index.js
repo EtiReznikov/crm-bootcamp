@@ -3,6 +3,14 @@ const fieldStatus = {
     phone: true,
     email: true
 }
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'landingpage'
+});
+
 const express = require('express');
 const app = express();
 var cors = require('cors')
@@ -19,8 +27,11 @@ app.post('/', function(req, res) {
     const name = req.body.name;
     const phone = req.body.phone;
     const email = req.body.email;
+    const gender = req.body.gender;
+    const moreInfo = req.body.moreInfo;
+    const updatesConfirm = req.body.updatesConfirm
     let flag;
-
+    console.log(updatesConfirm)
     nameValidation(name)
     phoneValidation(phone);
     emailValidation(email);
@@ -34,13 +45,27 @@ app.post('/', function(req, res) {
         name: name,
         flag: flag
     }
+    if (data.flag) {
+        connection.connect(function(err) {
+            if (err) throw err;
+            console.log("Connected!");
+            var sql = `INSERT INTO leads (name, phone_number,email) VALUES ('${name}', '${phone}', '${email}')`;
+
+            connection.query(sql, function(err, result) {
+                if (err) throw err;
+                console.log("1 record inserted");
+            });
+        });
+    }
     res.send(data);
+
 
 
 
 });
 app.listen(process.env.PORT, () => {
-    console.log(`Server running at http://localhost:${process.env.PORT}/`);
+    console.log(`
+                    Server running at http: //localhost:${process.env.PORT}/`);
 });
 
 

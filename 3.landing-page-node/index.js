@@ -43,8 +43,6 @@ app.get('/', function(req, res) {
 });
 
 app.get('/submitted', function(req, res) {
-    console.log(req.path)
-    console.log(req.query.name);
     const data = {
         "title": "Lea Edri - Personal Trainer",
         "name": req.query.name,

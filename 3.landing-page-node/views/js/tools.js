@@ -101,7 +101,10 @@ function formValidation(e) {
     axios.post('http://crossfit.com:8004', {
             name: document.getElementById("name").value,
             phone: document.getElementById("phone").value,
-            email: document.getElementById("email").value
+            email: document.getElementById("email").value,
+            gender: form.querySelector('input[name=gender]:checked') != null ? form.querySelector('input[name=gender]:checked').value : '',
+            moreInfo: document.getElementById("more-info") != null ? document.getElementById("more-info").value : '',
+            updatesConfirm: document.getElementById("email-permission").checked
         })
         .then(function(response) {
             if (!response.data.flag) {
