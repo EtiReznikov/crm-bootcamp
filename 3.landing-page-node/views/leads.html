@@ -17,32 +17,65 @@
     <div id=error></div>
 
     <div class="container">
-        <table style="width:100%">
+        <table style="width:100%" id="leads-table">
 
-            <tr>
-                <th>Name</th>
-                <th>Phone Number</th>
-                <th>Email Address</th>
-                <th>Gender</th>
-                <th>More information</th>
-                <th>Confirmation of updates</th>
-            </tr>
-            <!-- <tr>
-                <td>male</td>
-                <td>Smith</td>
-                <td>50</td>
-                <td>50</td>
-                <td>50</td>
-                <td>50</td>
-            </tr>
-            <tr>
-                <td>Eve</td>
-                <td>Jackson</td>
-                <td>94</td>
-                <td>94</td>
-                <td>94</td>
-                <td>94</td>
-            </tr> -->
+            <thead>
+                <tr>
+                    <td>
+                        <button onclick="sortBy('name', 'DESC')"> Sort Desc
+                        </button>
+                        <button onclick="sortBy('name', 'ASC')">
+                            Sort ASC
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="sortBy('phone_number', 'DESC')"> Sort Desc
+                        </button>
+                        <button onclick="sortBy('phone_number', 'ASC')">
+                            Sort ASC
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="sortBy('email', 'DESC')"> Sort Desc
+                        </button>
+                        <button onclick="sortBy('email', 'ASC')">
+                            Sort ASC
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="sortBy('gender', 'DESC')"> Sort Desc
+                        </button>
+                        <button onclick="sortBy('gender', 'ASC')">
+                            Sort ASC
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="sortBy('more_info', 'DESC')"> Sort Desc
+                        </button>
+                        <button onclick="sortBy('more_info', 'ASC')">
+                            Sort ASC
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="sortBy('update_confirm', 'DESC')"> Sort Desc
+                        </button>
+                        <button onclick="sortBy('update_confirm', 'ASC')">
+                            Sort ASC
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email Address</th>
+                    <th>Gender</th>
+                    <th>More information</th>
+                    <th>Confirmation of updates</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+
+            </tbody>
         </table>
 
 </body>

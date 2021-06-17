@@ -19,13 +19,7 @@ connection.connect(function(err) {
 const express = require('express');
 const app = express();
 var cors = require('cors')
-    // app.use(function(req, res, next) {
-    //     res.header("Access-Control-Allow-Origin", "localhost:8003"); // update to match the domain you will make the request from
-    //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    //     next();
-    // });
 
-// app.options('*', cors())
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,20 +27,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.post('/leads', function(req, res) {
+    console.log(req.body);
 
-    const name = req.body.name;
-    const phone = req.body.phone;
-    const email = req.body.email;
-    const gender = req.body.gender;
-    const updatesConfirm = req.body.updatesConfirm
     let flag;
     let data = {
         leads: {}
     };
-    const sql = `SELECT * FROM leads`;
+    const orderBy = req.body.orderBy ? req.body.orderBy : ''
+    console.log("order by", orderBy);
+    const sql = `SELECT * FROM leads ${orderBy}`;
+    console.log(sql);
     connection.query(sql, function(err, result, fields) {
-        data.leads = JSON.stringify(result);
-        res.send(data);
+        res.send(result);
 
     });
 
