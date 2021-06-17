@@ -39,8 +39,6 @@ const getLeads = () => {
                 new_tbody.appendChild(newTr);
             }
             console.log(new_tbody)
-
-
             tbody.innerHTML = new_tbody.innerHTML
         })
         .catch(function(error) {
