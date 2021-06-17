@@ -8,6 +8,13 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 app.use(express.static('views'));
 
+app.get('/admin', function(req, res) {
+    const data = {
+        "title": "Lea Edri - Personal Trainer",
+        "name": req.query.name,
+    };
+    res.render('leads', data);
+});
 
 
 app.get('/', function(req, res) {
@@ -50,6 +57,7 @@ app.get('/submitted', function(req, res) {
 
     res.render('ThankYou', data);
 });
+
 
 app.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}/`);

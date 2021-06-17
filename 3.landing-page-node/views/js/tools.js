@@ -81,9 +81,8 @@ function emailValidation() {
         fieldStatus.email = false;
         document.getElementById("email-error").innerHTML = "Oops! Invalid email address";
     }
-
-
 }
+
 
 /**
  * check that the all form fill is valid, when the user submit it
@@ -107,6 +106,7 @@ function formValidation(e) {
             updatesConfirm: document.getElementById("email-permission").checked
         })
         .then(function(response) {
+            console.log(response)
             if (!response.data.flag) {
                 console.log("error");
                 document.getElementById("form-error").innerHTML = "Oops! Something is wrong with your data";

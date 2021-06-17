@@ -11,14 +11,47 @@ var connection = mysql.createConnection({
     database: 'landingpage'
 });
 
+connection.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+});
+
 const express = require('express');
 const app = express();
 var cors = require('cors')
-app.use(cors())
+    // app.use(function(req, res, next) {
+    //     res.header("Access-Control-Allow-Origin", "localhost:8003"); // update to match the domain you will make the request from
+    //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    //     next();
+    // });
+
+// app.options('*', cors())
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.post('/leads', function(req, res) {
+
+    const name = req.body.name;
+    const phone = req.body.phone;
+    const email = req.body.email;
+    const gender = req.body.gender;
+    const updatesConfirm = req.body.updatesConfirm
+    let flag;
+    let data = {
+        leads: {}
+    };
+    const sql = `SELECT * FROM leads`;
+    connection.query(sql, function(err, result, fields) {
+        data.leads = JSON.stringify(result);
+        res.send(data);
+
+    });
+
+});
+
 
 app.get('/', function(req, res) {
     res.send('hello there');
@@ -28,13 +61,13 @@ app.post('/', function(req, res) {
     const phone = req.body.phone;
     const email = req.body.email;
     const gender = req.body.gender;
-    const moreInfo = req.body.moreInfo;
+    let moreInfo = req.body.moreInfo;
     const updatesConfirm = req.body.updatesConfirm
     let flag;
-    console.log(updatesConfirm)
     nameValidation(name)
     phoneValidation(phone);
     emailValidation(email);
+    moreInfo = moreInfoValidation(moreInfo);
     if (fieldStatus.name && fieldStatus.phone && fieldStatus.email) {
         flag = true;
     } else {
@@ -46,23 +79,18 @@ app.post('/', function(req, res) {
         flag: flag
     }
     if (data.flag) {
-        connection.connect(function(err) {
+        const genderBin = gender == '' ? '' : gender == 'male' ? 'm' : 'f';
+        const sql = `INSERT INTO leads (name, phone_number,email, gender, more_info, update_confirm) VALUES ('${name}', '${phone}', '${email}', '${gender}', '${moreInfo}', '${updatesConfirm }')`;
+        connection.query(sql, function(err, result) {
             if (err) throw err;
-            console.log("Connected!");
-            var sql = `INSERT INTO leads (name, phone_number,email) VALUES ('${name}', '${phone}', '${email}')`;
+            console.log("1 record inserted");
 
-            connection.query(sql, function(err, result) {
-                if (err) throw err;
-                console.log("1 record inserted");
-            });
         });
     }
     res.send(data);
-
-
-
-
 });
+
+
 app.listen(process.env.PORT, () => {
     console.log(`
                     Server running at http: //localhost:${process.env.PORT}/`);
@@ -117,4 +145,11 @@ function emailValidation(email) {
     } else if (!validEmail) {
         fieldStatus.email = false;
     }
+}
+/**
+ * @param {*} moreInfo
+ * check that the email is valid.
+ */
+function moreInfoValidation(moreInfo) {
+    return escape(moreInfo)
 }
