@@ -53,8 +53,8 @@ app.post('/CreateUser', function(req, res) {
         if (err) throw err;
         console.log("1 record inserted");
         emailErrorStatus=false;
-        const token= jwt.sign({ userId: result.insertId}, accessTokenSecret );
-        res.json({token})
+        const token= jwt.sign({ userId: result.insertId}, accessTokenSecret , {expiresIn: 86400});
+        res.json({token, emailErrorStatus})
 
         // console.log(data.emailStatus)
     // });
@@ -63,7 +63,7 @@ app.post('/CreateUser', function(req, res) {
     else{
       console.log("email exists")
       emailErrorStatus=true;
-
+      res.json({ emailErrorStatus})
     }
   });
   // const data={
@@ -81,15 +81,15 @@ app.post('/Login', function(req, res) {
   const password = md5(req.body.password);
  
   const sqlPassword= `SELECT user_id, user_password FROM users WHERE user_email='${email}'`;
-  let status;
+  let status=-1;
   connection.query(sqlPassword, function(err, resultSelectPassword) {
     if (err) throw err;
     if (resultSelectPassword.length===0){
       console.log("user not exist")
       //The user not exist
       status=0;
-      res.json(status);
-  }
+      res.json({status});
+    }
     else{
 
        if (resultSelectPassword[0].user_password === password){
@@ -100,11 +100,10 @@ app.post('/Login', function(req, res) {
         res.json({token, status})
        
        }
-       
-        else{
+       else{
           console.log("password incorrect")
           status=1; //password incorrect
-          res.json(status);
+          res.json({status});
         }
       
     }

@@ -1,25 +1,42 @@
-import React , { useState } from 'react';
-import InputField from '../Input/input'
+import React , { useEffect, useState } from 'react';
+import InputField from '../Input/Input'
 import LabelField from '../Label/label'
-import Button from '../Button/button'
+import Button from '../Button/Button'
 import axios from 'axios';
 import ErrorMsg from '../errorMsg/errorMsg'; 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorStatus, setError] = useState(4);
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [errorStatus, setError] = useState();
 
+  const [formState, setState]= useState({
+    email: "",
+    password: "",
+    errorStatus : -1
+    }
+  );
+
+  useEffect(()=>{
+
+  });
+
+  
   const submitLogin = () =>{
     axios.post('http://crossfit.com:8005/Login', {
-            email: email,
-            password: password
+
+            email: formState.email,
+            password: formState.password
         })
         .then((response)=> {
           console.log(response.data)
-          console.log(response.data.status)
-          setError(errorStatus+1);
-          console.log(errorStatus)
+          console.log("status "+response.data.status)
+          setState({
+            ...formState,
+             errorStatus: response.data.status ,
+          })
+
           localStorage.setItem('user_token', response.data.token);
+          window.location.href = "http://localhost:3000";
       
         })
         .catch(function(error) {
@@ -39,7 +56,13 @@ function Login() {
            type="text"
             className="login-input"
             placeholder="Email"
-            onChange={e =>setEmail(e.target.value)}/>
+            onChange={e =>
+              setState({
+                ...formState,
+                 email: e.target.value ,
+              })}
+              />
+
         </div>
 
         <div className="input-group">
@@ -48,7 +71,13 @@ function Login() {
             type="password"
             className="login-input"
             placeholder="Password"
-            onChange={e =>setPassword(e.target.value)}/>
+            onChange={e =>
+              setState({
+                ...formState,
+                 password: e.target.value ,
+              })}
+              />
+
         </div>
         <Button  
         className="login-btn"
@@ -56,8 +85,9 @@ function Login() {
           .bind(this)}
         text="Login"
         />{
-          (errorStatus===0 && <ErrorMsg text="User is not exists"/> ) ||
-          ( errorStatus===1 && <ErrorMsg text="Oops! Wrong password"/> )
+          (formState.errorStatus===0 && <ErrorMsg text="User is not exists"/> ) ||
+          (formState.errorStatus===1 && <ErrorMsg text="Oops! Wrong password"/> ) ||
+          (formState.errorStatus===2 && <ErrorMsg text="Login is successful"/> )
         }
       </div>
     </div>

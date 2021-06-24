@@ -1,25 +1,41 @@
-import React , { useState } from 'react';
-import InputField from '../Input/input'
+import React , { useState, useEffect } from 'react';
+import InputField from '../Input/Input'
 import LabelField from '../Label/label'
-import Button from '../Button/button';
-// import ErrorMsg from '../errorMsg/errorMsg'; 
+import Button from '../Button/Button';
+import ErrorMsg from '../errorMsg/errorMsg'; 
 import axios from 'axios';
 function Signup() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [phone, setPhone] = useState('');
+  // const [password, setPassword] = useState('');
   // const [errorStatus, setError] = useState(false);
 
+  const [formState, setState]= useState({
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+    errorStatus : false
+    }
+  );
+  useEffect(()=>{
+    console.log(formState.errorStatus)
 
+  });
   const submitRegister = () =>{
     axios.post('http://crossfit.com:8005/CreateUser', {
-            name: name,
-            phone: phone,
-            email: email,
-            password: password
+            name: formState.name,
+            phone: formState.phone,
+            email: formState.email,
+            password: formState.password
         })
         .then(function(response) {
+          console.log(response.data)
+          setState({
+            ...formState,
+             errorStatus: response.data.emailErrorStatus ,
+          })
           localStorage.setItem('user_token', response.data.token);
         })
         .catch(function(error) {
@@ -41,7 +57,13 @@ function Signup() {
           type="text"
             className="login-input"
             placeholder="name"
-            onChange={e =>setName(e.target.value)}/>
+            onChange={e =>
+              setState({
+                ...formState,
+                 name: e.target.value ,
+              })}
+            // e.target.value)}
+            />
         </div>
 
         <div className="input-group">
@@ -51,7 +73,13 @@ function Signup() {
           type="text"
            lassName="login-input"
             placeholder="Email"
-            onChange={e => setEmail(e.target.value)}/>
+            onChange={e => 
+              setState({
+                ...formState,
+                 email: e.target.value ,
+              })}
+            // setEmail(e.target.value)}
+            />
         </div>
 
         <div className="input-group">
@@ -61,7 +89,12 @@ function Signup() {
           type="number" 
           className="login-input" 
           placeholder="Phone Number"
-          onChange={e => setPhone(e.target.value)}
+          onChange={e => 
+            setState({
+              ...formState,
+               phone: e.target.value ,
+            })}
+            // setPhone(e.target.value)}
           />
         </div>
 
@@ -74,8 +107,13 @@ function Signup() {
             type="password"
             className="login-input"
             placeholder="Password"
-            onChange={e => {setPassword(e.target.value)}
-            }/>
+            onChange={e => 
+              setState({
+                ...formState,
+                 password: e.target.value ,
+              })}
+              // {setPassword(e.target.value)} }
+            />
         </div>
         <div className="input-group">
           <LabelField htmlFor="password" text="Confirm Password"/>
@@ -90,6 +128,9 @@ function Signup() {
         onClick={submitRegister}
         text="Signup"
         />
+        {
+          (formState.errorStatus && <ErrorMsg text="Oops, The user already exists"/> ) 
+        }
         {/* { errorStatus && <ErrorMsg text="Oops, The user already exists"/> } */}
       </div>
     </div>
