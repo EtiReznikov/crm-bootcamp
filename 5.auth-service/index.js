@@ -46,9 +46,8 @@ app.use( function (req, res, next) {
     console.log("Token")
     jwt.verify(req.headers.authentication, accessTokenSecret, function (err, decoded) {
       if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });
+        return res.status(403).json({ success: false, message: 'Failed to authenticate token.' });
       } else {
-    
         req.decoded = decoded; 
         console.log(decoded);
         next();

@@ -34,9 +34,12 @@ function Login() {
             ...formState,
              errorStatus: response.data.status ,
           })
+          if (response.data.status==2){
+            localStorage.setItem('user_token', response.data.token);
+            window.location.href = "http://localhost:3000";
+          }
 
-          localStorage.setItem('user_token', response.data.token);
-          // window.location.href = "http://localhost:3000";
+        
       
         })
         .catch(function(error) {
@@ -86,8 +89,7 @@ function Login() {
         text="Login"
         />{
           (formState.errorStatus===0 && <ErrorMsg text="User is not exists"/> ) ||
-          (formState.errorStatus===1 && <ErrorMsg text="Oops! Wrong password"/> ) ||
-          (formState.errorStatus===2 && <ErrorMsg text="Login is successful"/> )
+          (formState.errorStatus===1 && <ErrorMsg text="Oops! Wrong password"/> ) 
         }
       </div>
     </div>
