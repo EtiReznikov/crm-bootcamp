@@ -52,9 +52,9 @@ export function nameLengthValidation(name) {
 export function phoneValidation(phoneNumber) {
     const isOnlyDigit = /^\d+$/.test(phoneNumber);
     if (isOnlyDigit) {
-        return true;
+        return 0;
     } else {
-        return false;
+        return 1;
     }
 }
 
@@ -65,9 +65,8 @@ export function phoneValidation(phoneNumber) {
  */
 
 export function phoneLengthValidation(phone) {
-    if (phone.length !== 7) {
+    if (phone.length !== 10) {
         return 2;
-        // document.getElementById("phone-error").innerHTML = "Oops! A phone number should exactly 7 digits";
     }
     else return phoneValidation(phone);
 }
@@ -97,8 +96,6 @@ export function passwordStrengthValidation(password){
  */
 
  export function passwordMatchValidation(password, confirm){
-    console.log(password);
-    console.log(confirm)
     if (password === confirm){
         return 0;
     }

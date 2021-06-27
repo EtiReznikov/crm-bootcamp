@@ -1,17 +1,12 @@
 const express = require('express');
 const app = express();
 var cors = require('cors')
-const bodyParser = require('body-parser');
 app.use(express.json());
 app.use(express.urlencoded());
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
-
-
-
+const validators = require('./tools/validation');
 const jwt = require('jsonwebtoken');
 
 var mysql = require('mysql');
@@ -74,11 +69,17 @@ app.post('/CreateUser', function (req, res) {
   const email = req.body.email;
   const phone = req.body.phone;
   const password = md5(req.body.password);
-
+  const confirm = md5(req.body.confirm);
   emailErrorStatus = true;
 
   const sqlEmail = `SELECT user_id FROM users WHERE user_email='${email}'`;
-
+  const formValid = validators.nameValidation(name) && validators.phoneValidation(phone) && validators.emailValidation(email) && validators.passwordValidation(password, confirm);
+  // formStatus = formValid;
+  // if (!formValid){
+  //   res.json({ formValid })
+  // }
+//  else{
+    
   connection.query(sqlEmail, function (err, resultSelectEmail) {
     if (err) throw err;
     if (resultSelectEmail.length === 0) {
@@ -86,7 +87,7 @@ app.post('/CreateUser', function (req, res) {
       connection.query(sql, function (err, result) {
         if (err) throw err;
         console.log("1 record inserted");
-        emailErrorStatus = false;
+        emailErrorStatus = 0;
         const user_id = result.insertId;
         const token = jwt.sign({ userId: user_id, userEmail: email }, accessTokenSecret, { expiresIn: 86400 });
         res.json({ token, emailErrorStatus })
@@ -103,10 +104,11 @@ app.post('/CreateUser', function (req, res) {
     }
     else {
       console.log("email exists")
-      emailErrorStatus = true;
+      emailErrorStatus = 3;
       res.json({ emailErrorStatus })
     }
   });
+//}
 });
 
 

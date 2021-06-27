@@ -40,22 +40,30 @@ function Signup() {
       passwordValid: passwordValid,
       passwordMatchValid: passwordMatchValid
     })
-    const valid = nameValid === 0 && phoneValid === 0 && emailValid === 0 && passwordValid === 0 && passwordMatchValid === 0
+    const valid = (nameValid === 0 && phoneValid === 0 && emailValid === 0 &&
+       (passwordValid === 1 || passwordValid === 2 || passwordValid === 3 ) && passwordMatchValid === 0)
+    console.log(phoneValid)
     if (valid) {
       axios.post('http://crossfit.com:8005/CreateUser', {
         name: formState.name,
         phone: formState.phone,
         email: formState.email,
-        password: formState.password
+        password: formState.password,
+        confirm : formState.passwordConfirm
       })
         .then(function (response) {
           console.log(response.data)
           setState({
             ...formState,
-            AfterSubmitErrorStatus: response.data.emailErrorStatus,
+            // AfterSubmitErrorStatus: response.data.emailErrorStatus,
+            emailValid: response.data.emailErrorStatus
           })
-          localStorage.setItem('user_token', response.data.token);
-          window.location.href = "http://localhost:3000";
+          if (response.data.emailErrorStatus !== 3 && response.data.formValid){
+            console.log(response.data.formValid)
+            localStorage.setItem('user_token', response.data.token);
+            // window.location.href = "http://localhost:3000";
+          }
+         
         })
         .catch(function (error) {
           console.log(error);
@@ -109,7 +117,11 @@ function Signup() {
           />
           {
             (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
-            (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />)
+            (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />) ||
+            (formState.emailValid === 3 && <ErrorMsg text="Oops, The user already exists" />)
+          }
+          {
+             (formState.AfterSubmitErrorStatus && <ErrorMsg text="Oops, The user already exists" />)
           }
 
         </div>
@@ -134,7 +146,8 @@ function Signup() {
             }
           />
           {
-            (!formState.phoneValid === 1 && <ErrorMsg text="Oops! A phone number should contain only numbers" />)
+            (formState.phoneValid === 1 && <ErrorMsg text="Oops! A phone number should contain only numbers" />) ||
+            (formState.phoneValid === 2 && <ErrorMsg text="Oops! A phone number should exactly 10 digits" />)
           }
         </div>
 
@@ -193,7 +206,7 @@ function Signup() {
         {
           (formState.AfterSubmitErrorStatus && <ErrorMsg text="Oops, The user already exists" />)
         }
-        {/* { AfterSubmitErrorStatus  && <ErrorMsg text="Oops, The user already exists"/> } */}
+        
       </div>
     </div>
   );
