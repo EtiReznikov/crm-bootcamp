@@ -75,13 +75,20 @@ export function phoneLengthValidation(phone) {
 
 /**
  * 
- * check if password has Minimum eight characters, at least one letter and one number:
+ * check if password is strong, medium or weak.
  */
 
 export function passwordStrengthValidation(password){
-    const isStrengthPassword= /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password);
-    if (isStrengthPassword) return 0;
-    return 1;
+    //password has at least one lowercase letter (?=.*[a-z]), one uppercase letter (?=.*[A-Z]), one digit (?=.*[0-9]), one special character (?=.*[^A-Za-z0-9]), and is at least eight characters long(?=.{8,}).
+    const strengthPassword = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/.test(password);
+    if (strengthPassword) return 3;
+    //If the password is at least six characters long and meets all the other requirements, or has no digit but meets the rest of the requirements.
+    const mediumPassword= /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))/.test(password);
+    if (mediumPassword) return 2;
+    // Password contain at least 8 characters, one letter and one number" 
+    const weakPassword= /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password);
+    if (weakPassword) return 1;
+    return 0;
 }
 
 /**

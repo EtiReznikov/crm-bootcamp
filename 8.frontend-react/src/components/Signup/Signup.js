@@ -17,7 +17,7 @@ function Signup() {
     nameValid: 0,
     emailValid: 0,
     phoneValid: 0,
-    passwordValid: 0,
+    passwordValid: -1,
     passwordMatchValid: true
   }
   );
@@ -152,9 +152,20 @@ function Signup() {
                 ...formState,
                 password: e.target.value,
               })}
+              onKeyUp={e => {
+                setState({
+                  ...formState, passwordValid: passwordStrengthValidation(e.target.value)
+                })
+                console.log("onKeyUp")
+              }
+              }
           />
           {
-            formState.passwordValid === 1 && <ErrorMsg text="Oops! Password must contain at least 8 characters, one letter and one number" />
+            (formState.passwordValid === 0 && <ErrorMsg text="Oops! Password must contain at least 8 characters, one letter and one number" />) ||
+            (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
+            (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
+            (formState.passwordValid === 3 && <ErrorMsg text="strong password" />)
+
           }
         </div>
         <div className="input-group">
@@ -172,7 +183,7 @@ function Signup() {
                />
         </div>
         {
-          formState.passwordValid === 0 && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
+          (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3)&& formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
         }
         <Button
           className="signup-btn"
