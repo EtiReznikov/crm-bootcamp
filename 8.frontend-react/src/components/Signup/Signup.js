@@ -37,6 +37,7 @@ function Signup() {
              errorStatus: response.data.emailErrorStatus ,
           })
           localStorage.setItem('user_token', response.data.token);
+          window.location.href = "http://localhost:3000";
         })
         .catch(function(error) {
             console.log(error);
@@ -65,7 +66,7 @@ function Signup() {
             // e.target.value)}
             />
         </div>
-
+        // TODO: add email verify
         <div className="input-group">
           <LabelField htmlFor="email" text="Email"/>
           <InputField 
@@ -81,7 +82,7 @@ function Signup() {
             // setEmail(e.target.value)}
             />
         </div>
-
+        // TODO: add phone verify
         <div className="input-group">
           <LabelField htmlFor="phone" text="Phone Number"/>
           <InputField 
@@ -115,6 +116,7 @@ function Signup() {
               // {setPassword(e.target.value)} }
             />
         </div>
+        // TODO: add password verify
         <div className="input-group">
           <LabelField htmlFor="password" text="Confirm Password"/>
           <InputField

@@ -36,7 +36,7 @@ function Login() {
           })
 
           localStorage.setItem('user_token', response.data.token);
-          window.location.href = "http://localhost:3000";
+          // window.location.href = "http://localhost:3000";
       
         })
         .catch(function(error) {

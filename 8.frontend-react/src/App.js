@@ -15,18 +15,14 @@ import LoginSignup from './components/LoginSignup/LoginSignup'
 import { useState, useEffect } from 'react';
 // import menuItem from './components/menuItem/MenuItem';
 import Calendar from './components/Calendar/Calendar';
+
 function App() {
 
 
 
   const [appState, setState] = useState({
     localStorageStatus: false,
-    // menuItems:  [ <MenuItem link= "/" className="menu-button" text="Logout" onCLick={()=>
-    //   localStorage.removeItem('user_token')
-    // }
-    // ></MenuItem>
-    //   , <MenuItem link= "/LoginSignup" className="menu-button" text="Login / Signup"></MenuItem>,
-    //  ]
+
   }
   );
 
@@ -38,14 +34,7 @@ function App() {
 
   };
 
-  // const createMenu = () =>{
-  //   var arr= [1,2,3];
-  //   return arr;
-  // //   return(
-  // //     [ <MenuItem link= "/" className="menu-button" text="Logout" onClick={onClick.bind(this)}></MenuItem>
-  // //   , <MenuItem link= "/LoginSignup" className="menu-button" text="Login / Signup"></MenuItem>,
-  // // ]);
-  // }
+ 
   useEffect(() => {
 
     // setState({...appState, localStorageStatue: localStorage.getItem('user_token') })
@@ -74,21 +63,20 @@ function App() {
 
 
         <Switch>
-
+        <Route exact path="/">
+            <Home />
+          </Route>
         <Route path="/Calendar">
             <Calendar />
           </Route>
-
           <Route path="/LoginSignup">
             <LoginSignup />
           </Route>
-          <Route exact path="/">
-            <Home />
-          </Route>
+          
           <Route path="/Users">
-            <div>Test</div>
             <Users />
           </Route>
+    
         </Switch>
       </div>
     </Router>
