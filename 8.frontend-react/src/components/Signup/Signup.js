@@ -1,8 +1,8 @@
 import React , { useState, useEffect } from 'react';
 import InputField from '../Input/Input'
-import LabelField from '../Label/label'
+import LabelField from '../Label/Label'
 import Button from '../Button/Button';
-import ErrorMsg from '../errorMsg/errorMsg'; 
+import ErrorMsg from '../ErrorMsg/ErrorMsg'; 
 import axios from 'axios';
 function Signup() {
   // const [name, setName] = useState('');

@@ -1,9 +1,9 @@
 import React , { useEffect, useState } from 'react';
 import InputField from '../Input/Input'
-import LabelField from '../Label/label'
+import LabelField from '../Label/Label'
 import Button from '../Button/Button'
 import axios from 'axios';
-import ErrorMsg from '../errorMsg/errorMsg'; 
+import ErrorMsg from '../ErrorMsg/ErrorMsg'; 
 function Login() {
   // const [email, setEmail] = useState('');
   // const [password, setPassword] = useState('');
