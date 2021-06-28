@@ -21,10 +21,10 @@ function Signup() {
     passwordMatchValid: true
   }
   );
-  useEffect(() => {
+  // useEffect(() => {
     
 
-  });
+  // });
   const submitRegister = () => {
     //if valid
     const nameValid = nameLengthValidation(formState.name);
@@ -61,7 +61,7 @@ function Signup() {
           if (response.data.emailErrorStatus !== 3 && response.data.formValid){
             console.log(response.data.formValid)
             localStorage.setItem('user_token', response.data.token);
-            // window.location.href = "http://localhost:3000";
+            window.location.href = "http://localhost:3000";
           }
          
         })

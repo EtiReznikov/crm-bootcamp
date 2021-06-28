@@ -3,7 +3,6 @@ const app = express();
 var cors = require('cors')
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 const validators = require('./tools/validation');
@@ -30,7 +29,7 @@ connection.connect(function (err) {
 
 app.use( function (req, res, next) {
   const reqPath= req.path;
-  console.log(req.headers.authentication)
+
  
   //Login or Logout request- JWT not required
   if (req.path === '/Login' || req.path === '/CreateUser'){
@@ -38,7 +37,6 @@ app.use( function (req, res, next) {
   }
   //If JWT token was sent
   else if (req.headers.authentication !=='null') {
-    console.log("Token")
     jwt.verify(req.headers.authentication, accessTokenSecret, function (err, decoded) {
       if (err) {
         return res.status(403).json({ success: false, message: 'Failed to authenticate token.' });
@@ -68,7 +66,6 @@ app.use( function (req, res, next) {
 });
 
 app.post('/home', function (req, res) {
-  console.log("home")
   res.send('home');
 });
 
@@ -84,10 +81,10 @@ app.post('/CreateUser', function (req, res) {
   const sqlEmail = `SELECT user_id FROM users WHERE user_email='${email}'`;
   const formValid = validators.nameValidation(name) && validators.phoneValidation(phone) && validators.emailValidation(email) && validators.passwordValidation(password, confirm);
   // formStatus = formValid;
-  // if (!formValid){
-  //   res.json({ formValid })
-  // }
-//  else{
+  if (!formValid){
+    res.json({ formValid })
+  }
+ else{
     
   connection.query(sqlEmail, function (err, resultSelectEmail) {
     if (err) throw err;
@@ -99,16 +96,8 @@ app.post('/CreateUser', function (req, res) {
         emailErrorStatus = 0;
         const user_id = result.insertId;
         const token = jwt.sign({ userId: user_id, userEmail: email }, accessTokenSecret, { expiresIn: 86400 });
-        res.json({ token, emailErrorStatus })
-        // TODO: remove token from DB
-        const sqlToken = `UPDATE users SET token='${token}' WHERE user_id='${user_id}'`
-        connection.query(sqlToken, function (err, result) {
-          if (err) throw err;
-          console.log("1 record updated");
-        });
+        res.json({ token, emailErrorStatus, formValid })
 
-        // console.log(data.emailStatus)
-        // });
       });
     }
     else {
@@ -117,7 +106,7 @@ app.post('/CreateUser', function (req, res) {
       res.json({ emailErrorStatus })
     }
   });
-//}
+}
 });
 
 
@@ -146,12 +135,6 @@ app.post('/Login', function (req, res) {
         console.log("log in");
         status = 2; //log in
         res.json({ token, status })
-        // TODO: remove token from DB
-        // const sqlToken = `UPDATE users SET token='${token}' WHERE user_id='${user_id}'`
-        // connection.query(sqlToken, function (err, result) {
-        //   if (err) throw err;
-        //   console.log("1 record updated");
-        // });
 
       }
       else {
@@ -163,21 +146,9 @@ app.post('/Login', function (req, res) {
     }
   });
 
-  // res.send("login");
 
 });
 
-// app.post('/AuthApi', function(req, res) {
-//   const token= req.body.token;
-
-//   jwt.verify(token, accessTokenSecret, function(err, decoded) {
-//     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-//     console.log(decoded);
-//     res.status(200).send(decoded);
-
-// });
-
-// });
 app.get('/', function (req, res) {
   res.send('hello there');
 });
