@@ -1,0 +1,12 @@
+@import "../../Views/colors.scss";
+.link{
+    font-size: 0.85em;
+    text-decoration: none;
+    color: $button-background;
+}
+
+.link:hover{
+
+   font-weight: bold; 
+}
+

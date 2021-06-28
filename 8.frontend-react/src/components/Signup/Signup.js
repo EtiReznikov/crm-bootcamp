@@ -4,6 +4,7 @@ import LabelField from '../Label/Label'
 import Button from '../Button/Button';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import axios from 'axios';
+import Headline from '../Headline/Headline';
 import { emailValidation, phoneValidation, nameValidation, nameLengthValidation, phoneLengthValidation, passwordStrengthValidation, passwordMatchValidation } from '../../tools/validation';
 function Signup() {
 
@@ -22,7 +23,7 @@ function Signup() {
   }
   );
   // useEffect(() => {
-    
+
 
   // });
   const submitRegister = () => {
@@ -31,7 +32,7 @@ function Signup() {
     const phoneValid = phoneLengthValidation(formState.phone);
     const emailValid = emailValidation(formState.email);
     const passwordValid = passwordStrengthValidation(formState.password)
-    const passwordMatchValid = passwordMatchValidation( formState.password, formState.passwordConfirm)
+    const passwordMatchValid = passwordMatchValidation(formState.password, formState.passwordConfirm)
     setState({
       ...formState,
       nameValid: nameValid,
@@ -41,7 +42,7 @@ function Signup() {
       passwordMatchValid: passwordMatchValid
     })
     const valid = (nameValid === 0 && phoneValid === 0 && emailValid === 0 &&
-       (passwordValid === 1 || passwordValid === 2 || passwordValid === 3 ) && passwordMatchValid === 0)
+      (passwordValid === 1 || passwordValid === 2 || passwordValid === 3) && passwordMatchValid === 0)
     console.log(phoneValid)
     if (valid) {
       axios.post('http://crossfit.com:8005/CreateUser', {
@@ -49,7 +50,7 @@ function Signup() {
         phone: formState.phone,
         email: formState.email,
         password: formState.password,
-        confirm : formState.passwordConfirm
+        confirm: formState.passwordConfirm
       })
         .then(function (response) {
           console.log(response.data)
@@ -58,27 +59,25 @@ function Signup() {
             // AfterSubmitErrorStatus: response.data.emailErrorStatus,
             emailValid: response.data.emailErrorStatus
           })
-          if (response.data.emailErrorStatus !== 3 && response.data.formValid){
+          if (response.data.emailErrorStatus !== 3 && response.data.formValid) {
             console.log(response.data.formValid)
             localStorage.setItem('user_token', response.data.token);
             window.location.href = "http://localhost:3000";
           }
-         
+
         })
         .catch(function (error) {
           console.log(error);
         });
     }
-    //else
   }
   return (
     <div className="inner-container">
-      <div className="header">
-        Signup
-      </div>
+      <Headline text="Signup" />
+
       <div className="box">
         <div className="input-group">
-          <LabelField htmlFor="name" text="name" />
+          <LabelField htmlFor="name" text="Name" />
           <InputField name="name"
             type="text"
             className="login-input"
@@ -92,46 +91,45 @@ function Signup() {
               setState({
                 ...formState, nameValid: nameValidation(e.target.value)
               })
-              console.log("onKeyUp")
             }
             }
 
           />
-          {
+
+        </div>
+        {
             (formState.nameValid === 1 && <ErrorMsg text="Oops! Your name can only contain letters and spaces" />) ||
             (formState.nameValid === 2 && <ErrorMsg text="Oops! Your name must contain at least 2 letters" />)
           }
-        </div>
         <div className="input-group">
           <LabelField htmlFor="email" text="Email" />
           <InputField
             name="email"
             type="text"
             lassName="login-input"
-            placeholder="Email"
+            placeholder="type your email"
             onChange={e =>
               setState({
                 ...formState,
                 email: e.target.value,
               })}
           />
-          {
+        </div>
+        {
             (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
             (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />) ||
             (formState.emailValid === 3 && <ErrorMsg text="Oops, The user already exists" />)
           }
           {
-             (formState.AfterSubmitErrorStatus && <ErrorMsg text="Oops, The user already exists" />)
+            (formState.AfterSubmitErrorStatus && <ErrorMsg text="Oops, The user already exists" />)
           }
-
-        </div>
         <div className="input-group">
           <LabelField htmlFor="phone" text="Phone Number" />
           <InputField
             name="phone"
             type="text"
             className="login-input"
-            placeholder="Phone Number"
+            placeholder="type your email phone number"
             onChange={e =>
               setState({
                 ...formState,
@@ -141,62 +139,59 @@ function Signup() {
               setState({
                 ...formState, phoneValid: phoneValidation(e.target.value)
               })
-              console.log("onKeyUp")
             }
             }
           />
-          {
+        
+        </div>
+        {
             (formState.phoneValid === 1 && <ErrorMsg text="Oops! A phone number should contain only numbers" />) ||
             (formState.phoneValid === 2 && <ErrorMsg text="Oops! A phone number should exactly 10 digits" />)
           }
-        </div>
-
-
-
         <div className="input-group">
           <LabelField htmlFor="password" text="Password" />
           <InputField
             name="password"
             type="password"
             className="login-input"
-            placeholder="Password"
+            placeholder="type your password"
             onChange={e =>
               setState({
                 ...formState,
                 password: e.target.value,
               })}
-              onKeyUp={e => {
-                setState({
-                  ...formState, passwordValid: passwordStrengthValidation(e.target.value)
-                })
-                console.log("onKeyUp")
-              }
-              }
+            onKeyUp={e => {
+              setState({
+                ...formState, passwordValid: passwordStrengthValidation(e.target.value)
+              })
+            }
+            }
           />
-          {
+      
+        </div>
+        {
             (formState.passwordValid === 0 && <ErrorMsg text="Oops! Password must contain at least 8 characters, one letter and one number" />) ||
             (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
             (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
             (formState.passwordValid === 3 && <ErrorMsg text="strong password" />)
 
           }
-        </div>
         <div className="input-group">
           <LabelField htmlFor="passwordConfirm" text="Confirm Password" />
           <InputField
             name="passwordConfirm"
             type="password"
             className="login-input"
-            placeholder="Confirm Password"
+            placeholder="type your password again"
             onChange={e =>
               setState({
                 ...formState,
-                passwordConfirm : e.target.value,
+                passwordConfirm: e.target.value,
               })}
-               />
+          />
         </div>
         {
-          (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3)&& formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
+          (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
         }
         <Button
           className="signup-btn"
@@ -206,7 +201,7 @@ function Signup() {
         {
           (formState.AfterSubmitErrorStatus && <ErrorMsg text="Oops, The user already exists" />)
         }
-        
+
       </div>
     </div>
   );

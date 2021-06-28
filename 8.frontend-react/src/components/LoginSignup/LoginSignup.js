@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../LoginSignup/LoginSignup.scss'
 import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
-
+import Button from '../Button/Button';
 
 function LoginSingUp() {
   const [isLogin, setIsLogIn] = useState(true);
@@ -17,38 +17,38 @@ function LoginSingUp() {
     setIsLogIn(false);
     setIsRegister(true);
   }
-  useEffect(()=>{
-    if (localStorage.getItem('user_token')){
+  useEffect(() => {
+    if (localStorage.getItem('user_token')) {
       setIsLogIn(false);
       setIsRegister(false);
     }
-  },[]);
+  }, []);
   return (
-    <div className="box-container">
-      <div className="menu">
-        {/* {(localStorage.getItem('user_token') && <div>Logged in</div> ) } */}
+    <div>
         {
           (localStorage.getItem('user_token') && <div>Logged in</div>) ||
-          (<div><div className={"controller" + (isLogin ? "selected-controller" : "")}
-            onClick={showLoginBox.bind(this)}> Login</div>
-            <div
+          (<div  className="menu">
+            {/* <div className={"controller" + (isLogin ? "selected-controller" : "")}
+              onClick={showLoginBox.bind(this)}>
+              Login
+            </div> */}
+            <Button  className="controller" text="Login" onClick={showLoginBox.bind(this)}/>
+            <Button  className="controller" text="Signup" onClick={showRegisterBox.bind(this)}/>
+            {/* <div
               className={"controller " + (isRegister ? "selected-controller" : "")}
               onClick={showRegisterBox.bind(this)}>
               Signup
-            </div>
+            </div> */}
           </div>)}
 
-
-      </div>
+      <div className="box-container">
       {
         (isLogin && <Login />) ||
         (isRegister && <Signup />)
-        // (localStorage.getItem('user_token') && <div>Logged in</div> )
       }
-      {/* {localStorage.removeItem('user_token') && localStorage.getItem('user_token') && <div>Logged in</div>} */}
 
     </div>
-
+    </div>
   );
 }
 

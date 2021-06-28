@@ -2,6 +2,10 @@ import './App.scss';
 import Home from './components/Home/Home';
 import Button from './components/Button/Button';
 import Users from './components/Users/Users';
+import ForgotPassword from './components/ForgotPassword/FogotPassword';
+import ResetPassword from './components/ResetPassword/ResetPassword';
+import InvalidLink from './components/InvalidLink/InvalidLink';
+import LinkHref from './components/Link/LinkHref';
 // import Menu from './components/Menu/Menu';
 import MenuItem from './components/menuItem/MenuItem';
 import {
@@ -43,20 +47,18 @@ function App() {
 
   return (
     <Router>
-      <div>
+      <div id="app">
         <div id="head">
         {/* <Menu items={appState.menuItems}></Menu> */}
-        
-
           {
-
             (localStorage.getItem('user_token') && 
-            <Link to="/" onClick={onClick}>Logout</Link>) ||
-            <Link to="/LoginSignup" >SignIn/ SignUp</Link>
+            <LinkHref href="/" onClick={onClick} text="Logout" />) ||
+            <LinkHref href="/LoginSignup" text="SignIn/ SignUp"/>
           }
-  
-          <Link to="/Users">Users</Link>
-          <Link to="/Calendar">Calender</Link>
+          <LinkHref href="/Users" text="Users" />
+          <LinkHref href="/Calendar" text="Calender" />
+
+
        
           </div>
         <hr />
@@ -76,8 +78,14 @@ function App() {
           <Route path="/Users">
             <Users />
           </Route>
-          <Route path="forgetPass">
-            
+          <Route path="/forgotPassword">
+            <ForgotPassword />
+          </Route>
+          <Route path="/resetPassword">
+            <ResetPassword />
+          </Route>
+          <Route path="/linkInvalid">
+            <InvalidLink />
           </Route>
     
         </Switch>
