@@ -1,21 +1,19 @@
 {
-  
   "name": "auth-api-express",
   "version": "1.0.0",
   "description": "Web application with server-side rendering (SSR) dynamic templates using Jade. ## Getting Started ### Install **yarn** (If Not Installed Already) ``` npm i -g yarn ```",
   "main": "index.js",
-  
-  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "export PORT=8005 && nodemon index.js"
-    
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "mailgun-js": "^0.22.0",
     "md5": "^2.3.0"
   }
 }
+
