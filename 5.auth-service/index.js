@@ -44,8 +44,17 @@ app.use( function (req, res, next) {
         return res.status(403).json({ success: false, message: 'Failed to authenticate token.' });
       } else {
         req.decoded = decoded; 
-        console.log(decoded);
-        next();
+        const sql= `SELECT user_id FROM users WHERE user_id='${decoded.userId}' AND user_email='${decoded.userEmail}'`
+        connection.query(sql, function (err, result) {
+          if (err) throw err;
+          else if (result.length === 0) {
+            return res.status(403).send({
+              success: false,
+              message: 'The token is not valid'
+            });
+           }
+           else next();
+        });
       }
     });
   }
@@ -133,7 +142,7 @@ app.post('/Login', function (req, res) {
 
       if (resultSelectPassword[0].user_password === password) {
 
-        const token = jwt.sign({ userId: resultSelectPassword[0].user_id }, accessTokenSecret);
+        const token = jwt.sign({ userId: resultSelectPassword[0].user_id , userEmail: email }, accessTokenSecret);
         console.log("log in");
         status = 2; //log in
         res.json({ token, status })

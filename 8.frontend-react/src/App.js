@@ -76,6 +76,9 @@ function App() {
           <Route path="/Users">
             <Users />
           </Route>
+          <Route path="forgetPass">
+            
+          </Route>
     
         </Switch>
       </div>

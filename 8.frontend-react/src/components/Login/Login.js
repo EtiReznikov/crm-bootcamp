@@ -4,6 +4,10 @@ import LabelField from '../Label/Label'
 import Button from '../Button/Button'
 import axios from 'axios';
 import ErrorMsg from '../ErrorMsg/ErrorMsg'; 
+import {
+  BrowserRouter as Router,
+  Link,
+} from "react-router-dom";
 function Login() {
   // const [email, setEmail] = useState('');
   // const [password, setPassword] = useState('');
@@ -87,10 +91,13 @@ function Login() {
         onClick={submitLogin
           .bind(this)}
         text="Login"
-        />{
+        />
+        {
           (formState.errorStatus===0 && <ErrorMsg text="User is not exists"/> ) ||
           (formState.errorStatus===1 && <ErrorMsg text="Oops! Wrong password"/> ) 
         }
+
+        <Link to="/forgetPass">Forget my password</Link>
       </div>
     </div>
   );
