@@ -120,7 +120,6 @@ app.post('/Login', function (req, res) {
 
   const email = req.body.email;
   const password = md5(req.body.password);
-
   const sqlPassword = `SELECT user_id, user_password FROM users WHERE user_email='${email}'`;
   let status = -1;
   connection.query(sqlPassword, function (err, resultSelectPassword) {
@@ -208,17 +207,17 @@ app.post('/NewPassword', function (req, res) {
     confirm : req.body.password,
   };
   if (!validators.passwordValidation(password, confirm)){
-    return res.json({successStatus : false })
+    return res.json({successStatus : 1 })
   }
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
     if (err) {
-      return res.status(403).json({ successStatus: false , message: 'Failed to authenticate token.' });
+      return res.status(403).json({ successStatus: 1 , message: 'Failed to authenticate token.' });
     }else{
       const sql = `UPDATE users SET user_password='${password} WHERE user_id='${decoded,user_id}'`;
         connection.query(sql, function (err, result) {
-          if (err) res.status(505).json({success: false, message: 'Failed to update DB'})
+          if (err) res.status(505).json({success: 1, message: 'Failed to update DB'})
           else{
-            return res.json({successStatus : true })
+            return res.json({successStatus : 0 })
           }
         });
     }
