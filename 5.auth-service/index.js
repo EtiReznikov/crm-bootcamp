@@ -19,10 +19,6 @@ var connection = mysql.createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  // host: 'localhost',
-  // user: 'root',
-  // password: '',
-  // database: 'crm'
 });
 
 connection.connect(function (err) {
@@ -37,7 +33,7 @@ app.use(function (req, res, next) {
   const reqPath = req.path;
 
   //Login or Logout request- JWT not required
-  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword') {
+  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword' || req.path === '/addUser' || req.path === '/CreateUserByInvite') {
     next();
   }
   //If JWT token was sent
@@ -52,6 +48,7 @@ app.use(function (req, res, next) {
           if (err) throw err;
           else if (result.length === 0) {
             return res.status(403).send({
+              //* TODO: remove token form jwt/
               success: false,
               message: 'The token is not valid'
             });
@@ -79,30 +76,36 @@ app.post('/CreateUser', function (req, res) {
   const name = req.body.name;
   const email = req.body.email;
   const phone = req.body.phone;
+  const businessName = req.body.businessName;
   const password = md5(req.body.password);
   const confirm = md5(req.body.confirm);
   emailErrorStatus = true;
 
-  const sqlEmail = `SELECT user_id FROM users WHERE user_email='${email}'`;
-  const formValid = validators.nameValidation(name) && validators.phoneValidation(phone) && validators.emailValidation(email) && validators.passwordValidation(password, confirm);
+
+  const formValid = validators.nameValidation(name) && validators.phoneValidation(phone) && validators.emailValidation(email) && validators.passwordValidation(password, confirm) && businessName.length > 0;
   // formStatus = formValid;
   if (!formValid) {
     res.json({ formValid })
   }
   else {
-
+    const sqlEmail = `SELECT user_id FROM users WHERE user_email='${email}'`;
     connection.query(sqlEmail, function (err, resultSelectEmail) {
       if (err) throw err;
       if (resultSelectEmail.length === 0) {
-        const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password) VALUES ('${name}', '${email}', '${phone}' , '${password}')`;
-        connection.query(sql, function (err, result) {
+        const sqlBusiness = `INSERT INTO gym (gym_name) VALUES ('${businessName}')`;
+        connection.query(sqlBusiness, function (err, businessResult) {
           if (err) throw err;
-          console.log("1 record inserted");
-          emailErrorStatus = 0;
-          const user_id = result.insertId;
-          const token = jwt.sign({ userId: user_id, userEmail: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 });
-          res.json({ token, emailErrorStatus, formValid })
-
+          const businessId = businessResult.insertId;
+          console.log("result" + businessResult.insertId)
+          const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id) VALUES ('${name}', '${email}', '${phone}' , '${password}' ,'${businessId}')`;
+          connection.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("1 record inserted");
+            emailErrorStatus = 0;
+            const userId = result.insertId;
+            const token = jwt.sign({ userId: userId, userEmail: email, businessId: businessId, name: name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 });
+            res.json({ token, emailErrorStatus, formValid })
+          });
         });
       }
       else {
@@ -136,7 +139,6 @@ app.post('/Login', function (req, res) {
       if (resultSelectPassword[0].user_password === password) {
 
         const token = jwt.sign({ userId: resultSelectPassword[0].user_id, userEmail: email }, process.env.ACCESS_TOKEN_SECRET);
-        console.log("log in");
         status = 2; //log in
         res.json({ token, status })
 
@@ -172,9 +174,9 @@ app.post('/ResetPasswordReq', function (req, res) {
       });
 
       const token = jwt.sign({ userId: result[0].user_id, userEmail: email }, process.env.ACCESS_TOKEN_SECRET);
-     const message= "We have received a request to reset your account password. please click the <a href=http://localhost:3000/resetPassword/"+token+"> link </a> to reset your password."
-      
-     const data = {
+      const message = "We have received a request to reset your account password. please click the <a href=http://localhost:3000/resetPassword/" + token + "> link </a> to reset your password."
+
+      const data = {
         from: 'eti.reznikov@workiz.com',
         to: email,
         subject: 'Reset Password',
@@ -200,37 +202,123 @@ app.post('/ResetPasswordReq', function (req, res) {
 });
 /**chang password post request */
 app.post('/NewPassword', function (req, res) {
-  console.log("new pass")
   const data = {
-    token : 1234,
-    password : md5(req.body.password),
-    confirm : md5(req.body.password),
+    token: 1234,
+    password: md5(req.body.password),
+    confirm: md5(req.body.password),
   };
- 
+
   //password validation
-  if (!validators.passwordValidation(data.password, data.confirm)){
-    return res.json({successStatus : 1 })
+  if (!validators.passwordValidation(data.password, data.confirm)) {
+    return res.json({ successStatus: 1 })
   }
 
   //check the token
   jwt.verify(data.token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
-    console.log(decoded)
     if (err) {
-      return res.json({ successStatus: 2 , message: 'Failed to authenticate token.' });
-    }else{
+      return res.json({ successStatus: 2, message: 'Failed to authenticate token.' });
+    } else {
       const sql = `UPDATE users SET user_password='${data.password}' WHERE user_id='${decoded.userId}'`;
       console.log(sql);
-        connection.query(sql, function (err, result) {
-          if (err) res.status(505).json({success: 1, message: 'Failed to update DB'})
-          else{
-            //* TODO: remove token form jwt/
-            return res.json({successStatus : 0 })
-          }
-        });
+      connection.query(sql, function (err, result) {
+        if (err) res.status(505).json({ success: 1, message: 'Failed to update DB' })
+        else {
+          //* TODO: remove token form jwt/
+          return res.json({ successStatus: 0 })
+        }
+      });
     }
   });
 
 });
+
+app.post('/addUser', function (req, res) {
+  const email = req.body.email;
+  const token = req.body.token;
+  const sql = `SELECT user_id FROM users WHERE user_email='${email}'`;
+  let status = -1;
+  connection.query(sql, function (err, result) {
+    if (err) throw err;
+    if (result.length > 0) {
+      console.log("user exist")
+      //The user not exist
+      status = 1;
+      res.json({ status });
+    }
+    else {
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+        if (err) {
+          return res.json({ successStatus: 2, message: 'Failed to authenticate token.' });
+        } else {
+          var mailGun = new Mailgun({
+            apiKey: process.env.MAILGUN_KEY,
+            domain: process.env.MAILGUN_ADMIN
+          });
+
+          const token = jwt.sign({ userEmail: email, businessId: decoded.businessId }, process.env.ACCESS_TOKEN_SECRET);
+          console.log(decoded)
+          const message = "You have invitation to join " + decoded.name + " team. <a href=http://localhost:3000/inviteUser/" + token + "> link </a> to continue the process."
+
+          const data = {
+            from: 'eti.reznikov@workiz.com',
+            to: email,
+            subject: 'Invitation',
+            html: message
+          }
+
+          mailGun.messages().send(data, function (err, body) {
+            if (err) {
+              status = 2;
+              res.json({ error: err, status: status });
+              console.log("got an error: ", err);
+            }
+            //Else we can greet    and leave
+            else {
+              status = 0;
+
+              res.json({ email: email, status: status });
+            }
+          });
+        }
+      });
+
+    }
+  });
+});
+
+app.post('/CreateUserByInvite', function (req, res) {
+
+  const name = req.body.name;
+  const phone = req.body.phone;
+  const password = md5(req.body.password);
+  const confirm = md5(req.body.confirm);
+  const token = req.body.token;
+  
+  const formValid = validators.nameValidation(name) && validators.phoneValidation(phone) && validators.passwordValidation(password, confirm);
+  // formStatus = formValid;
+  if (!formValid) {
+    res.json({ formValid })
+  }
+  else {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+      if (err) {
+        return res.json({ successStatus: 2, message: 'Failed to authenticate token.' });
+      } else {
+        const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id) VALUES ('${name}', '${decoded.email}', '${phone}' , '${password}' ,'${decoded.businessId}')`;
+        connection.query(sql, function (err, result) {
+          if (err) throw err;
+          console.log("1 record inserted");
+          const userId = result.insertId;
+          const token = jwt.sign({ userId: userId, userEmail: decoded.email, businessId: decoded.businessId, name: name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 });
+          res.json({ token, formValid })
+        });
+      }
+    });
+  }
+});
+
+
+
 
 app.get('/', function (req, res) {
   res.send('hello there');

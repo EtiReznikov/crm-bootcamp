@@ -6,7 +6,7 @@ import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import axios from 'axios';
 import Headline from '../Headline/Headline';
 import { emailValidation, phoneValidation, nameValidation, nameLengthValidation, phoneLengthValidation, passwordStrengthValidation, passwordMatchValidation } from '../../tools/validation';
-function Signup() {
+function Signup(props) {
 
   const [formState, setState] = useState({
     name: "",
@@ -14,12 +14,14 @@ function Signup() {
     phone: "",
     password: "",
     passwordConfirm: "",
+    businessName: "",
     AfterSubmitErrorStatus: false,
     nameValid: 0,
     emailValid: 0,
     phoneValid: 0,
     passwordValid: -1,
-    passwordMatchValid: true
+    passwordMatchValid: true,
+    businessValid: true
   }
   );
   // useEffect(() => {
@@ -30,6 +32,7 @@ function Signup() {
     //if valid
     const nameValid = nameLengthValidation(formState.name);
     const phoneValid = phoneLengthValidation(formState.phone);
+    const businessValid =  formState.businessName.length>0;
     const emailValid = emailValidation(formState.email);
     const passwordValid = passwordStrengthValidation(formState.password)
     const passwordMatchValid = passwordMatchValidation(formState.password, formState.passwordConfirm)
@@ -39,32 +42,34 @@ function Signup() {
       phoneValid: phoneValid,
       emailValid: emailValid,
       passwordValid: passwordValid,
-      passwordMatchValid: passwordMatchValid
+      passwordMatchValid: passwordMatchValid,
+      businessValid: businessValid
     })
     const valid = (nameValid === 0 && phoneValid === 0 && emailValid === 0 &&
-      (passwordValid === 1 || passwordValid === 2 || passwordValid === 3) && passwordMatchValid === 0)
-    console.log(phoneValid)
+      (passwordValid === 1 || passwordValid === 2 || passwordValid === 3) && passwordMatchValid === 0 && businessValid)
     if (valid) {
       axios.post('http://crossfit.com:8005/CreateUser', {
         name: formState.name,
         phone: formState.phone,
         email: formState.email,
+        businessName: formState.businessName,
         password: formState.password,
-        confirm: formState.passwordConfirm
+        confirm: formState.passwordConfirm,
+        
       })
         .then(function (response) {
           console.log(response.data)
           setState({
             ...formState,
-            // AfterSubmitErrorStatus: response.data.emailErrorStatus,
             emailValid: response.data.emailErrorStatus
           })
           if (response.data.emailErrorStatus !== 3 && response.data.formValid) {
             console.log(response.data.formValid)
             localStorage.setItem('user_token', response.data.token);
+            props.onUserChange(true);
+            /* TODO: replace with redirect */
             window.location.href = "http://localhost:3000";
           }
-
         })
         .catch(function (error) {
           console.log(error);
@@ -93,14 +98,12 @@ function Signup() {
               })
             }
             }
-
           />
-
         </div>
         {
-            (formState.nameValid === 1 && <ErrorMsg text="Oops! Your name can only contain letters and spaces" />) ||
-            (formState.nameValid === 2 && <ErrorMsg text="Oops! Your name must contain at least 2 letters" />)
-          }
+          (formState.nameValid === 1 && <ErrorMsg text="Oops! Your name can only contain letters and spaces" />) ||
+          (formState.nameValid === 2 && <ErrorMsg text="Oops! Your name must contain at least 2 letters" />)
+        }
         <div className="input-group">
           <LabelField htmlFor="email" text="Email" />
           <InputField
@@ -116,13 +119,13 @@ function Signup() {
           />
         </div>
         {
-            (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
-            (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />) ||
-            (formState.emailValid === 3 && <ErrorMsg text="Oops, The user already exists" />)
-          }
-          {
-            (formState.AfterSubmitErrorStatus && <ErrorMsg text="Oops, The user already exists" />)
-          }
+          (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
+          (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />) ||
+          (formState.emailValid === 3 && <ErrorMsg text="Oops, The user already exists" />)
+        }
+        {
+          (formState.AfterSubmitErrorStatus && <ErrorMsg text="Oops, The user already exists" />)
+        }
         <div className="input-group">
           <LabelField htmlFor="phone" text="Phone Number" />
           <InputField
@@ -142,12 +145,26 @@ function Signup() {
             }
             }
           />
-        
+
         </div>
         {
-            (formState.phoneValid === 1 && <ErrorMsg text="Oops! A phone number should contain only numbers" />) ||
-            (formState.phoneValid === 2 && <ErrorMsg text="Oops! A phone number should exactly 10 digits" />)
-          }
+          (formState.phoneValid === 1 && <ErrorMsg text="Oops! A phone number should contain only numbers" />) ||
+          (formState.phoneValid === 2 && <ErrorMsg text="Oops! A phone number should exactly 10 digits" />)
+        }
+        <div className="input-group">
+          <LabelField htmlFor="businessName" text="Business Name" />
+          <InputField name="businessName"
+            type="text"
+            className="signup-input"
+            placeholder="type your business name"
+            onChange={e =>
+              setState({
+                ...formState,
+                businessName: e.target.value,
+              })}
+          />
+        </div>
+        {!formState.businessValid && <ErrorMsg text="Oops! Business Name is required" />}
         <div className="input-group">
           <LabelField htmlFor="password" text="Password" />
           <InputField
@@ -167,15 +184,15 @@ function Signup() {
             }
             }
           />
-      
+
         </div>
         {
-            (formState.passwordValid === 0 && <ErrorMsg text="Oops! Password must contain at least 8 characters, one letter and one number" />) ||
-            (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
-            (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
-            (formState.passwordValid === 3 && <ErrorMsg text="strong password" />)
+          (formState.passwordValid === 0 && <ErrorMsg text="Oops! Password must contain at least 8 characters, one letter and one number" />) ||
+          (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
+          (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
+          (formState.passwordValid === 3 && <ErrorMsg text="strong password" />)
 
-          }
+        }
         <div className="input-group">
           <LabelField htmlFor="passwordConfirm" text="Confirm Password" />
           <InputField
@@ -200,6 +217,7 @@ function Signup() {
         />
         {
           (formState.AfterSubmitErrorStatus && <ErrorMsg text="Oops, The user already exists" />)
+          
         }
 
       </div>

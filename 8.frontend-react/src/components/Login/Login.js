@@ -7,21 +7,21 @@ import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import Headline from '../Headline/Headline';
 import { emailValidation } from '../../tools/validation';
 import LinkHref from '../Link/LinkHref';
-function Login() {
+function Login(props) {
 
+  
   const [formState, setState] = useState({
     email: "",
     password: "",
-    errorStatus: -1,
+    errorStatus: 2,
     emailValid: -1
   }
   );
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  });
-
-
+  // });
+  
   const submitLogin = () => {
     const valid = emailValidation(formState.email);
     setState({
@@ -42,7 +42,11 @@ function Login() {
           })
           if (response.data.status == 2) {
             localStorage.setItem('user_token', response.data.token);
+            props.onUserChange(true);
             window.location.href = "http://localhost:3000";
+            /*TODO: replce with redirect */
+            window.location.href = "http://localhost:3000";
+          
           }
         })
         .catch(function (error) {

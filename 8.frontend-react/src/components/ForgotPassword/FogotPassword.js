@@ -33,7 +33,6 @@ function ForgotPassword(props) {
 
   return (
     <div className="box-container">
- 
       <div className="inner-container">
         <Headline text="Forgot your password?" />
         <div className="box">

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Home(props) {
-    
     return  <div onClick= {()=>{
         axios.post('http://crossfit.com:8005/home', { },{
             headers: {'authentication': localStorage.getItem('user_token') }

@@ -4,7 +4,7 @@ import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
 import Button from '../Button/Button';
 
-function LoginSingUp() {
+function LoginSingUp(props) {
   const [isLogin, setIsLogIn] = useState(true);
   const [isRegister, setIsRegister] = useState(false);
 
@@ -23,6 +23,8 @@ function LoginSingUp() {
       setIsRegister(false);
     }
   }, []);
+
+  console.log(props)
   return (
     <div>
         {
@@ -32,8 +34,8 @@ function LoginSingUp() {
               onClick={showLoginBox.bind(this)}>
               Login
             </div> */}
-            <Button  className="controller" text="Login" onClick={showLoginBox.bind(this)}/>
-            <Button  className="controller" text="Signup" onClick={showRegisterBox.bind(this)}/>
+            <Button  className="controller" text="Login" onClick={showLoginBox}  />
+            <Button  className="controller" text="Signup" onClick={showRegisterBox}/>
             {/* <div
               className={"controller " + (isRegister ? "selected-controller" : "")}
               onClick={showRegisterBox.bind(this)}>
@@ -43,8 +45,8 @@ function LoginSingUp() {
 
       <div className="box-container">
       {
-        (isLogin && <Login />) ||
-        (isRegister && <Signup />)
+        (isLogin && <Login onUserChange={props.onUserChange}/>) ||
+        (isRegister && <Signup onUserChange={props.onUserChange}/>)
       }
 
     </div>

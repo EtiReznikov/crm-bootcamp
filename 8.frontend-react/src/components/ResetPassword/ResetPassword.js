@@ -56,8 +56,9 @@ function ResetPassword(props) {
         }
 
     }
-
+/*TODO: check that link is valid*/
     return (
+     
         <div className="box-container">
             <div className="inner-container">
             <Headline text="Reset Your Password" />

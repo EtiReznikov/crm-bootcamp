@@ -6,6 +6,8 @@ import ForgotPassword from './components/ForgotPassword/FogotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import InvalidLink from './components/InvalidLink/InvalidLink';
 import LinkHref from './components/Link/LinkHref';
+import AddUser from './components/AddUser/AddUser';
+import InviteUser from './components/InviteUser/InviteUser';
 // import Menu from './components/Menu/Menu';
 import MenuItem from './components/menuItem/MenuItem';
 import {
@@ -13,7 +15,7 @@ import {
   Switch,
   Route,
   Link,
-  Redirect 
+  Redirect
 } from "react-router-dom";
 import LoginSignup from './components/LoginSignup/LoginSignup'
 import { useState, useEffect } from 'react';
@@ -22,59 +24,66 @@ import Calendar from './components/Calendar/Calendar';
 
 function App() {
 
+  const [userState, setState] = useState( localStorage.getItem('user_token'));
 
-
-  const [appState, setState] = useState({
-    localStorageStatus: false,
-
-  }
-  );
-
-
-
-  const onClick = () => {
+  const logout = () => {
+    console.log("click")
     localStorage.removeItem('user_token');
-    setState({ ...appState, localStorageStatue: false })
-
+    setState( false )
   };
 
- 
-  useEffect(() => {
 
-    // setState({...appState, localStorageStatue: localStorage.getItem('user_token') })
-  });
+  // useEffect(() => {
+  //   setState({...userState, localStorageStatue: localStorage.getItem('user_token') })
+  // });
 
+//   useEffect(() => {
+//     localStorage.removeItem('user_token') 
+//     props.onUserChange();
+//   // removeItem();
+// },[]);
+  const handleUserChange = (flag) => {
+    console.log("user changed")
+    console.log(localStorage.getItem('user_token'));
+    setState(true);
+    console.log(userState);
+  }
 
+  
   return (
     <Router>
       <div id="app">
+
         <div id="head">
-        {/* <Menu items={appState.menuItems}></Menu> */}
-          {
-            (localStorage.getItem('user_token') && 
-            <LinkHref href="/" onClick={onClick} text="Logout" />) ||
-            <LinkHref href="/LoginSignup" text="SignIn/ SignUp"/>
+          
+          { 
+            (userState &&
+              <>
+                <span href="/" onClick={logout} >Logout</span>
+                <LinkHref href="/Users" text="Users" />
+                <LinkHref href="/Calendar" text="Calender" />
+                <LinkHref href="/addUser" text="Add new user" />
+              </>
+            ) ||
+            <LinkHref href="/LoginSignup" text="SignIn/ SignUp" />
           }
-          <LinkHref href="/Users" text="Users" />
-          <LinkHref href="/Calendar" text="Calender" />
 
 
-       
-          </div>
+        </div>
         <hr />
 
 
         <Switch>
-        <Route exact path="/">
+          <Route exact path="/" >
             <Home />
           </Route>
-        <Route path="/Calendar">
+          <Route path="/Calendar">
             <Calendar />
           </Route>
           <Route path="/LoginSignup">
-            <LoginSignup />
+            <LoginSignup onUserChange={handleUserChange}/>
           </Route>
-          
+
           <Route path="/Users">
             <Users />
           </Route>
@@ -87,7 +96,12 @@ function App() {
           <Route path="/linkInvalid">
             <InvalidLink />
           </Route>
-    
+          <Route path="/addUser">
+            <AddUser />
+          </Route>
+          <Route path="/inviteUser/:token">
+            <InviteUser onUserChange={handleUserChange} />
+          </Route>
         </Switch>
       </div>
     </Router>
