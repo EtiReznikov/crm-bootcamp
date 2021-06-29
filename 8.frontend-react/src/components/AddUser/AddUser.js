@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Headline from '../Headline/Headline';
 import LabelField from '../Label/Label';
 import InputField from '../Input/Input';
@@ -9,7 +9,6 @@ import Button from '../Button/Button';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import { emailValidation } from '../../tools/validation';
 import {
-    BrowserRouter as Router,
     Redirect
 } from "react-router-dom";
 function AddUser(props) {
@@ -21,12 +20,15 @@ function AddUser(props) {
     }
     );
 
+    /* when add user button is submitted*/
     const addUser = () => {
+        //Check email validation
         const emailValid = emailValidation(formState.email);
         setState({
             ...formState,
             emailValid: emailValid,
         })
+        //only if email is valid
         if (emailValid === 0) {
             axios.post('http://crossfit.com:8005/addUser', {
                 email: formState.email,
@@ -40,7 +42,6 @@ function AddUser(props) {
                 .catch(function (error) {
                     console.log(error);
                 });
-
         }
     }
     return (
@@ -48,7 +49,6 @@ function AddUser(props) {
             {!localStorage.getItem('user_token') && <Redirect to="/LoginSignup" />} ||
             <div className="box-container">
                 <div className="inner-container">
-
                     <Headline text="Add new user" />
                     <div className="box">
                         <div className="input-group">
@@ -66,21 +66,22 @@ function AddUser(props) {
                             />
                         </div>
                         {
+                            /* show email error msg if needed */
                             (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
                             (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />) ||
                             (formState.emailValid === 3 && <ErrorMsg text="Oops, The user already exists" />)
                         }
+                        {/* or show success msg if needed */}
                         <Text text="We will send your employee invitation email" />
                         <Button
                             className="forgotPass-btn"
                             onClick={addUser}
                             text="Submit"
                         />
-
+                        {/**show error msg if needed */}
                         {formState.successStatus === 1 && <ErrorMsg text="Oops, The user already exists" />}
                         {formState.successStatus === 2 && <ErrorMsg text="Something went wrong, please try again" />}
                         {formState.successStatus === 0 && <Text text="Your employee will get an invitation email soon" />}
-
                     </div>
                 </div>
             </div>

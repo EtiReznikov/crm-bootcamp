@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Headline from '../Headline/Headline';
 import InputField from '../Input/Input'
 import LabelField from '../Label/Label'
@@ -15,6 +15,7 @@ function ForgotPassword(props) {
   }
   );
 
+  //**On sumbit forgot password form */
   const onSubmit = () => {
     axios.post('http://crossfit.com:8005/ResetPasswordReq', {
       email: formState.email,
@@ -28,7 +29,6 @@ function ForgotPassword(props) {
       .catch(function (error) {
         console.log(error);
       });
-
   }
 
   return (
@@ -36,35 +36,35 @@ function ForgotPassword(props) {
       <div className="inner-container">
         <Headline text="Forgot your password?" />
         <div className="box">
-        <div className="input-group">
-          <LabelField htmlfor="email" text="Email" />
-          <InputField name="email"
-            type="text"
-            className="login-input"
-            placeholder="type your email"
-            onChange={e =>
-              setState({
-                ...formState,
-                email: e.target.value,
-              })}
+          <div className="input-group">
+            <LabelField htmlfor="email" text="Email" />
+            <InputField name="email"
+              type="text"
+              className="login-input"
+              placeholder="type your email"
+              onChange={e =>
+                setState({
+                  ...formState,
+                  email: e.target.value,
+                })}
+            />
+          </div>
+          <Text text="We will send you an email with instructions" />
+          <Button
+            className="forgotPass-btn"
+            onClick={onSubmit
+              .bind(this)}
+            text="Submit"
           />
+
         </div>
-        <Text text="We will send you an email with instructions" />
-        <Button
-          className="forgotPass-btn"
-          onClick={onSubmit
-            .bind(this)}
-          text="Submit"
-        />
-     
-      </div>
-      <LinkHref href="/LoginSignup" text="return to login page"/>
+        <LinkHref href="/LoginSignup" text="return to login page" />
         {
           (formState.errorStatus === 0 && <Text text="Please check your inbox and click on the link in the email we have just sent you. (If it is not there, please check your spam mail folder)" />) ||
           (formState.errorStatus === 1 && <ErrorMsg text="User is not exists" />) ||
           (formState.errorStatus === 2 && <ErrorMsg text="Something went wrong please try again" />)
         }
-    </div>
+      </div>
     </div>
   )
 }
