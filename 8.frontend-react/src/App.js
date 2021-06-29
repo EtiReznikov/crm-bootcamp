@@ -81,7 +81,7 @@ function App() {
           <Route path="/forgotPassword">
             <ForgotPassword />
           </Route>
-          <Route path="/resetPassword">
+          <Route path="/resetPassword/:token">
             <ResetPassword />
           </Route>
           <Route path="/linkInvalid">

@@ -97,8 +97,7 @@ function Login() {
           text="Login"
         />
         {
-          (formState.errorStatus === 0 && <ErrorMsg text="User is not exists" />) ||
-          (formState.errorStatus === 1 && <ErrorMsg text="Oops! Wrong password" />)
+          (formState.errorStatus !== 2 && <ErrorMsg text="Email or Password incorrect" />) 
         }
       </div>
       <LinkHref href="/ForgotPassword" text="Forgot my password"/>

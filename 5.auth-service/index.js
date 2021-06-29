@@ -36,7 +36,6 @@ Middleware to verify that jwt is valid
 app.use(function (req, res, next) {
   const reqPath = req.path;
 
-
   //Login or Logout request- JWT not required
   if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword') {
     next();
@@ -173,12 +172,13 @@ app.post('/ResetPasswordReq', function (req, res) {
       });
 
       const token = jwt.sign({ userId: result[0].user_id, userEmail: email }, process.env.ACCESS_TOKEN_SECRET);
-
-      const data = {
-        from: 'etirez56@gmail.com',
+     const message= "We have received a request to reset your account password. please click the <a href=http://localhost:3000/resetPassword/"+token+"> link </a> to reset your password."
+      
+     const data = {
+        from: 'eti.reznikov@workiz.com',
         to: email,
         subject: 'Reset Password',
-        html: `We have received a request to reset your account password. /n please click the <a href="http://localhost:3000/resetPassword?token="'${token}'"> link </a> to reset your password.`
+        html: message
       }
 
       mailGun.messages().send(data, function (err, body) {
@@ -193,30 +193,37 @@ app.post('/ResetPasswordReq', function (req, res) {
           //We pass the variable "email" from the url parameter in an object rendered by Jade
           status = 0;
           res.json({ email: email, status: status });
-          console.log(body);
         }
       });
     }
   });
 });
-
+/**chang password post request */
 app.post('/NewPassword', function (req, res) {
+  console.log("new pass")
   const data = {
-    token : req.query.token,
-    password : req.body.password,
-    confirm : req.body.password,
+    token : 1234,
+    password : md5(req.body.password),
+    confirm : md5(req.body.password),
   };
-  if (!validators.passwordValidation(password, confirm)){
+ 
+  //password validation
+  if (!validators.passwordValidation(data.password, data.confirm)){
     return res.json({successStatus : 1 })
   }
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+
+  //check the token
+  jwt.verify(data.token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+    console.log(decoded)
     if (err) {
-      return res.status(403).json({ successStatus: 1 , message: 'Failed to authenticate token.' });
+      return res.json({ successStatus: 2 , message: 'Failed to authenticate token.' });
     }else{
-      const sql = `UPDATE users SET user_password='${password} WHERE user_id='${decoded,user_id}'`;
+      const sql = `UPDATE users SET user_password='${data.password}' WHERE user_id='${decoded.userId}'`;
+      console.log(sql);
         connection.query(sql, function (err, result) {
           if (err) res.status(505).json({success: 1, message: 'Failed to update DB'})
           else{
+            //* TODO: remove token form jwt/
             return res.json({successStatus : 0 })
           }
         });
