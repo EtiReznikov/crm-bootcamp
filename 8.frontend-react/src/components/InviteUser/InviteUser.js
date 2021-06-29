@@ -33,7 +33,7 @@ function InviteUser(props) {
 
     useEffect(() => {
           localStorage.removeItem('user_token') 
-          props.onUserChange();
+          props.onUserChange(false);
     },[]);
     const submit = () => {
         console.log("sumbit")
@@ -60,18 +60,19 @@ function InviteUser(props) {
                 token: token
             })
                 .then(function (response) {
-                    
-                    if ( response.data.formValid) {
-                        console.log(response.data.formValid)
-                        localStorage.setItem('user_token', response.data.token);
-                        /* TODO: replace with redirect */
-                        this.props.history.push('/');
-                        // window.location.href = "http://localhost:3000";
-                    }
                     setState({
                         ...formState,
                         AfterSubmitErrorStatus : response.data.formValid
                     })
+                    if ( response.data.formValid) {
+                        console.log(response.data.formValid)
+                        localStorage.setItem('user_token', response.data.token);
+                        props.onUserChange(true);
+                        /* TODO: replace with redirect */
+                        // this.props.history.push('/');
+                        window.location.href = "http://localhost:3000";
+                    }
+                    
                 })
                 .catch(function (error) {
                     console.log(error);

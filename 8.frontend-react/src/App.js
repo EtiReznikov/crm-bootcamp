@@ -45,7 +45,7 @@ function App() {
   const handleUserChange = (flag) => {
     console.log("user changed")
     console.log(localStorage.getItem('user_token'));
-    setState(true);
+    setState(flag);
     console.log(userState);
   }
 
