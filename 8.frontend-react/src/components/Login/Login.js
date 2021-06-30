@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import InputField from '../Input/Input'
 import LabelField from '../Label/Label'
 import Button from '../Button/Button'
@@ -38,7 +38,7 @@ function Login(props) {
             errorStatus: response.data.status,
           })
           // If request went well- save user token to local storage and redirect to home page
-          if (response.data.status == 2) {
+          if (response.data.status === 2) {
             localStorage.setItem('user_token', response.data.token);
             props.onUserChange(true);
             /*TODO: replce with redirect */

@@ -7,9 +7,7 @@ import axios from 'axios';
 import Headline from '../Headline/Headline';
 import Text from '../Text/Text';
 import {
-    BrowserRouter as Router,
     useParams,
-    Redirect
   } from "react-router-dom";
 import { nameValidation, phoneValidation, nameLengthValidation, phoneLengthValidation, passwordStrengthValidation, passwordMatchValidation } from '../../tools/validation';
 
@@ -32,9 +30,11 @@ function InviteUser(props) {
     const { token } = useParams()
 
     useEffect(() => {
-          localStorage.removeItem('user_token') 
+          localStorage.removeItem('user_token');
           props.onUserChange(false);
     },[]);
+
+
     const submit = () => {
         //if valid
         const nameValid = nameLengthValidation(formState.name);

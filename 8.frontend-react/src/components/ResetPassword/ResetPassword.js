@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../ResetPassword/ResetPassword.scss'
 import Headline from '../Headline/Headline';
 import InputField from '../Input/Input'
 import LabelField from '../Label/Label'
 import Button from '../Button/Button';
-import Text from '../Text/Text';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import axios from 'axios';
-import LinkHref from '../Link/LinkHref';
 import {
-    BrowserRouter as Router,
     useParams,
     Redirect
 } from "react-router-dom";
@@ -126,7 +123,7 @@ function ResetPassword(props) {
                         }}
                         />
                     }
-                    {formState.successStatus == 2 && <Redirect to={{
+                    {formState.successStatus === 2 && <Redirect to={{
                         pathname: "/msgPage",
                         state: {
                             headLine: "Invalid Password Reset Link",
