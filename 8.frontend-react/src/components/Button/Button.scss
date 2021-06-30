@@ -1,14 +1,11 @@
 @import "../../Views/colors.scss";
 
 Button{
-    // background-color : $button-background;
     border-radius: 5px;
-    // color: $button-text;
-    // padding-bottom: 0.25em;
     background-color: $background;
     color: $head-background;
     border-width: 0.01em;
-    font-size: 1em;
+    font-size: 1.25em;
 
 }
 button:hover{

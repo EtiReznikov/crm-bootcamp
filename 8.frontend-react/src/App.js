@@ -7,6 +7,7 @@ import MsgPage from './components/MsgPage/MsgPage';
 import LinkHref from './components/Link/LinkHref';
 import AddUser from './components/AddUser/AddUser';
 import InviteUser from './components/InviteUser/InviteUser';
+import logo from './Views/Daco_6140061.png'
 import {
   BrowserRouter as Router,
   Switch,
@@ -39,13 +40,17 @@ function App() {
             /* Show menu for loggedIn user */
             (userState &&
               <>
+                <img className="menu-logo"  src={logo} />
                 <span  className="menu" href="/" onClick={logout} >Logout</span>
                 <LinkHref className="menu" href="/Users" text="Users" />
                 <LinkHref className="menu" href="/Calendar" text="Calender" />
                 <LinkHref className="menu" href="/addUser" text="Add new user" />
               </>) ||
             /* Show loggedIn/ Signup link for loggedOut user */
+            <>
+            <img className="menu-logo" src={logo} />
             <LinkHref className="menu" href="/LoginSignup" text="SignIn / SignUp" />
+            </>
           }
         </div>
       

@@ -55,7 +55,7 @@ function ForgotPassword(props) {
                 })}
             />
           </div>
-          <Text text="We will send you an email with instructions" />
+          <Text className="up-form-text" text="We will send you an email with instructions" />
           <Button
             className="forgotPass-btn"
             onClick={onSubmit

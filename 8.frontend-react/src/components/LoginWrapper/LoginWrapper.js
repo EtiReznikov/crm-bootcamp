@@ -31,41 +31,30 @@ function LoginSingUp(props) {
   }, []);
 
   return (
-    <div>
-      <div className="box-container">
-        {
-          (isLogin && <Login onUserChange={props.onUserChange} />) ||
-          (isRegister && <Signup onUserChange={props.onUserChange} />)
-        }
-        <div>
-         
-          {
-            (localStorage.getItem('user_token') && <Redirect to="/"> </Redirect>) ||
-            (<div className="wrapperSign">
-              <div> 
-              <img id="logo" src={logo}/>
-              </div>
-               
-              {!isLogin && 
-              <>
-              <Text className="text-controller" text="Already have a User?"/>
-               <Button className="controller" text="Login" onClick={showLoginBox} />
-              </>
-             }
-             {!isRegister && 
-              <>
-             <Text className="text-controller" text="Don't have a user?"/>
-             <Button className="controller" text="Signup" onClick={showRegisterBox} />
-             </>
-             }
-             
-             
-            </div>
-            )}
+    <div className="box-container">
+      {
+        (isLogin && <Login onUserChange={props.onUserChange} />) ||
+        (isRegister && <Signup onUserChange={props.onUserChange} />)
+      }
+      {
+        (localStorage.getItem('user_token') && <Redirect to="/"> </Redirect>) ||
+        (<div className="wrapperSign">
+          <img id="logo" src={logo} />
+          {!isLogin &&
+            <>
+              <Text className="text-controller" text="Already have a User?" />
+              <Button className="controller" text="Login" onClick={showLoginBox} />
+            </>
+          }
+          {!isRegister &&
+            <>
+              <Text className="text-controller" text="Don't have a user?" />
+              <Button className="controller" text="Signup" onClick={showRegisterBox} />
+            </>
+          }
         </div>
-      </div>
+        )}
     </div>
-
   );
 }
 

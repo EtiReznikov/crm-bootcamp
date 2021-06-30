@@ -19,9 +19,17 @@ body{
 }
 #root{
     background-color: $background;
-    background-repeat: repeat;
     font-family: $font-family;
     color: $text;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+
+#app{
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
 
 .inner-container{
@@ -31,8 +39,8 @@ body{
   // flex-direction: row;
   // height: auto;
   padding-top: 0.5em;
-  width: 20em;
-  height: 20em;
+  width: 40em;
+  height: 40em;
   // height: ;
   display: flex;
   flex-direction: column;
@@ -56,6 +64,8 @@ body{
     padding-top: 1em;
     align-content: space-evenly;
     justify-content: space-evenly;
+    margin: auto;
+    // margin: auto;
 }
 
 .input-group{
@@ -69,24 +79,30 @@ body{
 }
 #head{
   display: flex;
-    // background-color: #BFDBF7;
-    background-color: $head-background;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: space-evenly;
+  background-color: #274c77;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: flex-start;
+   
+}
+.menu-logo{
+  padding: 0.5em;
+  height: 5em;
 }
 
 .menu{
   text-decoration: none;
   color : #E1E5F2;
-  padding: 0.5em;
+  padding: 1em;
+  font-size: 1.25em;
 }
 
 .menu:hover{
  font-weight: bold; 
  background-color: #E1E5F2;
  color: $head-background;
+ cursor: pointer;
 }
 
 
