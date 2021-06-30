@@ -83,7 +83,7 @@ function Login(props) {
           <InputField name="password"
             type="password"
             className="login-input"
-            placeholder="type your email"
+            placeholder="type your password"
             onChange={e =>
               setState({
                 ...formState,
