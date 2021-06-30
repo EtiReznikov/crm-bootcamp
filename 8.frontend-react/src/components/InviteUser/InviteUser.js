@@ -7,8 +7,10 @@ import axios from 'axios';
 import Headline from '../Headline/Headline';
 import Text from '../Text/Text';
 import {
+    Redirect,
     useParams,
   } from "react-router-dom";
+
 import { nameValidation, phoneValidation, nameLengthValidation, phoneLengthValidation, passwordStrengthValidation, passwordMatchValidation } from '../../tools/validation';
 
 function InviteUser(props) {
@@ -17,7 +19,8 @@ function InviteUser(props) {
         phone: "",
         password: "",
         passwordConfirm: "",
-        AfterSubmitErrorStatus: false,
+        AfterSubmitErrorStatus: -1,
+        formValid: true,
         nameValid: 0,
         phoneValid: 0,
         passwordValid: -1,
@@ -61,14 +64,14 @@ function InviteUser(props) {
                 .then(function (response) {
                     setState({
                         ...formState,
-                        AfterSubmitErrorStatus : response.data.formValid
+                        AfterSubmitErrorStatus : response.data.successStatus,
                     })
                     if ( response.data.formValid) {
                         localStorage.setItem('user_token', response.data.token);
                         props.onUserChange(true);
                         /* TODO: replace with redirect */
                         // this.props.history.push('/');
-                        window.location.href = "http://localhost:3000";
+                        // window.location.href = "http://localhost:3000";
                     }
                     
                 })
@@ -76,14 +79,11 @@ function InviteUser(props) {
                 });
             }
     }
-    // function removeItem  () { 
-    //     localStorage.removeItem('user_token') 
-    //     return localStorage.getItem('user_token');
-    // }
+    
     return ( <div className="box-container">
             <div className="inner-container">
                 <Headline text="Register" />
-                <Text text="So happy to see you! we just need a few more details" />
+                <Text className="up-form-text" text="So happy to see you! we just need a few more details" />
                 <div className="box">
                     <div className="input-group">
                         <LabelField htmlFor="name" text="Name" />
@@ -184,7 +184,19 @@ function InviteUser(props) {
                         text="Submit"
                     />
                     {
-                        (formState.AfterSubmitErrorStatus && <ErrorMsg text="Oops, something went wrong, please try again" />)
+                        
+                        (formState.AfterSubmitErrorStatus === 2 && <ErrorMsg text="Oops, something went wrong, please try again" />) ||
+                        (formState.AfterSubmitErrorStatus === 1 && 
+                        <Redirect to={{
+                            pathname: "/msgPage",
+                            state: {
+                                headLine: "Account created successfully ",
+                                link: "/",
+                                aText: "Go to home page"
+                            }
+                        }}
+                        />
+                            )
                     }
                 </div>
             </div>

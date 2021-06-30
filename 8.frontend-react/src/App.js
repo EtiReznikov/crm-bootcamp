@@ -12,7 +12,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import LoginSignup from './components/LoginSignup/LoginSignup'
+import LoginSignup from './components/LoginWrapper/LoginWrapper'
 import { useState } from 'react';
 import Calendar from './components/Calendar/Calendar';
 
@@ -39,16 +39,16 @@ function App() {
             /* Show menu for loggedIn user */
             (userState &&
               <>
-                <span href="/" onClick={logout} >Logout</span>
-                <LinkHref href="/Users" text="Users" />
-                <LinkHref href="/Calendar" text="Calender" />
-                <LinkHref href="/addUser" text="Add new user" />
+                <span  className="menu" href="/" onClick={logout} >Logout</span>
+                <LinkHref className="menu" href="/Users" text="Users" />
+                <LinkHref className="menu" href="/Calendar" text="Calender" />
+                <LinkHref className="menu" href="/addUser" text="Add new user" />
               </>) ||
             /* Show loggedIn/ Signup link for loggedOut user */
-            <LinkHref href="/LoginSignup" text="SignIn/ SignUp" />
+            <LinkHref className="menu" href="/LoginSignup" text="SignIn / SignUp" />
           }
         </div>
-        <hr />
+      
         {/* Switch path for router */}
         <Switch>
           <Route exact path="/" >

@@ -64,7 +64,7 @@ function ForgotPassword(props) {
           />
 
         </div>
-        <LinkHref href="/LoginSignup" text="return to login page" />
+        <LinkHref className="info-link" href="/LoginSignup" text="return to login page" />
         {
           (formState.errorStatus === 0 && <Redirect to={{
             pathname: "/msgPage",

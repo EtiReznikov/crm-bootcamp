@@ -131,7 +131,7 @@ Post request from login page
 app.post('/Login', function (req, res) {
   const email = req.body.email;
   const password = md5(req.body.password);
-  const sqlPassword = `SELECT user_id, user_password FROM users WHERE user_email='${email}'`;
+  const sqlPassword = `SELECT user_id, user_password, user_name, gym_id FROM users WHERE user_email='${email}'`;
   let status = -1;
   connection.query(sqlPassword, function (err, resultSelectPassword) {
     if (err) res.status(500).json({ success: false, message: 'Failed to connect DB' });
@@ -143,7 +143,7 @@ app.post('/Login', function (req, res) {
     }
     else {
       if (resultSelectPassword[0].user_password === password) {
-        const token = jwt.sign({ userId: resultSelectPassword[0].user_id, userEmail: email }, process.env.ACCESS_TOKEN_SECRET);
+        const token = jwt.sign({ userId: resultSelectPassword[0].user_id, userEmail: email, businessId: resultSelectPassword[0].gym_id, name: resultSelectPassword[0].user_name }, process.env.ACCESS_TOKEN_SECRET);
         status = 2; //log in
         res.status(200).json({ token, status })
       }
@@ -259,8 +259,7 @@ app.post('/addUser', function (req, res) {
             apiKey: process.env.MAILGUN_KEY,
             domain: process.env.MAILGUN_ADMIN
           });
-
-          const token = jwt.sign({ userEmail: email, businessId: decoded.businessId }, process.env.ACCESS_TOKEN_SECRET);
+          const token = jwt.sign({ userEmail: email, businessId: decoded.businessId , managerMail: decoded.userEmail}, process.env.ACCESS_TOKEN_SECRET);
           const message = "You have invitation to join " + decoded.name + " team. <a href=http://localhost:3000/inviteUser/" + token + "> link </a> to continue the process."
 
           const data = {
@@ -274,10 +273,8 @@ app.post('/addUser', function (req, res) {
               status = 2;
               res.json({ error: err, status: status });
             }
-            //Else we can greet    and leave
             else {
               status = 0;
-
               res.json({ email: email, status: status });
             }
           });
@@ -296,21 +293,39 @@ app.post('/CreateUserByInvite', function (req, res) {
   const token = req.body.token;
 
   const formValid = validators.nameValidation(name) && validators.phoneValidation(phone) && validators.passwordValidation(password, confirm);
-  // formStatus = formValid;
   if (!formValid) {
-    res.json({ formValid })
+    res.json({  successStatus: 2 })
   }
   else {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
       if (err) {
         return res.json({ successStatus: 2, message: 'Failed to authenticate token.' });
       } else {
-        const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id, permmision_id) VALUES ('${name}', '${decoded.userEmail}', '${phone}' , '${password}' ,'${decoded.businessId}', 1)`;
+        const permission_id = 1; //user is employee
+        const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id, permission_id) VALUES ('${name}', '${decoded.userEmail}', '${phone}' , '${password}' ,'${decoded.businessId}', '${permission_id}')`;
         connection.query(sql, function (err, result) {
           if (err) throw err;
           const userId = result.insertId;
           const token = jwt.sign({ userId: userId, userEmail: decoded.userEmail, businessId: decoded.businessId, name: name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 });
-          res.json({ token, formValid })
+
+          var mailGun = new Mailgun({
+            apiKey: process.env.MAILGUN_KEY,
+            domain: process.env.MAILGUN_ADMIN
+          });
+    
+          const message = name + " accept your invitation to join your team"
+         
+          const data = {
+            from: 'eti.reznikov@workiz.com',
+            to: decoded.managerMail,
+            subject: 'invitation accepted',
+            html: message
+          }
+          //send mail to manager
+          mailGun.messages().send(data, function (err, body) {
+
+          });
+          res.json({ token, successStatus: 1 })
         });
       }
     });

@@ -1,0 +1,25 @@
+@import "../../Views/colors.scss";
+.menu{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: stretch;
+    justify-content: space-around;
+    padding-bottom: 0.5em;
+}
+.controller{
+    background-color: $background;
+    color: $head-background;
+    border-width: 0.01em;
+    font-size: 1.2em;
+ 
+}
+
+.wrapperSign{
+    display: flex;
+    flex-direction: column;
+}
+
+#logo{
+    height: 8vw;
+}

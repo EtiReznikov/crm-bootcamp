@@ -101,7 +101,7 @@ function Login(props) {
             && <ErrorMsg text="Email or Password incorrect" />)
         }
       </div>
-      <LinkHref href="/ForgotPassword" text="Forgot my password" />
+      <LinkHref className="info-link" href="/ForgotPassword" text="Forgot my password" />
     </div>
   );
 }

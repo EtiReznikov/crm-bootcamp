@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import Headline from '../Headline/Headline';
 import LabelField from '../Label/Label';
 import InputField from '../Input/Input';
-import Text from '../Text/Text';
 import Button from '../Button/Button';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import { emailValidation } from '../../tools/validation';
+import './AddUser.scss'
 import {
     Redirect
 } from "react-router-dom";
@@ -40,13 +40,13 @@ function AddUser(props) {
                 })
             })
                 .catch(function (error) {
-               
+
                 });
         }
     }
     return (
         <>
-            {!localStorage.getItem('user_token') && <Redirect to="/LoginSignup" />} ||
+            {!localStorage.getItem('user_token') && <Redirect to="/LoginSignup" />}
             <div className="box-container">
                 <div className="inner-container">
                     <Headline text="Add new user" />
@@ -68,10 +68,8 @@ function AddUser(props) {
                         {
                             /* show email error msg if needed */
                             (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
-                            (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />) 
+                            (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />)
                         }
-                        {/* or show success msg if needed */}
-                        <Text text="We will send your employee invitation email" />
                         <Button
                             className="forgotPass-btn"
                             onClick={addUser}
@@ -80,7 +78,15 @@ function AddUser(props) {
                         {/**show error msg if needed */}
                         {formState.successStatus === 1 && <ErrorMsg text="Oops, The user already exists" />}
                         {formState.successStatus === 2 && <ErrorMsg text="Something went wrong, please try again" />}
-                        {formState.successStatus === 0 && <Text text="Your employee will get an invitation email soon" />}
+                        {formState.successStatus === 0 && <Redirect to={{
+                            pathname: "/msgPage",
+                            state: {
+                                headLine: "Your employee will get an invitation soon.",
+                                link: "/",
+                                aText: "Back to home page"
+                            }
+                        }} />}
+
                     </div>
                 </div>
             </div>
