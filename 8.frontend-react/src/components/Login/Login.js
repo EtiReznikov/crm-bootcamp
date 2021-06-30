@@ -9,7 +9,7 @@ import { emailValidation } from '../../tools/validation';
 import LinkHref from '../Link/LinkHref';
 function Login(props) {
 
-  
+
   const [formState, setState] = useState({
     email: "",
     password: "",
@@ -18,11 +18,9 @@ function Login(props) {
   }
   );
 
-  // useEffect(() => {
-
-  // });
-  
+  //On submit form
   const submitLogin = () => {
+    // email validation
     const valid = emailValidation(formState.email);
     setState({
       ...formState,
@@ -30,7 +28,6 @@ function Login(props) {
     })
     if (valid === 0) {
       axios.post('http://crossfit.com:8005/Login', {
-
         email: formState.email,
         password: formState.password
       })
@@ -40,17 +37,18 @@ function Login(props) {
             errorValid: 0,
             errorStatus: response.data.status,
           })
+          // If request went well- save user token to local storage and redirect to home page
           if (response.data.status == 2) {
             localStorage.setItem('user_token', response.data.token);
             props.onUserChange(true);
-            window.location.href = "http://localhost:3000";
             /*TODO: replce with redirect */
             window.location.href = "http://localhost:3000";
-          
+
           }
         })
         .catch(function (error) {
-          console.log(error);
+          /*TODO: Redirect to error page */
+        
         });
     }
   }
@@ -74,11 +72,11 @@ function Login(props) {
           />
         </div>
         {
-          (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
-          (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />)
+          (formState.emailValid === 1
+            && <ErrorMsg text="Oops! Email address is required" />) ||
+          (formState.emailValid === 2
+            && <ErrorMsg text="Oops! Invalid email address" />)
         }
-
-
         <div className="input-group">
           <LabelField htmlFor="password" text="Password" />
           <InputField name="password"
@@ -91,9 +89,7 @@ function Login(props) {
                 password: e.target.value,
               })}
           />
-
         </div>
-
         <Button
           className="login-btn"
           onClick={submitLogin
@@ -101,10 +97,11 @@ function Login(props) {
           text="Login"
         />
         {
-          (formState.errorStatus !== 2 && <ErrorMsg text="Email or Password incorrect" />) 
+          (formState.errorStatus !== 2
+            && <ErrorMsg text="Email or Password incorrect" />)
         }
       </div>
-      <LinkHref href="/ForgotPassword" text="Forgot my password"/>
+      <LinkHref href="/ForgotPassword" text="Forgot my password" />
     </div>
   );
 }

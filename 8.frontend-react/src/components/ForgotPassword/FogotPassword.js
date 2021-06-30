@@ -7,6 +7,9 @@ import Text from '../Text/Text';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import axios from 'axios';
 import LinkHref from '../Link/LinkHref';
+import {
+  Redirect
+} from "react-router-dom";
 import './ForgotPassword.scss'
 function ForgotPassword(props) {
   const [formState, setState] = useState({
@@ -15,7 +18,7 @@ function ForgotPassword(props) {
   }
   );
 
-  //**On sumbit forgot password form */
+  //**On submit forgot password form */
   const onSubmit = () => {
     axios.post('http://crossfit.com:8005/ResetPasswordReq', {
       email: formState.email,
@@ -27,7 +30,10 @@ function ForgotPassword(props) {
         })
       })
       .catch(function (error) {
-        console.log(error);
+        setState({
+          ...formState,
+          errorStatus: error.data.status,
+        })
       });
   }
 
@@ -60,7 +66,14 @@ function ForgotPassword(props) {
         </div>
         <LinkHref href="/LoginSignup" text="return to login page" />
         {
-          (formState.errorStatus === 0 && <Text text="Please check your inbox and click on the link in the email we have just sent you. (If it is not there, please check your spam mail folder)" />) ||
+          (formState.errorStatus === 0 && <Redirect to={{
+            pathname: "/msgPage",
+            state: {
+              headLine: "A link to reset password sent to you",
+              text_1: "Please check your inbox (Or spam folder)",
+            }
+          }}
+          />) ||
           (formState.errorStatus === 1 && <ErrorMsg text="User is not exists" />) ||
           (formState.errorStatus === 2 && <ErrorMsg text="Something went wrong please try again" />)
         }

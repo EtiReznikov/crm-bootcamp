@@ -3,7 +3,7 @@ import Home from './components/Home/Home';
 import Users from './components/Users/Users';
 import ForgotPassword from './components/ForgotPassword/FogotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
-import InvalidLink from './components/InvalidLink/InvalidLink';
+import MsgPage from './components/MsgPage/MsgPage';
 import LinkHref from './components/Link/LinkHref';
 import AddUser from './components/AddUser/AddUser';
 import InviteUser from './components/InviteUser/InviteUser';
@@ -22,7 +22,6 @@ function App() {
 
   //logput the user
   const logout = () => {
-    console.log("click")
     localStorage.removeItem('user_token');
     setState(false)
   };
@@ -30,9 +29,7 @@ function App() {
   //update the user when child is updating the local  storage
   const handleUserChange = (flag) => {
     setState(flag);
-    console.log(userState);
   }
-
 
   return (
     <Router>
@@ -72,9 +69,7 @@ function App() {
           <Route path="/resetPassword/:token">
             <ResetPassword />
           </Route>
-          <Route path="/linkInvalid">
-            <InvalidLink />
-          </Route>
+          <Route path="/msgPage" render={(props) =>  <MsgPage {...props}/> }/>
           <Route path="/addUser">
             <AddUser />
           </Route>

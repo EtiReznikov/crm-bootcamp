@@ -36,7 +36,6 @@ function InviteUser(props) {
           props.onUserChange(false);
     },[]);
     const submit = () => {
-        console.log("sumbit")
         //if valid
         const nameValid = nameLengthValidation(formState.name);
         const phoneValid = phoneLengthValidation(formState.phone);
@@ -65,7 +64,6 @@ function InviteUser(props) {
                         AfterSubmitErrorStatus : response.data.formValid
                     })
                     if ( response.data.formValid) {
-                        console.log(response.data.formValid)
                         localStorage.setItem('user_token', response.data.token);
                         props.onUserChange(true);
                         /* TODO: replace with redirect */
@@ -75,7 +73,6 @@ function InviteUser(props) {
                     
                 })
                 .catch(function (error) {
-                    console.log(error);
                 });
             }
     }

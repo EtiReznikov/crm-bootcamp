@@ -40,7 +40,7 @@ function AddUser(props) {
                 })
             })
                 .catch(function (error) {
-                    console.log(error);
+               
                 });
         }
     }
@@ -68,8 +68,7 @@ function AddUser(props) {
                         {
                             /* show email error msg if needed */
                             (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
-                            (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />) ||
-                            (formState.emailValid === 3 && <ErrorMsg text="Oops, The user already exists" />)
+                            (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />) 
                         }
                         {/* or show success msg if needed */}
                         <Text text="We will send your employee invitation email" />
