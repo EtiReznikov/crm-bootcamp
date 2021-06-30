@@ -28,3 +28,17 @@
 .box-container{
     flex-direction: column;
 }
+
+.box{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+}
+
+.box-signup{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 80%;
+}

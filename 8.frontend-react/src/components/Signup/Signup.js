@@ -81,8 +81,9 @@ function Signup(props) {
   }
   return (
     <div className="inner-container">
-      <Headline text="Signup" />
-      <div className="box">
+      <Headline className="head-form" text="Signup" />
+      <div className="box-signup">
+        <div>
         <div className="input-group">
           <LabelField htmlFor="name" text="Name" />
           <InputField name="name"
@@ -206,6 +207,7 @@ function Signup(props) {
         {
           (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
         }
+        </div>
         <Button
           className="signup-btn"
           onClick={submitRegister}

@@ -1,7 +1,17 @@
-
-
-.head-line{
+@import "../../Views/colors.scss";
+.head-form{
     font-size : 3em;
+    padding-top: 1em;
+    padding-bottom : 1em;
+    position: absolute;
+    font-weight: bold;
+    text-shadow: 2px 2px $background;
+    top: 0;
+}
+.head-msg{
+    font-size : 3em;
+    padding-top: 2em;
     padding-bottom : 1em;
 
+    
 }

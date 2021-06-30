@@ -5,9 +5,16 @@
 .up-form-text{
     padding-bottom: 0.75em;
     color: $head-background;
+    font-size: 2vh;
 //     // padding-bottom: 0.75em;
 //     // font-size: 1em;
 //     // align-content: center;
+}
+
+.form-text{
+    font-size: 2vh;
+    // padding-bottom: 0.75em;
+    color: $head-background;
 }
 .text-controller{
     background-color: $background;

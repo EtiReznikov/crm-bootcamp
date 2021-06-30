@@ -6,6 +6,7 @@ import LabelField from '../Label/Label';
 import InputField from '../Input/Input';
 import Button from '../Button/Button';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
+import Text from '../Text/Text';
 import { emailValidation } from '../../tools/validation';
 import './AddUser.scss'
 import {
@@ -49,8 +50,9 @@ function AddUser(props) {
             {!localStorage.getItem('user_token') && <Redirect to="/LoginSignup" />}
             <div className="box-container">
                 <div className="inner-container">
-                    <Headline text="Add new user" />
-                    <div className="box">
+                    <Headline className="head-form" text="Add new user" />
+                    <div className="box-addUser">
+                        <div>
                         <div className="input-group">
                             <LabelField htmlfor="email" text="User email" />
                             <InputField name="email"
@@ -70,6 +72,8 @@ function AddUser(props) {
                             (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
                             (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />)
                         }
+                        </div>
+                        <Text className="form-text" text="Your employee will get an invitation to his email address."></Text>
                         <Button
                             className="forgotPass-btn"
                             onClick={addUser}

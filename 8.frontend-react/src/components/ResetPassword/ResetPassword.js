@@ -59,8 +59,9 @@ function ResetPassword(props) {
     return (
         <div className="box-container">
             <div className="inner-container">
-                <Headline text="Reset Your Password" />
+            <Headline className="head-form"  text="Reset Your Password" />
                 <div className="box">
+                    <div>
                     <div className="input-group">
                         <LabelField htmlFor="password" text="Password" />
                         <InputField
@@ -105,6 +106,7 @@ function ResetPassword(props) {
                     {
                         (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
                     }
+                    </div>
                     <Button
                         className="signup-btn"
                         onClick={onSubmit}

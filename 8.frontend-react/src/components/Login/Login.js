@@ -55,8 +55,9 @@ function Login(props) {
 
   return (
     <div className="inner-container">
-      <Headline text="Login" />
+      <Headline className="head-form" text="Login" />
       <div className="box">
+        <div>
         <div className="input-group">
           <LabelField htmlFor="email" text="Email" />
           <InputField name="email"
@@ -89,6 +90,7 @@ function Login(props) {
                 password: e.target.value,
               })}
           />
+        </div>
         </div>
         <Button
           className="login-btn"

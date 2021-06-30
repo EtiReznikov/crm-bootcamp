@@ -40,7 +40,7 @@ function ForgotPassword(props) {
   return (
     <div className="box-container">
       <div className="inner-container">
-        <Headline text="Forgot your password?" />
+        <Headline className="head-form" text="Forgot your password?" />
         <div className="box">
           <div className="input-group">
             <LabelField htmlfor="email" text="Email" />
