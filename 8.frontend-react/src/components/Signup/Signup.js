@@ -74,7 +74,7 @@ function Signup(props) {
           }
         })
         .catch(function (error) {
-          console.log(error.response.data.message);
+          console.log(error.response)
           if (error.response.data.message === 'User exists') {
             setState({
               ...formState,

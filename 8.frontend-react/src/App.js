@@ -40,14 +40,14 @@ function App() {
             /* Show menu for loggedIn user */
             (userState &&
               <>
-                <img className="menu-logo"  src={logo} />
+                <img alt="logo" className="menu-logo"  src={logo} />
                 <LinkHref className="menu-item" href="/Users" text="Users" />
                 <LinkHref className="menu-item" href="/Calendar" text="Calender" />
                 <span  className="menu-item" href="/" onClick={logout} >Logout</span>
               </>) ||
             /* Show loggedIn/ Signup link for loggedOut user */
             <>
-            <img className="menu-logo" src={logo} />
+            <img alt="logo" className="menu-logo" src={logo} />
             <LinkHref className="menu-item" href="/LoginSignup" text="SignIn / SignUp" />
             </>
           }

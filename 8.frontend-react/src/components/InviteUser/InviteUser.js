@@ -33,7 +33,7 @@ function InviteUser(props) {
     // const [IsLoggedIn , setIsLoggedIn] = useState( removeItem  ());
     const { token } = useParams()
 
-    useEffect(() => {
+    useEffect((props) => {
         localStorage.removeItem('user_token');
         props.onUserChange(false);
     }, []);

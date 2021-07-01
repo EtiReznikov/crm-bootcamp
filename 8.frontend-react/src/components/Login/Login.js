@@ -9,7 +9,6 @@ import { emailValidation } from '../../tools/validation';
 import LinkHref from '../Link/LinkHref';
 import {
   Redirect,
-  useParams,
 } from "react-router-dom";
 import './Login.scss'
 function Login(props) {
@@ -66,7 +65,7 @@ function Login(props) {
 
   return (
     <div className="inner-container">
-      {successStatus == 1 && <Redirect to="/"/>} 
+      {successStatus === 1 && <Redirect to="/"/>} 
        {successStatus === 2 && <Redirect to={{
                         pathname: "/msgPage",
                         state: {

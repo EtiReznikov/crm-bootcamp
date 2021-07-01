@@ -99,6 +99,7 @@ app.post('/CreateUser', function (req, res) {
   }
   else {
     const sqlEmail = `SELECT user_id FROM users WHERE user_email='${email}'`;
+   
     connection.query(sqlEmail, function (err, resultSelectEmail) {
       if (err) res.status(500).json({ success: false,
         message: 'server error'
@@ -116,7 +117,9 @@ app.post('/CreateUser', function (req, res) {
           //res.status(500).json({ success: false, message: 'Failed to connect DB' });
           const businessId = businessResult.insertId;
           const permission_id = 0; //user is manager
-          const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id,  permission_id ) VALUES ('${name}', '${email}', '${phone}' , '${password}' ,'${businessId}', '${permission_id})`;
+          const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id,  permission_id ) VALUES ('${name}', '${email}', '${phone}' , '${password}' ,'${businessId}', '${permission_id}')`;
+          console.log(sql);
+          // return
           connection.query(sql, function (err, result) {
             if (err) throw res.status(500).json({ success: false, message: 'Failed to connect DB' });
             emailErrorStatus = 0;
