@@ -31,11 +31,10 @@ Middleware to verify that jwt is valid
 */
 
 app.use(function (req, res, next) {
-  const authentication = req.body.headers.authentication;
+  const authentication = req.body.headers ? req.body.headers.authentication : undefined;
   const reqPath = req.path;
   //Paths where JWT not required 
-   console.log(req.body.headers.authentication)
-  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword' || req.path === '/addUser' || req.path === '/CreateUserByInvite' ) {
+  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword'  || req.path === '/CreateUserByInvite' ) {
     next();
   }
 
@@ -44,19 +43,21 @@ app.use(function (req, res, next) {
     jwt.verify(authentication, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
       if (err) {
         // The token doesn't exist in JWT
-        return res.status(403).json({ success: false, message: 'Failed to authenticate token.' });
+        return res.status(403).json({ success: false, message: 'token invalid' });
       } else {
         req.decoded = decoded;
         const sql = `SELECT user_id FROM users WHERE user_id='${decoded.userId}' AND user_email='${decoded.userEmail}'`
         connection.query(sql, function (err, result) {
           //mysql serer error
-          if (err) res.status(500).json({ success: false, message: 'Failed to connect DB' });
+          if (err) res.status(500).json({ success: false,
+            message: 'server error'
+          });
           else if (result.length === 0) {
             //token data mot valid
             return res.status(403).send({
               //* TODO: remove token form jwt/
               success: false,
-              message: 'The token is not valid'
+              message: 'token invalid'
             });
           }
           //success
@@ -69,7 +70,7 @@ app.use(function (req, res, next) {
     // if JWT token wasn't sent
     return res.status(403).send({
       success: false,
-      message: 'No token provided.'
+      message: 'token invalid'
     });
   }
 });
@@ -99,13 +100,20 @@ app.post('/CreateUser', function (req, res) {
   else {
     const sqlEmail = `SELECT user_id FROM users WHERE user_email='${email}'`;
     connection.query(sqlEmail, function (err, resultSelectEmail) {
-      if (err) res.status(500).json({ success: false, message: 'Failed to connect DB' });
+      if (err) res.status(500).json({ success: false,
+        message: 'server error'
+      });
+      
+      //res.status(500).json({ success: false, message: 'Failed to connect DB' });
       //There is no user with such mail
       if (resultSelectEmail.length === 0) {
         // Insert business to DB
         const sqlBusiness = `INSERT INTO gym (gym_name) VALUES ('${businessName}')`;
         connection.query(sqlBusiness, function (err, businessResult) {
-          if (err) res.status(500).json({ success: false, message: 'Failed to connect DB' });
+          if (err) res.status(500).json({ success: false,
+            message: 'server error'
+          });
+          //res.status(500).json({ success: false, message: 'Failed to connect DB' });
           const businessId = businessResult.insertId;
           const permission_id = 0; //user is manager
           const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id,  permission_id ) VALUES ('${name}', '${email}', '${phone}' , '${password}' ,'${businessId}', '${permission_id})`;
@@ -119,10 +127,9 @@ app.post('/CreateUser', function (req, res) {
         });
       }
       else {
-        // TODO ask Yonatan which status should be here
         //user exists
         emailErrorStatus = 3;
-        res.json({ emailErrorStatus: emailErrorStatus })
+        res.status(409).json({ emailErrorStatus: emailErrorStatus, message: 'User exists' })
       }
     });
   }
@@ -137,12 +144,11 @@ app.post('/Login', function (req, res) {
   const sqlPassword = `SELECT user_id, user_password, user_name, gym_id FROM users WHERE user_email='${email}'`;
   let status = -1;
   connection.query(sqlPassword, function (err, resultSelectPassword) {
-    if (err) res.status(500).json({ success: false, message: 'Failed to connect DB' });
+    if (err) res.status(500).json({ success: false, message: 'server error' });
     if (resultSelectPassword.length === 0) {
       //The user not exist
       status = 0;
-      // TODO ask Yonatan which status should be here
-      res.json({ status });
+      res.status(409).json({ status: status, message: 'User not exists' })
     }
     else {
       if (resultSelectPassword[0].user_password === password) {
@@ -153,8 +159,7 @@ app.post('/Login', function (req, res) {
       else {
         //password incorrect
         status = 0;
-        // TODO ask Yonatan which status should be here
-        res.json({ status });
+        res.status(409).json({ status: 0, message: 'password incurrent' })
       }
     }
   });
@@ -172,8 +177,7 @@ app.post('/ResetPasswordReq', function (req, res) {
     if (result.length === 0) {
       //The user not exist
       status = 1;
-      // TODO ask Yonatan which status should be here
-      res.json({ status });
+     res.status(409).json({ status: 0, message: 'User not exists' })
     }
     //User exist
     else {
@@ -219,7 +223,7 @@ app.post('/NewPassword', function (req, res) {
 
   //password validation
   if (!validators.passwordValidation(data.password, data.confirm)) {
-    return res.json({ successStatus: 1 })
+    return res.status(403).json({ successStatus: 1 })
   }
 
   //check the token
@@ -232,7 +236,7 @@ app.post('/NewPassword', function (req, res) {
         if (err) res.status(505).json({ ssuccessStatus: 1, message: 'Failed to update DB' })
         else {
           //* TODO: remove token form jwt/
-          return res.json({ successStatus: 0 })
+          return res.status(200).json({ successStatus: 0 })
         }
       });
     }
@@ -251,12 +255,12 @@ app.post('/addUser', function (req, res) {
     if (result.length > 0) {
       //The user not exist
       status = 1;
-      res.json({ status });
+      res.status(409).json({ status:status, message: 'user exists' });
     }
     else {
       jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
         if (err) {
-          return res.json({ successStatus: 2, message: 'Failed to authenticate token.' });
+          return res.status(500).json({ successStatus: 2, message: 'Failed to authenticate token.' });
         } else {
           var mailGun = new Mailgun({
             apiKey: process.env.MAILGUN_KEY,
@@ -274,11 +278,11 @@ app.post('/addUser', function (req, res) {
           mailGun.messages().send(data, function (err, body) {
             if (err) {
               status = 2;
-              res.json({ error: err, status: status });
+              res.status(500).json({ error: err, status: status });
             }
             else {
               status = 0;
-              res.json({ email: email, status: status });
+              res.status(200).json({ email: email, status: status });
             }
           });
         }
@@ -338,21 +342,18 @@ app.post('/CreateUserByInvite', function (req, res) {
 });
 
 
-/**add user to business post request */
+/** get Users list to users table */
 app.post('/getUsersList', function (req, res) {
-  console.log("get list")
   let data = [];
   const sql = `SELECT user_name, user_phone,  permission_id, user_email FROM users;`
   connection.query(sql, function (err, result) {
-    if (err) throw err;
+    if (err) res.status(500).json({ success: false,
+      message: 'server error'
+    });
     else {
        for (row in result){
         result[row].permission_id  = result[row].permission_id==0 ? 'Manager' : 'Employee'
        }
-      // for (row in result){
-      //   data.push({name : result[row].user_name, email : result[row].user_email, phone: result[row].user_phone , permission : result[row].permission_id });
-      // }
-      // console.log(data)
       res.send(result);
     }
 });

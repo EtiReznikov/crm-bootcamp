@@ -7,18 +7,23 @@ import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import Headline from '../Headline/Headline';
 import { emailValidation } from '../../tools/validation';
 import LinkHref from '../Link/LinkHref';
+import {
+  Redirect,
+  useParams,
+} from "react-router-dom";
 import './Login.scss'
 function Login(props) {
 
-
+  const [successStatus, setStatus] = useState (0);
   const [formState, setState] = useState({
     email: "",
     password: "",
-    errorStatus: 2,
+    status: 2,
     emailValid: -1
   }
   );
 
+  
   //On submit form
   const submitLogin = () => {
     // email validation
@@ -35,27 +40,45 @@ function Login(props) {
         .then((response) => {
           setState({
             ...formState,
-            errorValid: 0,
-            errorStatus: response.data.status,
+            status: response.data.status,
           })
           // If request went well- save user token to local storage and redirect to home page
           if (response.data.status === 2) {
             localStorage.setItem('user_token', response.data.token);
             props.onUserChange(true);
-            /*TODO: replce with redirect */
-            window.location.href = "http://localhost:3000";
-
+            setState({
+              ...formState,
+              successStatus: 1
+            })
           }
         })
         .catch(function (error) {
-          /*TODO: Redirect to error page */
-        
+          if (error.response.data.message === 'server error'){
+            setStatus(true);
+          }
+          setState({
+            ...formState,
+            status: error.response.data.status,
+          })
         });
     }
   }
 
   return (
     <div className="inner-container">
+      {successStatus == 1 && <Redirect to="/"/>} 
+       {successStatus === 2 && <Redirect to={{
+                        pathname: "/msgPage",
+                        state: {
+                            headLine: "Something went wrong",
+                            text_1: "please ",
+                            link: "/Login",
+                            aText: "click here",
+                            text_2: " to try again.",
+                            className: "msg-page-link"
+                        }
+                    }} />
+                }
       <Headline className="head-form" text="Login" />
       <div className="box">
         <div className="formWrapper">
@@ -64,7 +87,7 @@ function Login(props) {
           <InputField name="email"
             type="text"
             className="login-input"
-            placeholder="type your email"
+            placeholder="Type your email"
             onChange={e =>
               setState({
                 ...formState,
@@ -77,14 +100,15 @@ function Login(props) {
           (formState.emailValid === 1
             && <ErrorMsg text="Oops! Email address is required" />) ||
           (formState.emailValid === 2
-            && <ErrorMsg text="Oops! Invalid email address" />)
+            && <ErrorMsg text="Oops! Invalid email address" />) ||
+            <ErrorMsg/>
         }
         <div className="input-group">
           <LabelField htmlFor="password" text="Password" />
           <InputField name="password"
             type="password"
             className="login-input"
-            placeholder="type your password"
+            placeholder="Type your password"
             onChange={e =>
               setState({
                 ...formState,
@@ -93,8 +117,9 @@ function Login(props) {
           />
         </div>
         {
-          (formState.errorStatus !== 2
-            && <ErrorMsg id="login-error" text="Email or Password incorrect" />)
+          (formState.status !== 2
+            && <ErrorMsg id="login-error" text="Email or Password incorrect" />) ||
+            <ErrorMsg/>
         }
         </div>
         <Button

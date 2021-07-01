@@ -68,7 +68,7 @@ function ResetPassword(props) {
                             name="password"
                             type="password"
                             className="login-input"
-                            placeholder="type your new password"
+                            placeholder="Type your new password"
                             onChange={e =>
                                 setState({
                                     ...formState,
@@ -83,10 +83,11 @@ function ResetPassword(props) {
                         />
                     </div>
                     {
-                        (formState.passwordValid === 0 && <ErrorMsg text="Oops! Password must contain at least 8 characters, one letter and one number" />) ||
+                        (formState.passwordValid === 0 && <ErrorMsg text="Password must contain at least 8 characters, 1 letter and 1 number" />) ||
                         (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
                         (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
-                        (formState.passwordValid === 3 && <ErrorMsg text="strong password" />)
+                        (formState.passwordValid === 3 && <ErrorMsg text="strong password" />) ||
+                        (formState.passwordValid === -1 &&<ErrorMsg/>)
 
                     }
                     <div className="input-group">
@@ -105,6 +106,9 @@ function ResetPassword(props) {
                     </div>
                     {
                         (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
+                    }
+                     {
+                        (formState.passwordValid === -1 ) && formState.passwordMatchValid  && <ErrorMsg />
                     }
                     </div>
                     <Button

@@ -40,14 +40,14 @@ function ForgotPassword(props) {
   return (
     <div className="box-container">
       <div className="inner-container">
-        <Headline className="head-form" text="Forgot your password?" />
+        <Headline className="head-form-forgot-password" text="Forgot your password?" />
         <div className="box">
           <div className="input-group">
             <LabelField htmlfor="email" text="Email" />
             <InputField name="email"
               type="text"
               className="login-input"
-              placeholder="type your email"
+              placeholder="Type your email"
               onChange={e =>
                 setState({
                   ...formState,
@@ -55,6 +55,8 @@ function ForgotPassword(props) {
                 })}
             />
           </div>
+          {formState.errorStatus === 1 && <ErrorMsg text="User is not exists" />} 
+          {formState.errorStatus === -1 && <ErrorMsg /> }
           <Text className="up-form-text" text="We will send you an email with instructions" />
           <Button
             className="forgotPass-btn"
@@ -64,7 +66,7 @@ function ForgotPassword(props) {
           />
 
         </div>
-        <LinkHref className="info-link" href="/LoginSignup" text="return to login page" />
+        <LinkHref className="info-link-forgotpass" href="/LoginSignup" text="return to login page" />
         {
           (formState.errorStatus === 0 && <Redirect to={{
             pathname: "/msgPage",
@@ -74,8 +76,18 @@ function ForgotPassword(props) {
             }
           }}
           />) ||
-          (formState.errorStatus === 1 && <ErrorMsg text="User is not exists" />) ||
-          (formState.errorStatus === 2 && <ErrorMsg text="Something went wrong please try again" />)
+          (formState.errorStatus === 2 && <Redirect to={{
+              pathname: "/msgPage",
+              state: {
+                  headLine: "Something went wrong",
+                  text_1: "please ",
+                  //*TODO change to signup
+                  link: "/ForgotPassword",
+                  aText: "click here",
+                  text_2: " to try again.",
+                  className: "msg-page-link"
+              }
+          }} /> )
         }
       </div>
     </div>

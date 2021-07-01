@@ -5,3 +5,11 @@
     align-items: center;
     margin: auto;
 }
+
+#info-warper{
+    display: flex;
+    margin: auto;
+    width: 45%;
+    flex-direction: row;
+    justify-content: space-evenly;
+}

@@ -33,7 +33,8 @@ function AddUser(props) {
         if (emailValid === 0) {
             axios.post('http://crossfit.com:8005/addUser', {
                 email: formState.email,
-                token: localStorage.getItem('user_token')
+                token: localStorage.getItem('user_token'),
+                headers: { authentication: localStorage.getItem('user_token') }
             }).then(function (response) {
                 setState({
                     ...formState,
@@ -41,7 +42,27 @@ function AddUser(props) {
                 })
             })
                 .catch(function (error) {
-
+                    if(error.response.data.message === 'token invalid')
+                    {
+                       
+                        localStorage.removeItem('user_token');
+                        setState({
+                            ...formState,
+                            successStatus: 3
+                        })
+                    }
+                    if (error.response.data.status === 1){
+                        setState({
+                            ...formState,
+                            successStatus: 1
+                        })
+                    }
+                    else{
+                        setState({
+                            ...formState,
+                            successStatus: 2
+                        })
+                    }
                 });
         }
     }
@@ -50,7 +71,7 @@ function AddUser(props) {
             {!localStorage.getItem('user_token') && <Redirect to="/LoginSignup" />}
             <div className="box-container">
                 <div className="inner-container">
-                    <Headline className="head-form" text="Add new user" />
+                    <Headline className="head-form-add-user" text="Add new user" />
                     <div className="box-addUser">
                         <div>
                         <div className="input-group">
@@ -69,19 +90,22 @@ function AddUser(props) {
                         </div>
                         {
                             /* show email error msg if needed */
+                            (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />) ||
                             (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
-                            (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />)
+                            (formState.emailValid === -1 && <ErrorMsg/>)
                         }
                         </div>
                         <Text className="form-text" text="Your employee will get an invitation to his email address."></Text>
+                        {formState.successStatus === -1 && <ErrorMsg />}
+                        {formState.successStatus === 1 && <ErrorMsg text="Oops, The user already exists" />}
+                        {formState.successStatus === 2 && <ErrorMsg text="Something went wrong, please try again" />}
                         <Button
                             className="forgotPass-btn"
                             onClick={addUser}
                             text="Submit"
                         />
                         {/**show error msg if needed */}
-                        {formState.successStatus === 1 && <ErrorMsg text="Oops, The user already exists" />}
-                        {formState.successStatus === 2 && <ErrorMsg text="Something went wrong, please try again" />}
+                        
                         {formState.successStatus === 0 && <Redirect to={{
                             pathname: "/msgPage",
                             state: {
@@ -90,7 +114,18 @@ function AddUser(props) {
                                 aText: "Back to home page"
                             }
                         }} />}
-
+                         {formState.successStatus === 3 && <Redirect to={{
+                        pathname: "/msgPage",
+                        state: {
+                            headLine: "Something went wrong",
+                            text_1: "please ",
+                            link: "/LoginSignUp",
+                            aText: "click here",
+                            text_2: " to login again.",
+                            className: "msg-page-link"
+                        }
+                    }} />
+                }
                     </div>
                 </div>
             </div>

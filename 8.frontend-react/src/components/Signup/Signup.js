@@ -1,10 +1,15 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import InputField from '../Input/Input'
 import LabelField from '../Label/Label'
 import Button from '../Button/Button';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import axios from 'axios';
 import Headline from '../Headline/Headline';
+import {
+  Redirect,
+  useParams,
+} from "react-router-dom";
+import './Signup.scss';
 import { emailValidation, phoneValidation, nameValidation, nameLengthValidation, phoneLengthValidation, passwordStrengthValidation, passwordMatchValidation } from '../../tools/validation';
 function Signup(props) {
 
@@ -24,10 +29,10 @@ function Signup(props) {
     businessValid: true
   }
   );
-  
+
   //On submit form
   const submitRegister = () => {
-   
+
     const nameValid = nameLengthValidation(formState.name);
     const phoneValid = phoneLengthValidation(formState.phone);
     const businessValid = formState.businessName.length > 0;
@@ -43,7 +48,7 @@ function Signup(props) {
       passwordMatchValid: passwordMatchValid,
       businessValid: businessValid
     })
-     //form validation
+    //form validation
     const valid = (nameValid === 0 && phoneValid === 0 && emailValid === 0 &&
       (passwordValid === 1 || passwordValid === 2 || passwordValid === 3) && passwordMatchValid === 0 && businessValid)
     if (valid) {
@@ -69,153 +74,182 @@ function Signup(props) {
           }
         })
         .catch(function (error) {
-          /*TODO: Redirect to error page */
+          console.log(error.response.data.message);
+          if (error.response.data.message === 'User exists') {
+            setState({
+              ...formState,
+              emailValid:  3,
+            })
+          }
+          else{
+            setState({
+            ...formState,
+            AfterSubmitErrorStatus: true
+          })
+        }
+        
+ 
 
-          // setState({
-          //   ...formState,
-          //   AfterSubmitErrorStatus: true
-          // })
-
+    
+        
         });
     }
   }
   return (
     <div className="inner-container">
-      <Headline className="head-form" text="Signup" />
+      {formState.AfterSubmitErrorStatus === 2 && <Redirect to={{
+                        pathname: "/msgPage",
+                        state: {
+                            headLine: "Something went wrong",
+                            text_1: "please ",
+                            //*TODO change to signup
+                            link: "/Login",
+                            aText: "click here",
+                            text_2: " to try again.",
+                            className: "msg-page-link"
+                        }
+                    }} /> }
+      <Headline className="head-form-signup" text="Signup" />
       <div className="box-signup">
-      <div className="formWrapper">
-        <div className="input-group">
-          <LabelField htmlFor="name" text="Name" />
-          <InputField name="name"
-            type="text"
-            className="login-input"
-            placeholder="type your name"
-            onChange={e =>
-              setState({
-                ...formState,
-                name: e.target.value,
-              })}
-            onKeyUp={e => {
-              setState({
-                ...formState, nameValid: nameValidation(e.target.value)
-              })
-            }
-            }
-          />
-        </div>
-        {
-          (formState.nameValid === 1 && <ErrorMsg text="Oops! Your name can only contain letters and spaces" />) ||
-          (formState.nameValid === 2 && <ErrorMsg text="Oops! Your name must contain at least 2 letters" />)
-        }
-        <div className="input-group">
-          <LabelField htmlFor="email" text="Email" />
-          <InputField
-            name="email"
-            type="text"
-            lassName="login-input"
-            placeholder="type your email"
-            onChange={e =>
-              setState({
-                ...formState,
-                email: e.target.value,
-              })}
-          />
-        </div>
-        {
-          (formState.emailValid === 1 && <ErrorMsg text="Oops! Email address is required" />) ||
-          (formState.emailValid === 2 && <ErrorMsg text="Oops! Invalid email address" />) ||
-          (formState.emailValid === 3 && <ErrorMsg text="Oops, The user already exists" />)
-        }
-        <div className="input-group">
-          <LabelField htmlFor="phone" text="Phone Number" />
-          <InputField
-            name="phone"
-            type="text"
-            className="login-input"
-            placeholder="type your email phone number"
-            onChange={e =>
-              setState({
-                ...formState,
-                phone: e.target.value,
-              })}
-            onKeyUp={e => {
-              setState({
-                ...formState, phoneValid: phoneValidation(e.target.value)
-              })
-            }
-            }
-          />
-        </div>
-        {
-          (formState.phoneValid === 1 && <ErrorMsg text="Oops! A phone number should contain only numbers" />) ||
-          (formState.phoneValid === 2 && <ErrorMsg text="Oops! A phone number should exactly 10 digits" />)
-        }
-        <div className="input-group">
-          <LabelField htmlFor="businessName" text="Business Name" />
-          <InputField name="businessName"
-            type="text"
-            className="signup-input"
-            placeholder="type your business name"
-            onChange={e =>
-              setState({
-                ...formState,
-                businessName: e.target.value,
-              })}
-          />
-        </div>
-        {!formState.businessValid && <ErrorMsg text="Oops! Business Name is required" />}
-        <div className="input-group">
-          <LabelField htmlFor="password" text="Password" />
-          <InputField
-            name="password"
-            type="password"
-            className="login-input"
-            placeholder="type your password"
-            onChange={e =>
-              setState({
-                ...formState,
-                password: e.target.value,
-              })}
-            onKeyUp={e => {
-              setState({
-                ...formState, passwordValid: passwordStrengthValidation(e.target.value)
-              })
-            }
-            }
-          />
-        </div>
-        {
-          (formState.passwordValid === 0 && <ErrorMsg text="Oops! Password must contain at least 8 characters, one letter and one number" />) ||
-          (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
-          (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
-          (formState.passwordValid === 3 && <ErrorMsg text="strong password" />)
-        }
-        <div className="input-group">
-          <LabelField htmlFor="passwordConfirm" text="Confirm Password" />
-          <InputField
-            name="passwordConfirm"
-            type="password"
-            className="login-input"
-            placeholder="type your password again"
-            onChange={e =>
-              setState({
-                ...formState,
-                passwordConfirm: e.target.value,
-              })}
-          />
-        </div>
-        {
-          (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
-        }
+        <div className="formWrapper">
+          <div className="input-group">
+            <LabelField htmlFor="name" text="Name" />
+            <InputField name="name"
+              type="text"
+              className="login-input"
+              placeholder="type your name"
+              onChange={e =>
+                setState({
+                  ...formState,
+                  name: e.target.value,
+                })}
+              onKeyUp={e => {
+                setState({
+                  ...formState, nameValid: nameValidation(e.target.value)
+                })
+              }
+              }
+            />
+          </div>
+          {
+            (formState.nameValid === 1 && <ErrorMsg text="Name can only contain letters and spaces" />) ||
+            (formState.nameValid === 2 && <ErrorMsg text="Name must contain at least 2 letters" />) ||
+            <ErrorMsg />
+          }
+          <div className="input-group">
+            <LabelField htmlFor="email" text="Email" />
+            <InputField
+              name="email"
+              type="text"
+              lassName="login-input"
+              placeholder="Type your email"
+              onChange={e =>
+                setState({
+                  ...formState,
+                  email: e.target.value,
+                })}
+            />
+          </div>
+          {
+            (formState.emailValid === 1 && <ErrorMsg text="Email address is required" />) ||
+            (formState.emailValid === 2 && <ErrorMsg text="Invalid email address" />) ||
+            (formState.emailValid === 3 && <ErrorMsg text="The user already exists" />) ||
+            <ErrorMsg />
+          }
+          <div className="input-group">
+            <LabelField htmlFor="phone" text="Phone Number" />
+            <InputField
+              name="phone"
+              type="text"
+              className="login-input"
+              placeholder="Type your email phone number"
+              onChange={e =>
+                setState({
+                  ...formState,
+                  phone: e.target.value,
+                })}
+              onKeyUp={e => {
+                setState({
+                  ...formState, phoneValid: phoneValidation(e.target.value)
+                })
+              }
+              }
+            />
+          </div>
+          {
+            (formState.phoneValid === 1 && <ErrorMsg text="Phone number should contain only numbers" />) ||
+            (formState.phoneValid === 2 && <ErrorMsg text="Phone number should contain exactly 10 digits" />) ||
+            <ErrorMsg />
+          }
+          <div className="input-group">
+            <LabelField htmlFor="businessName" text="Business Name" />
+            <InputField name="businessName"
+              type="text"
+              className="signup-input"
+              placeholder="Type your business name"
+              onChange={e =>
+                setState({
+                  ...formState,
+                  businessName: e.target.value,
+                })}
+            />
+          </div>
+          {!formState.businessValid && <ErrorMsg text="Business Name is required" /> ||
+            <ErrorMsg />
+          }
+          <div className="input-group">
+            <LabelField htmlFor="password" text="Password" />
+            <InputField
+              name="password"
+              type="password"
+              className="login-input"
+              placeholder="Type your password"
+              onChange={e =>
+                setState({
+                  ...formState,
+                  password: e.target.value,
+                })}
+              onKeyUp={e => {
+                setState({
+                  ...formState, passwordValid: passwordStrengthValidation(e.target.value)
+                })
+              }
+              }
+            />
+          </div>
+          {
+            (formState.passwordValid === 0 && <ErrorMsg text="Password must contain at least 8 characters, 1 letter and 1 number" />) ||
+            (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
+            (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
+            (formState.passwordValid === 3 && <ErrorMsg text="strong password" />) ||
+            <ErrorMsg />
+          }
+          <div className="input-group">
+            <LabelField htmlFor="passwordConfirm" text="Confirm Password" />
+            <InputField
+              name="passwordConfirm"
+              type="password"
+              className="login-input"
+              placeholder="type your password again"
+              onChange={e =>
+                setState({
+                  ...formState,
+                  passwordConfirm: e.target.value,
+                })}
+            />
+          </div>
+          {
+            (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) &&
+            formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" /> ||
+            <ErrorMsg />
+          }
         </div>
         <Button
           className="signup-btn"
           onClick={submitRegister}
           text="Signup"
         />
-        {
-          (formState.AfterSubmitErrorStatus && <ErrorMsg text="Oops, Something went wrong" />)
-        }
+
       </div>
     </div>
   );

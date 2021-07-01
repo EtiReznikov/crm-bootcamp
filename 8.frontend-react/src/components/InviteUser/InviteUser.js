@@ -109,7 +109,8 @@ function InviteUser(props) {
                 </div>
                 {
                     (formState.nameValid === 1 && <ErrorMsg text="Oops! Your name can only contain letters and spaces" />) ||
-                    (formState.nameValid === 2 && <ErrorMsg text="Oops! Your name must contain at least 2 letters" />)
+                    (formState.nameValid === 2 && <ErrorMsg text="Oops! Your name must contain at least 2 letters" />) ||
+                    (formState.nameValid === 0 && <ErrorMsg />)
                 }
                 <div className="input-group">
                     <LabelField htmlFor="phone" text="Phone Number" />
@@ -134,7 +135,8 @@ function InviteUser(props) {
                 </div>
                 {
                     (formState.phoneValid === 1 && <ErrorMsg text="Oops! A phone number should contain only numbers" />) ||
-                    (formState.phoneValid === 2 && <ErrorMsg text="Oops! A phone number should exactly 10 digits" />)
+                    (formState.phoneValid === 2 && <ErrorMsg text="Oops! A phone number should exactly 10 digits" />) ||
+                    (formState.phoneValid === 0 && <ErrorMsg />)
                 }
                 <div className="input-group">
                     <LabelField htmlFor="password" text="Password" />
@@ -161,7 +163,8 @@ function InviteUser(props) {
                     (formState.passwordValid === 0 && <ErrorMsg text="Oops! Password must contain at least 8 characters, one letter and one number" />) ||
                     (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
                     (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
-                    (formState.passwordValid === 3 && <ErrorMsg text="strong password" />)
+                    (formState.passwordValid === 3 && <ErrorMsg text="strong password" />) ||
+                    (formState.passwordValid === -1 && <ErrorMsg />)
 
                 }
                 <div className="input-group">
@@ -181,27 +184,31 @@ function InviteUser(props) {
                 {
                     (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
                 }
+
+                {(formState.passwordValid === -1 ) && formState.passwordMatchValid && <ErrorMsg/>}
+
+                {
+
+(formState.AfterSubmitErrorStatus === 2 && <ErrorMsg text="Oops, something went wrong, please try again" />) ||
+(formState.AfterSubmitErrorStatus === 1 &&
+    <Redirect to={{
+        pathname: "/msgPage",
+        state: {
+            headLine: "Account created successfully ",
+            link: "/",
+            aText: "Go to home page"
+        }
+    }}
+    />
+)
+}
                 </div>
                 <Button
                     className="signup-btn"
                     onClick={submit}
                     text="Submit"
                 />
-                {
-
-                    (formState.AfterSubmitErrorStatus === 2 && <ErrorMsg text="Oops, something went wrong, please try again" />) ||
-                    (formState.AfterSubmitErrorStatus === 1 &&
-                        <Redirect to={{
-                            pathname: "/msgPage",
-                            state: {
-                                headLine: "Account created successfully ",
-                                link: "/",
-                                aText: "Go to home page"
-                            }
-                        }}
-                        />
-                    )
-                }
+              
             </div>
         </div>
 

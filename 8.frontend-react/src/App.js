@@ -43,7 +43,6 @@ function App() {
                 <img className="menu-logo"  src={logo} />
                 <LinkHref className="menu-item" href="/Users" text="Users" />
                 <LinkHref className="menu-item" href="/Calendar" text="Calender" />
-                <LinkHref className="menu-item" href="/addUser" text="Add new user" />
                 <span  className="menu-item" href="/" onClick={logout} >Logout</span>
               </>) ||
             /* Show loggedIn/ Signup link for loggedOut user */

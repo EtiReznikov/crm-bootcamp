@@ -3,7 +3,7 @@ import Table from '../Table/Table';
 import axios from 'axios';
 import Headline from '../Headline/Headline';
 import Button from '../Button/Button';
-import Rollbar from "rollbar";
+
 import './Users.scss';
 import {
     Redirect,
@@ -13,6 +13,7 @@ function Users(props) {
 
     const [data, setData] = useState([]);
     const [addUser, onAddUser] = useState(false);
+    const [successStatus, setSuccessStatus] = useState (0);
     const columns = React.useMemo(() => [
         {
             Header: 'Name',
@@ -34,7 +35,6 @@ function Users(props) {
 
     useEffect(() => {
         (async () => {
-            console.log(localStorage.getItem('user_token'))
             await axios.post('http://crossfit.com:8005/getUsersList', {
                 headers: { authentication: localStorage.getItem('user_token') }
             }).
@@ -42,14 +42,18 @@ function Users(props) {
                     setData(response.data);
                 })
                 .catch(function (error) {
-                    
+                    if(error.response.data.message === 'token invalid')
+                    {
+                        localStorage.removeItem('user_token');
+                        setSuccessStatus (1);
+                    }
+                    else{
+                        setSuccessStatus (2);
+                    }
+
                 });
         })();
     }, []);
-
-
-
-
 
     return (
         <div id="users-page">
@@ -61,22 +65,34 @@ function Users(props) {
                     }
                     text="Add User"
                 />
-            
                 <Headline id="user-page-header" text="Users" />
-            
-
-          
-
             <Table columns={columns} data={data} />
             {addUser && <Redirect to="/addUser" />}
-
-
-
-
-
-
+            {successStatus === 1 && <Redirect to={{
+                        pathname: "/msgPage",
+                        state: {
+                            headLine: "Something went wrong",
+                            text_1: "please ",
+                            link: "/LoginSignUp",
+                            aText: "click here",
+                            text_2: " to login again.",
+                            className: "msg-page-link"
+                        }
+                    }} />
+                }
+                 {successStatus === 2 && <Redirect to={{
+                        pathname: "/msgPage",
+                        state: {
+                            headLine: "Something went wrong",
+                            text_1: "please ",
+                            link: "/Users",
+                            aText: "click here",
+                            text_2: " to try again.",
+                            className: "msg-page-link"
+                        }
+                    }} />
+                }
         </div>
-
     )
 }
 
