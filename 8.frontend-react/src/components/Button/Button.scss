@@ -6,6 +6,9 @@ Button{
     color: $head-background;
     border-width: 0.01em;
     font-size: 1.25em;
+    cursor: pointer;
+    width: 180px;
+    margin: 0 auto;
 
 }
 button:hover{

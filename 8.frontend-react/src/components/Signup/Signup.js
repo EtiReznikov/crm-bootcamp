@@ -83,7 +83,7 @@ function Signup(props) {
     <div className="inner-container">
       <Headline className="head-form" text="Signup" />
       <div className="box-signup">
-        <div>
+      <div className="formWrapper">
         <div className="input-group">
           <LabelField htmlFor="name" text="Name" />
           <InputField name="name"

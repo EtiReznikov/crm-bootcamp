@@ -7,6 +7,7 @@ import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import Headline from '../Headline/Headline';
 import { emailValidation } from '../../tools/validation';
 import LinkHref from '../Link/LinkHref';
+import './Login.scss'
 function Login(props) {
 
 
@@ -57,7 +58,7 @@ function Login(props) {
     <div className="inner-container">
       <Headline className="head-form" text="Login" />
       <div className="box">
-        <div>
+        <div className="formWrapper">
         <div className="input-group">
           <LabelField htmlFor="email" text="Email" />
           <InputField name="email"
@@ -91,6 +92,10 @@ function Login(props) {
               })}
           />
         </div>
+        {
+          (formState.errorStatus !== 2
+            && <ErrorMsg id="login-error" text="Email or Password incorrect" />)
+        }
         </div>
         <Button
           className="login-btn"
@@ -98,10 +103,7 @@ function Login(props) {
             .bind(this)}
           text="Login"
         />
-        {
-          (formState.errorStatus !== 2
-            && <ErrorMsg text="Email or Password incorrect" />)
-        }
+       
       </div>
       <LinkHref className="info-link" href="/ForgotPassword" text="Forgot my password" />
     </div>

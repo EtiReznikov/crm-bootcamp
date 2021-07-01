@@ -2,5 +2,12 @@
 
 .error-msg{
     color: #FE5F55;
-    font-size: 1em;
+    text-align: center;
+    // font-size: 1em;
+}
+
+#login-error {
+    height: 7px;
+    margin-top: 7px;
+    text-align: center;
 }

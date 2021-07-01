@@ -61,7 +61,7 @@ function ResetPassword(props) {
             <div className="inner-container">
             <Headline className="head-form"  text="Reset Your Password" />
                 <div className="box">
-                    <div>
+                <div className="formWrapper">
                     <div className="input-group">
                         <LabelField htmlFor="password" text="Password" />
                         <InputField

@@ -35,21 +35,21 @@ function App() {
   return (
     <Router>
       <div id="app">
-        <div id="head">
+        <div id="menu">
           {
             /* Show menu for loggedIn user */
             (userState &&
               <>
                 <img className="menu-logo"  src={logo} />
-                <span  className="menu" href="/" onClick={logout} >Logout</span>
-                <LinkHref className="menu" href="/Users" text="Users" />
-                <LinkHref className="menu" href="/Calendar" text="Calender" />
-                <LinkHref className="menu" href="/addUser" text="Add new user" />
+                <LinkHref className="menu-item" href="/Users" text="Users" />
+                <LinkHref className="menu-item" href="/Calendar" text="Calender" />
+                <LinkHref className="menu-item" href="/addUser" text="Add new user" />
+                <span  className="menu-item" href="/" onClick={logout} >Logout</span>
               </>) ||
             /* Show loggedIn/ Signup link for loggedOut user */
             <>
             <img className="menu-logo" src={logo} />
-            <LinkHref className="menu" href="/LoginSignup" text="SignIn / SignUp" />
+            <LinkHref className="menu-item" href="/LoginSignup" text="SignIn / SignUp" />
             </>
           }
         </div>

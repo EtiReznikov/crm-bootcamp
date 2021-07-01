@@ -86,7 +86,7 @@ function InviteUser(props) {
             <Headline className="head-form" text="Register" />
         
             <div className="box-inviteUser">
-                <div>
+                <div className="formWrapper">
                 <Text className="up-form-text" text="So happy to see you! we just need a few more details" />
                 <div className="input-group">
                     <LabelField htmlFor="name" text="Name" />

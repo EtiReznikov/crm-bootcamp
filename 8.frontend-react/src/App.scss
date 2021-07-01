@@ -23,7 +23,7 @@ body{
     color: $text;
     width: 100%;
     height: 100%;
-    position: fixed;
+
 }
 
 #app{
@@ -35,8 +35,8 @@ body{
 .inner-container{
   background-color: $form-background;
   padding-top: 0.5em;
-  width: 40em;
-  height: 40em;
+  width: 30em;
+  height: 30em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,33 +71,43 @@ body{
 
   padding-bottom: 0.5em;
 }
-#head{
+#menu{
   display: flex;
-  background-color: #274c77;
+  background-color: $menu-background;
   flex-direction: column;
   flex-wrap: wrap;
   align-content: center;
   justify-content: flex-start;
+  width: 200px;
+  
+  margin-bottom: -5000px; /* any large number will do */
+  padding-bottom: 5000px; 
+
+  .menu-item{
+    text-decoration: none;
+    color : #ffffff;
+    opacity: 0.7;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    font-size: 1.1em;
+  }
+  
+  .menu-item:hover{
+   font-weight: bold; 
+  //  background-color: #E1E5F2;
+  //  color: $head-background;
+  opacity: 1;
+ 
+  }
    
 }
 .menu-logo{
-  padding: 0.5em;
-  height: 5em;
+  height: 3em;
+  margin: 1.5em 2em;
 }
 
-.menu{
-  text-decoration: none;
-  color : #E1E5F2;
-  padding: 1em;
-  font-size: 1.25em;
-}
-
-.menu:hover{
- font-weight: bold; 
- background-color: #E1E5F2;
- color: $head-background;
- cursor: pointer;
-}
 
 
 

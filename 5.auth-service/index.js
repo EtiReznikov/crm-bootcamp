@@ -31,14 +31,17 @@ Middleware to verify that jwt is valid
 */
 
 app.use(function (req, res, next) {
+  const authentication = req.body.headers.authentication;
   const reqPath = req.path;
-  //Paths where JWT not required
-  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword' || req.path === '/addUser' || req.path === '/CreateUserByInvite') {
+  //Paths where JWT not required 
+   console.log(req.body.headers.authentication)
+  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword' || req.path === '/addUser' || req.path === '/CreateUserByInvite' ) {
     next();
   }
+
   //If JWT token was sent
-  else if (req.headers.authentication !== 'null') {
-    jwt.verify(req.headers.authentication, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+  else if (authentication!== undefined) {
+    jwt.verify(authentication, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
       if (err) {
         // The token doesn't exist in JWT
         return res.status(403).json({ success: false, message: 'Failed to authenticate token.' });
@@ -284,6 +287,8 @@ app.post('/addUser', function (req, res) {
   });
 });
 
+//** User accept invitation post request */
+
 app.post('/CreateUserByInvite', function (req, res) {
 
   const name = req.body.name;
@@ -330,6 +335,27 @@ app.post('/CreateUserByInvite', function (req, res) {
       }
     });
   }
+});
+
+
+/**add user to business post request */
+app.post('/getUsersList', function (req, res) {
+  console.log("get list")
+  let data = [];
+  const sql = `SELECT user_name, user_phone,  permission_id, user_email FROM users;`
+  connection.query(sql, function (err, result) {
+    if (err) throw err;
+    else {
+       for (row in result){
+        result[row].permission_id  = result[row].permission_id==0 ? 'Manager' : 'Employee'
+       }
+      // for (row in result){
+      //   data.push({name : result[row].user_name, email : result[row].user_email, phone: result[row].user_phone , permission : result[row].permission_id });
+      // }
+      // console.log(data)
+      res.send(result);
+    }
+});
 });
 
 app.get('/', function (req, res) {

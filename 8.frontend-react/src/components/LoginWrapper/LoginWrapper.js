@@ -39,7 +39,7 @@ function LoginSingUp(props) {
       {
         (localStorage.getItem('user_token') && <Redirect to="/"> </Redirect>) ||
         (<div className="wrapperSign">
-          <img id="logo" src={logo} />
+        
           {!isLogin &&
             <>
               <Text className="text-controller" text="Already have a User?" />
