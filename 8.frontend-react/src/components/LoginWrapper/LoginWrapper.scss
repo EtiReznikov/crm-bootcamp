@@ -1,49 +1,6 @@
-@import "../../Views/colors.scss";
+
 .menu{
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: stretch;
-    justify-content: space-around;
-    padding-bottom: 0.5em;
-}
-.controller{
-    background-color: $background;
-    color: $head-background;
-    border-width: 0.01em;
-    font-size: 1.2em;
- 
-}
-
-.wrapperSign{
-    display: flex;
-    flex-direction: column;
-}
-
-#logo{
-    padding-top: 2em;
-    height: 6vw;
-}
-
-.box-container{
-    flex-direction: column;
-}
-
-.box{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 100%;
-}
-
-.box-signup{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 80%;
-}
-
-.text-controller{
-    margin-top: 60px;
-    text-align: center;
+    justify-content: space-evenly;
+    cursor: pointer;
 }

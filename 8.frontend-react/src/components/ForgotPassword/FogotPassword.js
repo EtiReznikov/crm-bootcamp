@@ -10,7 +10,7 @@ import LinkHref from '../Link/LinkHref';
 import {
   Redirect
 } from "react-router-dom";
-import './ForgotPassword.scss'
+import '../../Views/Form.scss';
 function ForgotPassword(props) {
   const [formState, setState] = useState({
     email: "",
@@ -38,36 +38,34 @@ function ForgotPassword(props) {
   }
 
   return (
-    <div className="box-container">
-      <div className="inner-container">
-        <Headline className="head-form-forgot-password" text="Forgot your password?" />
-        <div className="box">
-          <div className="input-group">
-            <LabelField htmlfor="email" text="Email" />
-            <InputField name="email"
-              type="text"
-              className="login-input"
-              placeholder="Type your email"
-              onChange={e =>
+    <div className="form_wrapper">
+    <div className="form_container">
+      <div className="title_container">
+        <h2>Forgot my password</h2>
+      </div>
+      <div className="row clearfix">
+        <div className="">
+          <form>
+            <div className="input_field"> <span><i aria-hidden="true" className="fa fa-envelope"></i></span>
+              <input type="email" name="email" placeholder="Email" onChange={e =>
                 setState({
                   ...formState,
                   email: e.target.value,
                 })}
+              />
+            </div>
+            {formState.errorStatus === 1 && <ErrorMsg text="User is not exists" />}
+            {formState.errorStatus === -1 && <ErrorMsg />}
+            <input className="button" type="submit" value="Submit"
+              onClick={onSubmit
+                .bind(this)}
+              text="Submit"
             />
-          </div>
-          {formState.errorStatus === 1 && <ErrorMsg text="User is not exists" />} 
-          {formState.errorStatus === -1 && <ErrorMsg /> }
-          <Text className="up-form-text" text="We will send you an email with instructions" />
-          <Button
-            className="forgotPass-btn"
-            onClick={onSubmit
-              .bind(this)}
-            text="Submit"
-          />
-
+               <LinkHref className="info-link-forgotpass" href="/LoginSignup" text="return to login page" />
+          </form>
         </div>
-        <LinkHref className="info-link-forgotpass" href="/LoginSignup" text="return to login page" />
-        {
+      </div>
+      {
           (formState.errorStatus === 0 && <Redirect to={{
             pathname: "/msgPage",
             state: {
@@ -89,8 +87,9 @@ function ForgotPassword(props) {
               }
           }} /> )
         }
-      </div>
     </div>
+    </div>
+ 
   )
 }
 

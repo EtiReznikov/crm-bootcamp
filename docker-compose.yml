@@ -53,8 +53,8 @@ services:
         source: ./6.crud-php
         target: /var/www/html
     ports: 
-      - 443:443
-      - 80:80
+     
+      - 991:80
     tty: true
     stdin_open: true
 

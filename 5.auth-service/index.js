@@ -34,8 +34,8 @@ app.use(function (req, res, next) {
   const authentication = req.body.headers ? req.body.headers.authentication : undefined;
   const reqPath = req.path;
   //Paths where JWT not required 
-  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword'  || req.path === '/CreateUserByInvite' ) {
-    next();
+  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword'  || req.path === '/CreateUserByInvite' || req.path === '/SignUp' || req.path === '/LoginSignup') {
+    next(); 
   }
 
   //If JWT token was sent
@@ -118,7 +118,6 @@ app.post('/CreateUser', function (req, res) {
           const businessId = businessResult.insertId;
           const permission_id = 0; //user is manager
           const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id,  permission_id ) VALUES ('${name}', '${email}', '${phone}' , '${password}' ,'${businessId}', '${permission_id}')`;
-          console.log(sql);
           // return
           connection.query(sql, function (err, result) {
             if (err) throw res.status(500).json({ success: false, message: 'Failed to connect DB' });

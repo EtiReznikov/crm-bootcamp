@@ -1,23 +1,23 @@
-@import "../../Views/colors.scss";
+// @import "../../Views/colors.scss";
 
-Button{
-    border-radius: 5px;
-    background-color: $background;
-    color: $head-background;
-    border-width: 0.01em;
-    font-size: 1.25em;
-    cursor: pointer;
-    width: 180px;
-    margin: 0 auto;
+// Button{
+//     border-radius: 5px;
+//     background-color: $background;
+//     color: $head-background;
+//     border-width: 0.01em;
+//     font-size: 1.25em;
+//     cursor: pointer;
+//     width: 180px;
+//     margin: 0 auto;
 
-}
-button:hover{
-    border-radius: 5px;
-    background-color: $button-background;
-    color : $button-text;
-}
+// }
+// button:hover{
+//     border-radius: 5px;
+//     background-color: $button-background;
+//     color : $button-text;
+// }
 
-.forgotPass-btn{
-    margin-top: 1em;
-}
+// .forgotPass-btn{
+//     margin-top: 1em;
+// }
 

@@ -13,7 +13,7 @@ function Users(props) {
 
     const [data, setData] = useState([]);
     const [addUser, onAddUser] = useState(false);
-    const [successStatus, setSuccessStatus] = useState (0);
+    const [successStatus, setSuccessStatus] = useState(0);
     const columns = React.useMemo(() => [
         {
             Header: 'Name',
@@ -42,13 +42,12 @@ function Users(props) {
                     setData(response.data);
                 })
                 .catch(function (error) {
-                    if(error.response.data.message === 'token invalid')
-                    {
+                    if (error.response.data.message === 'token invalid') {
                         localStorage.removeItem('user_token');
-                        setSuccessStatus (1);
+                        setSuccessStatus(1);
                     }
-                    else{
-                        setSuccessStatus (2);
+                    else {
+                        setSuccessStatus(2);
                     }
 
                 });
@@ -57,41 +56,55 @@ function Users(props) {
 
     return (
         <div id="users-page">
-                <Button
-                    className="add-user-btn"
-                    onClick={() => {
-                        onAddUser(true);
-                    }
-                    }
-                    text="Add User"
-                />
-                <Headline id="user-page-header" text="Users" />
-            <Table columns={columns} data={data} />
-            {addUser && <Redirect to="/addUser" />}
-            {successStatus === 1 && <Redirect to={{
-                        pathname: "/msgPage",
-                        state: {
-                            headLine: "Something went wrong",
-                            text_1: "please ",
-                            link: "/LoginSignUp",
-                            aText: "click here",
-                            text_2: " to login again.",
-                            className: "msg-page-link"
+
+            <Headline id="user-page-header" text="Users" />
+
+            <div id="table-warper">
+                <div id="button-warper">
+                    <Button
+                        className="add-user-btn"
+                        onClick={() => {
+                            onAddUser(true);
                         }
-                    }} />
-                }
-                 {successStatus === 2 && <Redirect to={{
-                        pathname: "/msgPage",
-                        state: {
-                            headLine: "Something went wrong",
-                            text_1: "please ",
-                            link: "/Users",
-                            aText: "click here",
-                            text_2: " to try again.",
-                            className: "msg-page-link"
                         }
-                    }} />
+                        text={<i class="fa fa-user-plus"></i>}
+                    />
+                    <Button
+                        className="remove-user-btn"
+                        //TODO add remove function
+                        text={<i class="fa fa-user-times"></i>}
+                    />
+                  
+                </div>
+                
+                <Table columns={columns} data={data} />
+                {addUser && <Redirect to="/addUser" />}
+                {successStatus === 1 && <Redirect to={{
+                    pathname: "/msgPage",
+                    state: {
+                        headLine: "Something went wrong",
+                        text_1: "please ",
+                        link: "/LoginSignUp",
+                        aText: "click here",
+                        text_2: " to login again.",
+                        className: "msg-page-link"
+                    }
+                }} />
                 }
+                {successStatus === 2 && <Redirect to={{
+                    pathname: "/msgPage",
+                    state: {
+                        headLine: "Something went wrong",
+                        text_1: "please ",
+                        link: "/Users",
+                        aText: "click here",
+                        text_2: " to try again.",
+                        className: "msg-page-link"
+                    }
+                }} />
+                }
+
+            </div>
         </div>
     )
 }

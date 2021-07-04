@@ -16,7 +16,7 @@
 
         public function test($key) {
             $this->response = $this->model->getFakeData();
-            $this->response["my_key"] = $key;
+            $this->response["my_key"] = $key . "   yo yo ";
             return $this->response;
         }
         

@@ -57,91 +57,175 @@ function ResetPassword(props) {
     }
     /*TODO: check that link is valid*/
     return (
-        <div className="box-container">
-            <div className="inner-container">
-            <Headline className="head-form"  text="Reset Your Password" />
-                <div className="box">
-                <div className="formWrapper">
-                    <div className="input-group">
-                        <LabelField htmlFor="password" text="Password" />
-                        <InputField
-                            name="password"
-                            type="password"
-                            className="login-input"
-                            placeholder="Type your new password"
-                            onChange={e =>
-                                setState({
-                                    ...formState,
-                                    password: e.target.value,
-                                })}
-                            onKeyUp={e => {
-                                setState({
-                                    ...formState, passwordValid: passwordStrengthValidation(e.target.value)
-                                })
-                            }
-                            }
-                        />
-                    </div>
-                    {
-                        (formState.passwordValid === 0 && <ErrorMsg text="Password must contain at least 8 characters, 1 letter and 1 number" />) ||
-                        (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
-                        (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
-                        (formState.passwordValid === 3 && <ErrorMsg text="strong password" />) ||
-                        (formState.passwordValid === -1 &&<ErrorMsg/>)
+        <div className="form_wrapper">
+            {!localStorage.getItem('user_token') && <Redirect to="/LoginSignup" />}
+            <div className="form_container">
+                <div className="title_container">
+                    <h2>Reset Password</h2>
+                </div>
+                <div className="row clearfix">
+                    <div className="">
+                        <form>
 
-                    }
-                    <div className="input-group">
-                        <LabelField htmlFor="passwordConfirm" text="Confirm Password" />
-                        <InputField
-                            name="passwordConfirm"
-                            type="password"
-                            className="login-input"
-                            placeholder="type new password again"
-                            onChange={e =>
-                                setState({
-                                    ...formState,
-                                    passwordConfirm: e.target.value,
-                                })}
-                        />
-                    </div>
-                    {
-                        (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
-                    }
-                     {
-                        (formState.passwordValid === -1 ) && formState.passwordMatchValid  && <ErrorMsg />
-                    }
-                    </div>
-                    <Button
-                        className="signup-btn"
-                        onClick={onSubmit}
-                        text="Change Password"
-                    />
-                    {formState.successStatus === 1 && <ErrorMsg text="Something went wrong, please try again" />}
-                    {formState.successStatus === 0 &&
-                        <Redirect to={{
-                            pathname: "/msgPage",
-                            state: {
-                                headLine: "Your password has been reset.",
-                                link: "/LoginSignup",
-                                aText: "click here",
-                                text_2: "to login."
+                            <div className="input_field">
+                                <span>
+                                    <i aria-hidden="true" className="fa fa-lock"></i>
+                                </span>
+                                <input type="password" name="password" placeholder="Password" onChange={e =>
+                                    setState({
+                                        ...formState,
+                                        password: e.target.value,
+                                    })}
+                                    onKeyUp={e => {
+                                        setState({
+                                            ...formState, passwordValid: passwordStrengthValidation(e.target.value)
+                                        })
+                                    }
+                                    }
+                                />
+                            </div>
+                            {
+                                (formState.passwordValid === 0 && <ErrorMsg text="Password must contain at least 8 characters, 1 letter and 1 number" />) ||
+                                (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
+                                (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
+                                (formState.passwordValid === 3 && <ErrorMsg text="strong password" />) ||
+                                (formState.passwordValid === -1 && <ErrorMsg />)
+
                             }
-                        }}
-                        />
-                    }
-                    {formState.successStatus === 2 && <Redirect to={{
-                        pathname: "/msgPage",
-                        state: {
-                            headLine: "Invalid Password Reset Link",
-                            text: "This link is no longer valid. please request a new link below",
-                            link: "/ForgotPassword",
-                            aText: "Get new reset password link"
+                            <div className="input_field">
+                                <span>
+                                    <i aria-hidden="true" className="fa fa-lock"></i>
+                                </span>
+                                <input type="password" name="password" placeholder="Re-type Password" onChange={e =>
+                                    setState({
+                                        ...formState,
+                                        passwordConfirm: e.target.value,
+                                    })}
+                                />
+                            </div>
+                            {
+                                (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
+                            }
+                            {
+                                (formState.passwordValid === -1) && formState.passwordMatchValid && <ErrorMsg />
+                            }
+
+                            {formState.successStatus === 1 && <ErrorMsg text="Something went wrong, please try again" />}
+                            {formState.successStatus === 0 &&
+                                <Redirect to={{
+                                    pathname: "/msgPage",
+                                    state: {
+                                        headLine: "Your password has been reset.",
+                                        link: "/LoginSignup",
+                                        aText: "click here",
+                                        text_2: "to login."
+                                    }
+                                }}
+                                />
+                            }
+                            {formState.successStatus === 2 && 
+                            <Redirect to={{
+                                pathname: "/msgPage",
+                                state: {
+                                    headLine : "Invalid Password Reset Link",
+                                    text: "This link is no longer valid. please request a new link below",
+                                    link: "/ForgotPassword",
+                                    aText: "Get new reset password link"
+                                }
+                         }} 
+                         /> 
                         }
-                    }}
-                    />}
+                        <input className="button" type="submit" value="Submit" onClick={onSubmit} />
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
+        // <div className="box-container">
+        //     <div className="inner-container">
+        //     <Headline className="head-form"  text="Reset Your Password" />
+        //         <div className="box">
+        //         <div className="formWrapper">
+        //             <div className="input-group">
+        //                 <LabelField htmlFor="password" text="Password" />
+        //                 <InputField
+        //                     name="password"
+        //                     type="password"
+        //                     className="login-input"
+        //                     placeholder="Type your new password"
+        //                     onChange={e =>
+        //                         setState({
+        //                             ...formState,
+        //                             password: e.target.value,
+        //                         })}
+        //                     onKeyUp={e => {
+        //                         setState({
+        //                             ...formState, passwordValid: passwordStrengthValidation(e.target.value)
+        //                         })
+        //                     }
+        //                     }
+        //                 />
+        //             </div>
+        //             {
+        //                 (formState.passwordValid === 0 && <ErrorMsg text="Password must contain at least 8 characters, 1 letter and 1 number" />) ||
+        //                 (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
+        //                 (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
+        //                 (formState.passwordValid === 3 && <ErrorMsg text="strong password" />) ||
+        //                 (formState.passwordValid === -1 &&<ErrorMsg/>)
+
+        //             }
+        //             <div className="input-group">
+        //                 <LabelField htmlFor="passwordConfirm" text="Confirm Password" />
+        //                 <InputField
+        //                     name="passwordConfirm"
+        //                     type="password"
+        //                     className="login-input"
+        //                     placeholder="type new password again"
+        //                     onChange={e =>
+        //                         setState({
+        //                             ...formState,
+        //                             passwordConfirm: e.target.value,
+        //                         })}
+        //                 />
+        //             </div>
+        //             {
+        //                 (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
+        //             }
+        //              {
+        //                 (formState.passwordValid === -1 ) && formState.passwordMatchValid  && <ErrorMsg />
+        //             }
+        //             </div>
+        //             <Button
+        //                 className="signup-btn"
+        //                 onClick={onSubmit}
+        //                 text="Change Password"
+        //             />
+        //             {formState.successStatus === 1 && <ErrorMsg text="Something went wrong, please try again" />}
+        //             {formState.successStatus === 0 &&
+        //                 <Redirect to={{
+        //                     pathname: "/msgPage",
+        //                     state: {
+        //                         headLine: "Your password has been reset.",
+        //                         link: "/LoginSignup",
+        //                         aText: "click here",
+        //                         text_2: "to login."
+        //                     }
+        //                 }}
+        //                 />
+        //             }
+        //             {formState.successStatus === 2 && <Redirect to={{
+        //                 pathname: "/msgPage",
+        //                 state: {
+        //                     headLine: "Invalid Password Reset Link",
+        //                     text: "This link is no longer valid. please request a new link below",
+        //                     link: "/ForgotPassword",
+        //                     aText: "Get new reset password link"
+        //                 }
+        //             }}
+        //             />}
+        //         </div>
+        //     </div>
+        // </div>
     )
 }
 

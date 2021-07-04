@@ -1,14 +1,15 @@
 import React from 'react';
 import Button from '../Button/Button';
 import {
-    BrowserRouter as 
+  BrowserRouter as
     Link
-  } from "react-router-dom";
+} from "react-router-dom";
 function menuItem(props) {
-    return <Link to={props.link}>
-    <Button className={props.className} text={props.text} onClick={props.onClick}/>
-    </Link> 
-  
+  return <a href="#" class={props.classA}>
+    <i class={props.classI}></i>
+    <span class={props.classS}>{props.text}
+    </span>
+  </a>
 }
 
 export default menuItem;

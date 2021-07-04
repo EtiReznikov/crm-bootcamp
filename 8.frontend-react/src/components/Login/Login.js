@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputField from '../Input/Input'
 import LabelField from '../Label/Label'
 import Button from '../Button/Button'
@@ -7,22 +7,23 @@ import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import Headline from '../Headline/Headline';
 import { emailValidation } from '../../tools/validation';
 import LinkHref from '../Link/LinkHref';
-import {
-  Redirect,
-} from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckSquare, faCoffee } from '@fortawesome/fontawesome-free-solid'
 import './Login.scss'
+
+
+
 function Login(props) {
 
-  const [successStatus, setStatus] = useState (0);
+
   const [formState, setState] = useState({
     email: "",
     password: "",
-    status: 2,
+    errorStatus: 2,
     emailValid: -1
   }
   );
 
-  
   //On submit form
   const submitLogin = () => {
     // email validation
@@ -39,98 +40,72 @@ function Login(props) {
         .then((response) => {
           setState({
             ...formState,
-            status: response.data.status,
+            errorValid: 0,
+            errorStatus: response.data.status,
           })
           // If request went well- save user token to local storage and redirect to home page
-          if (response.data.status === 2) {
+          if (response.data.status == 2) {
+            console.log("logged in")
             localStorage.setItem('user_token', response.data.token);
             props.onUserChange(true);
-            setState({
-              ...formState,
-              successStatus: 1
-            })
+            window.location.href = "http://localhost:3000";
+
           }
         })
         .catch(function (error) {
-          if (error.response.data.message === 'server error'){
-            setStatus(true);
-          }
-          setState({
-            ...formState,
-            status: error.response.data.status,
-          })
+          /*TODO: Redirect to error page */
+
         });
     }
   }
 
   return (
-    <div className="inner-container">
-      {successStatus === 1 && <Redirect to="/"/>} 
-       {successStatus === 2 && <Redirect to={{
-                        pathname: "/msgPage",
-                        state: {
-                            headLine: "Something went wrong",
-                            text_1: "please ",
-                            link: "/Login",
-                            aText: "click here",
-                            text_2: " to try again.",
-                            className: "msg-page-link"
-                        }
-                    }} />
-                }
-      <Headline className="head-form" text="Login" />
-      <div className="box">
-        <div className="formWrapper">
-        <div className="input-group">
-          <LabelField htmlFor="email" text="Email" />
-          <InputField name="email"
-            type="text"
-            className="login-input"
-            placeholder="Type your email"
-            onChange={e =>
-              setState({
-                ...formState,
-                email: e.target.value,
-                emailValid: 0
-              })}
-          />
+
+      <div className="form_container">
+        <div className="title_container">
+          <h2>Login</h2>
         </div>
-        {
-          (formState.emailValid === 1
-            && <ErrorMsg text="Oops! Email address is required" />) ||
-          (formState.emailValid === 2
-            && <ErrorMsg text="Oops! Invalid email address" />) ||
-            <ErrorMsg/>
-        }
-        <div className="input-group">
-          <LabelField htmlFor="password" text="Password" />
-          <InputField name="password"
-            type="password"
-            className="login-input"
-            placeholder="Type your password"
-            onChange={e =>
-              setState({
-                ...formState,
-                password: e.target.value,
-              })}
-          />
+        <div className="row clearfix">
+          <div className="">
+            <form>
+              <div className="input_field"> <span><i aria-hidden="true" className="fa fa-envelope"></i></span>
+                <input type="email" name="email" placeholder="Email" onChange={e =>
+                  setState({
+                    ...formState,
+                    email: e.target.value,
+                    emailValid: 0
+                  })}
+                />
+              </div>
+              {
+                (formState.emailValid === 1
+                  && <ErrorMsg text="Email address is required" />) ||
+                (formState.emailValid === 2
+                  && <ErrorMsg text="Invalid email address" />)
+              }
+              <div className="input_field"> <span><i aria-hidden="true" className="fa fa-lock"></i></span>
+                <input type="password" name="password" placeholder="Password" onChange={e =>
+                  setState({
+                    ...formState,
+                    password: e.target.value,
+                  })}
+                />
+              </div>
+              {
+                (formState.errorStatus !== 2
+                  && <ErrorMsg text="Email or Password incorrect" />)
+              }
+              {
+                (formState.errorStatus === 2
+                  && <ErrorMsg />)
+              }
+              <input className="button" type="submit" value="Submit" onClick={submitLogin
+                .bind(this)} />
+              <LinkHref href="/ForgotPassword" text="Forgot my password" />
+            </form>
+          </div>
         </div>
-        {
-          (formState.status !== 2
-            && <ErrorMsg id="login-error" text="Email or Password incorrect" />) ||
-            <ErrorMsg/>
-        }
-        </div>
-        <Button
-          className="login-btn"
-          onClick={submitLogin
-            .bind(this)}
-          text="Login"
-        />
-       
       </div>
-      <LinkHref className="info-link" href="/ForgotPassword" text="Forgot my password" />
-    </div>
   );
 }
 export default Login;

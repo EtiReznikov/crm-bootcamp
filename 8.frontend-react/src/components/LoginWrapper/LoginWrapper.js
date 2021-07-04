@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './LoginWrapper.scss'
+import '../../Views/Form.scss'
 import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
 import Button from '../Button/Button';
@@ -31,29 +32,30 @@ function LoginSingUp(props) {
   }, []);
 
   return (
-    <div className="box-container">
+    <div className="form_wrapper">
+        {
+          (localStorage.getItem('user_token') && <Redirect to="/"></Redirect>) ||
+          (<div  className="menu">
+            <div className={"controller" + (isLogin ? "selected-controller" : "")}
+              onClick={showLoginBox.bind(this)}>
+              Login
+            </div>
+            {/* <Button  className="controller" text="Login" onClick={showLoginBox}  />
+            <Button  className="controller" text="Signup" onClick={showRegisterBox}/> */}
+            <div
+              className={"controller " + (isRegister ? "selected-controller" : "")}
+              onClick={showRegisterBox.bind(this)}>
+              Signup
+            </div>
+          </div>)}
+     
+      {/* <div className="box-container"> */}
       {
-        (isLogin && <Login onUserChange={props.onUserChange} />) ||
-        (isRegister && <Signup onUserChange={props.onUserChange} />)
+        (isLogin && <Login onUserChange={props.onUserChange}/>) ||
+        (isRegister && <Signup onUserChange={props.onUserChange}/>)
       }
-      {
-        (localStorage.getItem('user_token') && <Redirect to="/"> </Redirect>) ||
-        (<div className="wrapperSign">
-        
-          {!isLogin &&
-            <>
-              <Text className="text-controller" text="Already have a User?" />
-              <Button className="controller" text="Login" onClick={showLoginBox} />
-            </>
-          }
-          {!isRegister &&
-            <>
-              <Text className="text-controller" text="Don't have a user?" />
-              <Button className="controller" text="Signup" onClick={showRegisterBox} />
-            </>
-          }
-        </div>
-        )}
+
+    {/* </div> */}
     </div>
   );
 }

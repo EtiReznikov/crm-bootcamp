@@ -1,37 +1,44 @@
 @import "../../Views/colors.scss";
-.head-form{
-    font-size : 3em;
-    padding-top: 1em;
-    padding-bottom : 1em;
-    position: absolute;
-    font-weight: bold;
-    // text-shadow: 2px 2px $background;
-    top: 0;
-}
-.head-msg{
-    font-size : 3em;
-    padding-top: 2em;
-    padding-bottom : 1em;    
-}
-
 #user-page-header{
-    font-size : 3em;
-    font-weight: bold;
-    padding-bottom: 15px;
-
-}
-
-.head-form-forgot-password{
-    font-size : 2em;
-    padding-top: 1em;
-    padding-bottom : 1em;
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    margin-top: 8px;
+    color: $menu-background;
     font-weight: bold;
 }
+// .head-form{
+//     font-size : 3em;
+//     padding-top: 1em;
+//     padding-bottom : 1em;
+//     position: absolute;
+//     font-weight: bold;
+//     // text-shadow: 2px 2px $background;
+//     top: 0;
+// }
+// .head-msg{
+//     font-size : 3em;
+//     padding-top: 2em;
+//     padding-bottom : 1em;    
+// }
 
-.head-form-add-user{
-    font-size : 2em;
-    padding-top: 1em;
-    padding-bottom : 1em;
-    font-weight: bold;
-}
+// #user-page-header{
+//     font-size : 3em;
+//     font-weight: bold;
+//     padding-bottom: 15px;
+
+// }
+
+// .head-form-forgot-password{
+//     font-size : 2em;
+//     padding-top: 1em;
+//     padding-bottom : 1em;
+//     font-weight: bold;
+// }
+
+// .head-form-add-user{
+//     font-size : 2em;
+//     padding-top: 1em;
+//     padding-bottom : 1em;
+//     font-weight: bold;
+// }
 

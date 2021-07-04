@@ -7,7 +7,18 @@ import MsgPage from './components/MsgPage/MsgPage';
 import LinkHref from './components/Link/LinkHref';
 import AddUser from './components/AddUser/AddUser';
 import InviteUser from './components/InviteUser/InviteUser';
+import Signup from './components/Signup/Signup';
+import Login from './components/Login/Login';
 import logo from './Views/Daco_6140061.png'
+import SideBar from './components/SideBar/SideBar';
+import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import 'react-pro-sidebar/dist/css/styles.css';
+import {
+  useParams,
+  Redirect
+} from "react-router-dom";
+
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -23,8 +34,9 @@ function App() {
 
   //logput the user
   const logout = () => {
+    console.log("logout")
     localStorage.removeItem('user_token');
-    setState(false)
+    handleUserChange(false)
   };
 
   //update the user when child is updating the local  storage
@@ -32,27 +44,13 @@ function App() {
     setState(flag);
   }
 
+
   return (
     <Router>
       <div id="app">
-        <div id="menu">
-          {
-            /* Show menu for loggedIn user */
-            (userState &&
-              <>
-                <img alt="logo" className="menu-logo"  src={logo} />
-                <LinkHref className="menu-item" href="/Users" text="Users" />
-                <LinkHref className="menu-item" href="/Calendar" text="Calender" />
-                <span  className="menu-item" href="/" onClick={logout} >Logout</span>
-              </>) ||
-            /* Show loggedIn/ Signup link for loggedOut user */
-            <>
-            <img alt="logo" className="menu-logo" src={logo} />
-            <LinkHref className="menu-item" href="/LoginSignup" text="SignIn / SignUp" />
-            </>
-          }
-        </div>
-      
+        {(userState && <SideBar logout={logout} />)}
+        {(!userState && <Redirect to="/LoginSignup"/>)}
+
         {/* Switch path for router */}
         <Switch>
           <Route exact path="/" >
@@ -64,6 +62,12 @@ function App() {
           <Route path="/LoginSignup">
             <LoginSignup onUserChange={handleUserChange} />
           </Route>
+          {/* <Route path="/SignUp">
+           <Signup  onUserChange={handleUserChange}/>
+          </Route>
+          <Route path="/Login" >
+           <Login onUserChange={handleUserChange}/>
+          </Route> */}
           <Route path="/Users">
             <Users />
           </Route>
@@ -73,7 +77,7 @@ function App() {
           <Route path="/resetPassword/:token">
             <ResetPassword />
           </Route>
-          <Route path="/msgPage" render={(props) =>  <MsgPage {...props}/> }/>
+          <Route path="/msgPage" render={(props) => <MsgPage {...props} />} />
           <Route path="/addUser">
             <AddUser />
           </Route>
@@ -85,5 +89,71 @@ function App() {
     </Router>
   );
 }
+//   return (
+//     <Router>
+//       <div id="app"> 
+
+
+
+
+//       <div id="menu">
+//           {
+//             /* Show menu for loggedIn user */
+//             (userState &&
+//               <>
+//                 <img alt="logo" className="menu-logo"  src={logo} />
+//                 <LinkHref className="menu-item" href="/Users" text="Users" />
+//                 <LinkHref className="menu-item" href="/Calendar" text="Calender" />
+//                 <span  className="menu-item" href="/" onClick={logout} >Logout</span>
+//               </>) ||
+//             /* Show loggedIn/ Signup link for loggedOut user */
+//             <>
+//             <img alt="logo" className="menu-logo" src={logo} />
+//             <LinkHref href="/LoginSignup" text="SignIn/ SignUp" />
+//             {/* <LinkHref className="menu-item" href="/Login" text="SignIn" />
+//             <LinkHref className="menu-item" href="/Signup" text="SignUp" /> */}
+//             </>
+//           }
+//         </div>
+
+
+//         {/* Switch path for router */}
+//         <Switch>
+//           <Route exact path="/" >
+//             <Home />
+//           </Route>
+//           <Route path="/Calendar">
+//             <Calendar />
+//           </Route>
+//            <Route path="/LoginSignup">
+//             <LoginSignup  onUserChange={handleUserChange} />
+//           </Route> 
+//           {/* <Route path="/SignUp">
+//            <Signup  onUserChange={handleUserChange}/>
+//           </Route>
+//           <Route path="/Login" >
+//            <Login onUserChange={handleUserChange}/>
+//           </Route> */}
+//           <Route path="/Users">
+//             <Users />
+//           </Route>
+//           <Route path="/forgotPassword">
+//             <ForgotPassword />
+//           </Route>
+//           <Route path="/resetPassword/:token">
+//             <ResetPassword />
+//           </Route>
+//           <Route path="/msgPage" render={(props) =>  <MsgPage {...props}/> }/>
+//           <Route path="/addUser">
+//             <AddUser />
+//           </Route>
+//           <Route path="/inviteUser/:token">
+//             <InviteUser onUserChange={handleUserChange} />
+//           </Route>
+//         </Switch>
+//       </div>
+//     </Router>
+//   );
+// }
 
 export default App;

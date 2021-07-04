@@ -1,70 +1,4 @@
-// .text{
-//     font-size: 0.75em;
-// }
-// @import "../../Views/colors.scss";
-// .menu{
-//     display: flex;
-//     flex-direction: row;
-//     flex-wrap: wrap;
-//     align-content: stretch;
-//     justify-content: space-around;
-//     padding-bottom: 0.5em;
-// }
-// .controller{
-//     background-color: $background;
-//     color: $head-background;
-//     border-width: 0.01em;
-//     font-size: 1.2em;
- 
-// }
-
-// .wrapperSign{
-//     display: flex;
-//     flex-direction: column;
-// }
-
-// #logo{
-//     padding-top: 2em;
-//     height: 6vw;
-// }
-
-// .box-container{
-//     flex-direction: column;
-// }
-
-// .box{
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: space-around;
-//     height: 100%;
-// }
-
-// .box-signup{
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: space-around;
-//     height: 80%;
-// }
-
-// .text-controller{
-//     margin-top: 60px;
-//     text-align: center;
-// }
-
-// .head-form-signup{
-//     font-size: 3em;
-//     padding-top: 0.2em;
-//     padding-bottom: 1em;
-//     position: absolute;
-//     font-weight: bold;
-//     top: 0;
-// }
-
-// .formWrapper{
-//    margin-top: 70px; 
-// }
-
-@import '../../Views/colors.scss';
+@import './colors.scss';
 $blue-background: $head-background;
 $black:#000000;
 $grey:#cccccc;
@@ -137,7 +71,7 @@ body {
 	}
 	.input_field {
 		position: relative;
-		margin-bottom: 20px;
+		margin-bottom: 0.5em;
         -webkit-animation: bounce 0.6s ease-out;
   	     animation: bounce 0.6s ease-out;
 		>span {
@@ -428,8 +362,10 @@ body {
 		padding-bottom: 20px;
 	}
 }
-.menu{
-    display: flex;
-    justify-content: space-evenly;
-    cursor: pointer;
+
+.form-text{
+    color: #000000;
+    margin-bottom: 10px;
+    text-align: left;
+    font-size: 1em;
 }
