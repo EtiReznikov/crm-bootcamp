@@ -75,7 +75,7 @@ function InviteUser(props) {
                         props.onUserChange(true);
                         /* TODO: replace with redirect */
                         // this.props.history.push('/');
-                        window.location.href = "http://localhost:3000";
+                        // window.location.href = "http://localhost:3000";
                         // window.location.href = "http://localhost:3000";
                     }
 

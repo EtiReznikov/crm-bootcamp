@@ -32,9 +32,12 @@ function LoginSingUp(props) {
   }, []);
 
   return (
+    <div className="login-warper">
+   
     <div className="form_wrapper">
-        {
-          (localStorage.getItem('user_token') && <Redirect to="/"></Redirect>) ||
+        
+    {
+           (localStorage.getItem('user_token') && <Redirect to="/"/>) ||
           (<div  className="menu">
             <div className={"controller" + (isLogin ? "selected-controller" : "")}
               onClick={showLoginBox.bind(this)}>
@@ -48,7 +51,6 @@ function LoginSingUp(props) {
               Signup
             </div>
           </div>)}
-     
       {/* <div className="box-container"> */}
       {
         (isLogin && <Login onUserChange={props.onUserChange}/>) ||
@@ -56,6 +58,7 @@ function LoginSingUp(props) {
       }
 
     {/* </div> */}
+    </div>
     </div>
   );
 }
