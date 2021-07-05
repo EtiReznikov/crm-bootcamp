@@ -88,32 +88,33 @@ function Login(props) {
             </div>
             {
               formState.errorStatus === 0
-                && <ErrorMsg text="Email or Password incorrect" />
+              && <ErrorMsg text="Email or Password incorrect" />
             }
             {
               formState.errorStatus === -1
-                && <ErrorMsg />
+              && <ErrorMsg />
             }
             {
               formState.errorStatus === 2
-                && <Redirect to="/" />
+              && <Redirect to="/" />
             }
-            { 
-            formState.errorStatus === 3
-            &&  <Redirect to={{
-              pathname: "/msgPage",
-              state: {
+            {
+              formState.errorStatus === 3
+              && <Redirect to={{
+                pathname: "/msgPage",
+                state: {
+                  icon: "fa fa-exclamation-circle",
                   headLine: "Something went wrong",
                   text_1: "please ",
                   link: "/LoginSignup",
                   aText: "click here",
                   text_2: " to try again.",
                   className: "msg-page-link"
-              }
-          }} />
+                }
+              }} />
             }
             <input className="button" type="submit" value="Submit" onClick={submitLogin} />
-            <LinkHref href="/ForgotPassword" text="Forgot my password" />
+            <LinkHref className="Login-forgot-pass" href="/ForgotPassword" text="Forgot my password" />
           </form>
         </div>
       </div>

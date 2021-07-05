@@ -68,9 +68,9 @@ function Signup(props) {
         })
         .catch(function (error) {
           setReqState(error.response.data.status);
-          
+
           console.log(error.response.data)
-           if (error.response.data.status === 1) {
+          if (error.response.data.status === 1) {
             setState({
               ...formState,
               emailValid: error.response.data.status
@@ -178,6 +178,7 @@ function Signup(props) {
               />
             </div>
             {
+              //*TODO: error message
               (formState.passwordValid === 0 && <ErrorMsg text="Password must contain at least 8 characters,1 letter and 1 number" />) ||
               (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
               (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
@@ -195,14 +196,11 @@ function Signup(props) {
               />
             </div>
             {
-              (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
+              (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Passwords do not match" />
             }
             {
               formState.passwordValid === -1 && formState.passwordMatchValid && <ErrorMsg />
             }
-            {/* {
-              (formState.AfterSubmitErrorStatus && <ErrorMsg text="Something went wrong" />)
-            } */}
             {
               reqState === 0
               && <Redirect to="/" />
@@ -213,6 +211,7 @@ function Signup(props) {
                 //*TODO redirect to signup
                 pathname: "/msgPage",
                 state: {
+                  icon: "fa fa-exclamation-circle",
                   headLine: "Something went wrong",
                   text_1: "please ",
                   link: "/LoginSignup",
