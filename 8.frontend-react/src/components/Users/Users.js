@@ -35,21 +35,18 @@ function Users(props) {
 
     useEffect(() => {
         (async () => {
-            await axios.post('http://crossfit.com:8005/getUsersList', {
+            await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
                 headers: { authentication: localStorage.getItem('user_token') }
             }).
                 then((response) => {
                     setData(response.data);
                 })
                 .catch(function (error) {
-                    if (error.response.data.message === 'token invalid') {
-                        localStorage.removeItem('user_token');
-                        setSuccessStatus(1);
-                    }
-                    else {
-                        setSuccessStatus(2);
-                    }
-
+                    console.log(error.response)
+                    // if (error.response.data.status === 10) {
+                    //     localStorage.removeItem('user_token');
+                    // }
+                    // setSuccessStatus(error.response.data.status);
                 });
         })();
     }, []);
@@ -74,14 +71,15 @@ function Users(props) {
                         //TODO add remove function
                         text={<i class="fa fa-user-times"></i>}
                     />
-                  
+
                 </div>
-                
+
                 <Table columns={columns} data={data} />
                 {addUser && <Redirect to="/addUser" />}
-                {successStatus === 1 && <Redirect to={{
+                {successStatus === 10 && <Redirect to={{
                     pathname: "/msgPage",
                     state: {
+                        icon: "fa fa-exclamation-circle",
                         headLine: "Something went wrong",
                         text_1: "please ",
                         link: "/LoginSignUp",
@@ -94,6 +92,7 @@ function Users(props) {
                 {successStatus === 2 && <Redirect to={{
                     pathname: "/msgPage",
                     state: {
+                        icon: "fa fa-exclamation-circle",
                         headLine: "Something went wrong",
                         text_1: "please ",
                         link: "/Users",

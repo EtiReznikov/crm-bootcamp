@@ -6,22 +6,10 @@
     margin: auto;
 }
 
-// #head-user-page{
-//     display: flex;
-// }
-
-
-// .add-user-btn{
-//     margin-right: 0;
-//     margin-top: 1%;
-//     width: 100px;
-//     font-size: 1.1em;
-// }
-
 #table-warper{
   
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;

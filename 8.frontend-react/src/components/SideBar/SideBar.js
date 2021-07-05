@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from 'react-router-dom'
-//import react pro sidebar components
+import React, { useState } from "react";
 import {
   ProSidebar,
   Menu,
@@ -12,19 +10,18 @@ import {
 import {
   BrowserRouter as Router,
   Link,
+  useLocation
 } from "react-router-dom";
-//import icons from react icons
 
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle, FiUsers } from "react-icons/fi";
 import { BiCalendar } from "react-icons/bi";
-
 
 import './SideBar.scss';
 
 
 
 function SideBar(props) {
-  const location = useLocation();
+  let location = useLocation();
   //create initial menuCollapse state using useState hook
   const [menuCollapse, setMenuCollapse] = useState(false);
 
