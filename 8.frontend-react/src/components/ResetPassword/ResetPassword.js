@@ -35,7 +35,7 @@ function ResetPassword(props) {
         })
         //passwords validation
         if (passwordValid !== 0 && passwordMatchValid === 0) {
-            axios.post('http://crossfit.com:8005/NewPassword', {
+            axios.post('http://crossfit.com:8005/Auth/NewPassword', {
                 password: formState.password,
                 conform: formState.confirm,
                 token: token

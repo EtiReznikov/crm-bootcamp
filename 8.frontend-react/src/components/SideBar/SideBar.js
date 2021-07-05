@@ -40,7 +40,8 @@ function SideBar(props) {
       <div id="header">
         <ProSidebar collapsed={menuCollapse}>
           <SidebarHeader>
-            //*TODO: changeLOGO
+           { //TODO: changeLOGO 
+           }
             <div className="logotext">
               <p>{menuCollapse ? "Logo" : "Big Logo"}</p>
             </div>

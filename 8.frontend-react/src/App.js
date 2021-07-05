@@ -60,7 +60,7 @@ function App() {
             <Calendar />
           </Route>
           <Route path="/LoginSignup">
-            <LoginSignup onUserChange={handleUserChange} />
+            <LoginSignup onUserChange={handleUserChange} isLogin={true} isRegister={false} />
           </Route>
           <Route path="/Users">
             <Users />
@@ -83,71 +83,5 @@ function App() {
     </Router>
   );
 }
-//   return (
-//     <Router>
-//       <div id="app"> 
-
-
-
-
-//       <div id="menu">
-//           {
-//             /* Show menu for loggedIn user */
-//             (userState &&
-//               <>
-//                 <img alt="logo" className="menu-logo"  src={logo} />
-//                 <LinkHref className="menu-item" href="/Users" text="Users" />
-//                 <LinkHref className="menu-item" href="/Calendar" text="Calender" />
-//                 <span  className="menu-item" href="/" onClick={logout} >Logout</span>
-//               </>) ||
-//             /* Show loggedIn/ Signup link for loggedOut user */
-//             <>
-//             <img alt="logo" className="menu-logo" src={logo} />
-//             <LinkHref href="/LoginSignup" text="SignIn/ SignUp" />
-//             {/* <LinkHref className="menu-item" href="/Login" text="SignIn" />
-//             <LinkHref className="menu-item" href="/Signup" text="SignUp" /> */}
-//             </>
-//           }
-//         </div>
-
-
-//         {/* Switch path for router */}
-//         <Switch>
-//           <Route exact path="/" >
-//             <Home />
-//           </Route>
-//           <Route path="/Calendar">
-//             <Calendar />
-//           </Route>
-//            <Route path="/LoginSignup">
-//             <LoginSignup  onUserChange={handleUserChange} />
-//           </Route> 
-//           {/* <Route path="/SignUp">
-//            <Signup  onUserChange={handleUserChange}/>
-//           </Route>
-//           <Route path="/Login" >
-//            <Login onUserChange={handleUserChange}/>
-//           </Route> */}
-//           <Route path="/Users">
-//             <Users />
-//           </Route>
-//           <Route path="/forgotPassword">
-//             <ForgotPassword />
-//           </Route>
-//           <Route path="/resetPassword/:token">
-//             <ResetPassword />
-//           </Route>
-//           <Route path="/msgPage" render={(props) =>  <MsgPage {...props}/> }/>
-//           <Route path="/addUser">
-//             <AddUser />
-//           </Route>
-//           <Route path="/inviteUser/:token">
-//             <InviteUser onUserChange={handleUserChange} />
-//           </Route>
-//         </Switch>
-//       </div>
-//     </Router>
-//   );
-// }
 
 export default App;
