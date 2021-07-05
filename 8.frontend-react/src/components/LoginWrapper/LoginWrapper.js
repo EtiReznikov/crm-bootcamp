@@ -12,8 +12,8 @@ import {
   Redirect
 } from "react-router-dom";
 function LoginSingUp(props) {
-  const [isLogin, setIsLogIn] = useState(true);
-  const [isRegister, setIsRegister] = useState(false);
+  const [isLogin, setIsLogIn] = useState(props.isLogin);
+  const [isRegister, setIsRegister] = useState(props.isRegister);
 
   const showLoginBox = () => {
     setIsLogIn(true);
@@ -24,21 +24,15 @@ function LoginSingUp(props) {
     setIsLogIn(false);
     setIsRegister(true);
   }
-  useEffect(() => {
-    if (localStorage.getItem('user_token')) {
-      setIsLogIn(false);
-      setIsRegister(false);
-    }
-  }, []);
 
   return (
     <div className="login-warper">
-   
-    <div className="form_wrapper">
-        
-    {
-           (localStorage.getItem('user_token') && <Redirect to="/"/>) ||
-          (<div  className="menu">
+
+      <div className="form_wrapper">
+
+        {
+          (localStorage.getItem('user_token') && <Redirect to="/" />) ||
+          (<div className="menu">
             <div className={"controller" + (isLogin ? "selected-controller" : "")}
               onClick={showLoginBox.bind(this)}>
               Login
@@ -51,14 +45,14 @@ function LoginSingUp(props) {
               Signup
             </div>
           </div>)}
-      {/* <div className="box-container"> */}
-      {
-        (isLogin && <Login onUserChange={props.onUserChange}/>) ||
-        (isRegister && <Signup onUserChange={props.onUserChange}/>)
-      }
+        {/* <div className="box-container"> */}
+        {
+          (isLogin && <Login onUserChange={props.onUserChange} />) ||
+          (isRegister && <Signup onUserChange={props.onUserChange} />)
+        }
 
-    {/* </div> */}
-    </div>
+        {/* </div> */}
+      </div>
     </div>
   );
 }

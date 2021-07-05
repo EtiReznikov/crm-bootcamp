@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import InputField from '../Input/Input'
-import LabelField from '../Label/Label'
-import Button from '../Button/Button';
+import React, { useState } from 'react';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import axios from 'axios';
-import Headline from '../Headline/Headline';
 import { emailValidation, phoneValidation, nameValidation, nameLengthValidation, phoneLengthValidation, passwordStrengthValidation, passwordMatchValidation } from '../../tools/validation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckSquare, faCoffee } from '@fortawesome/fontawesome-free-solid'
+import {
+  Redirect
+} from "react-router-dom";
 
 
 function Signup(props) {
@@ -29,8 +26,10 @@ function Signup(props) {
   }
   );
 
+  const [reqState, setReqState] = useState(-1);
+
   //On submit form
-  const submitRegister = () => {
+  const submitRegister = (e) => {
 
     const nameValid = nameLengthValidation(formState.name);
     const phoneValid = phoneLengthValidation(formState.phone);
@@ -60,30 +59,26 @@ function Signup(props) {
         confirm: formState.passwordConfirm,
       })
         .then(function (response) {
-          // setState({
-          //   ...formState,
-          //   emailValid: response.data.emailErrorStatus
-          // })
-          // If request went well- save user token to local storage and redirect to home page
-          // if (response.data.emailErrorStatus !== 3 && response.data.formValid) {
-          //   localStorage.setItem('user_token', response.data.token);
-          //   props.onUserChange(true);
-
-
-          //   /* TODO: replace with redirect */
-          //   // window.location.href = "http://localhost:3000";
-          // }
+          e.preventDefault();
+          console.log("siggup")
+          setReqState(response.data.status);
+          //If request went well- save user token to local storage and redirect to home page
+          localStorage.setItem('user_token', response.data.token);
+          props.onUserChange(true);
         })
         .catch(function (error) {
-          /*TODO: Redirect to error page */
-
-          // setState({
-          //   ...formState,
-          //   AfterSubmitErrorStatus: true
-          // })
-
+          setReqState(error.response.data.status);
+          
+          console.log(error.response.data)
+           if (error.response.data.status === 1) {
+            setState({
+              ...formState,
+              emailValid: error.response.data.status
+            })
+          }
         });
     }
+    e.preventDefault();
   }
   return (
 
@@ -114,11 +109,9 @@ function Signup(props) {
                 }} />
 
             </div>
-            {
-              (formState.nameValid === 1 && <ErrorMsg text="Name can only contain letters and spaces" />) ||
-              (formState.nameValid === 2 && <ErrorMsg text="Name must contain at least 2 letters" />) ||
-              formState.nameValid === 0 && <ErrorMsg />
-            }
+            {formState.nameValid === 1 && <ErrorMsg text="Name can only contain letters and spaces" />}
+            {(formState.nameValid === 2 && <ErrorMsg text="Name must contain at least 2 letters" />)}
+            {formState.nameValid === 0 && <ErrorMsg />}
             <div className="input_field">
               <span>
                 <i aria-hidden="true" className="fa fa-envelope"></i>
@@ -160,12 +153,12 @@ function Signup(props) {
               <span>
                 <i aria-hidden="true" className="fa fa-briefcase"></i>
               </span>
-              <input type="text" name="business" placeholder="Business Name"  onChange={e =>
-              setState({
-                ...formState,
-                businessName: e.target.value,
-              })}
-          />
+              <input type="text" name="business" placeholder="Business Name" onChange={e =>
+                setState({
+                  ...formState,
+                  businessName: e.target.value,
+                })}
+              />
             </div>
             {!formState.businessValid && <ErrorMsg text="Business Name is required" />}
             {formState.businessValid && <ErrorMsg />}
@@ -207,8 +200,27 @@ function Signup(props) {
             {
               formState.passwordValid === -1 && formState.passwordMatchValid && <ErrorMsg />
             }
-            {
+            {/* {
               (formState.AfterSubmitErrorStatus && <ErrorMsg text="Something went wrong" />)
+            } */}
+            {
+              reqState === 0
+              && <Redirect to="/" />
+            }
+            {
+              reqState === 3
+              && <Redirect to={{
+                //*TODO redirect to signup
+                pathname: "/msgPage",
+                state: {
+                  headLine: "Something went wrong",
+                  text_1: "please ",
+                  link: "/LoginSignup",
+                  aText: "click here",
+                  text_2: " to try again.",
+                  className: "msg-page-link"
+                }
+              }} />
             }
             <input className="button" type="submit" value="Submit" onClick={submitRegister} />
           </form>

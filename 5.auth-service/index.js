@@ -85,65 +85,6 @@ app.post('/home', function (req, res) {
   res.send('home');
 });
 
-/*
-Post request from signup page
-*/
-app.post('/CreateUser', function (req, res) {
-
-  const name = req.body.name;
-  const email = req.body.email;
-  const phone = req.body.phone;
-  const businessName = req.body.businessName;
-  const password = md5(req.body.password);
-  const confirm = md5(req.body.confirm);
-  let emailErrorStatus = true;
-
-  const formValid = validators.nameValidation(name) && validators.phoneValidation(phone) && validators.emailValidation(email) && validators.passwordValidation(password, confirm) && businessName.length > 0;
-  // form data invalid
-  if (!formValid) {
-    res.status(403).json({ formValid: formValid, message: 'Something is wrong with form data' })
-  }
-  else {
-    const sqlEmail = `SELECT user_id FROM users WHERE user_email='${email}'`;
-   
-    connection.query(sqlEmail, function (err, resultSelectEmail) {
-      if (err) res.status(500).json({ success: false,
-        message: 'server error'
-      });
-      
-      //res.status(500).json({ success: false, message: 'Failed to connect DB' });
-      //There is no user with such mail
-      if (resultSelectEmail.length === 0) {
-        // Insert business to DB
-        const sqlBusiness = `INSERT INTO gym (gym_name) VALUES ('${businessName}')`;
-        connection.query(sqlBusiness, function (err, businessResult) {
-          if (err) res.status(500).json({ success: false,
-            message: 'server error'
-          });
-          //res.status(500).json({ success: false, message: 'Failed to connect DB' });
-          const businessId = businessResult.insertId;
-          const permission_id = 0; //user is manager
-          const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id,  permission_id ) VALUES ('${name}', '${email}', '${phone}' , '${password}' ,'${businessId}', '${permission_id}')`;
-          // return
-          connection.query(sql, function (err, result) {
-            if (err) throw res.status(500).json({ success: false, message: 'Failed to connect DB' });
-            emailErrorStatus = 0;
-            const userId = result.insertId;
-            const token = jwt.sign({ userId: userId, userEmail: email, businessId: businessId, name: name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 });
-            res.status(200).json({ token, emailErrorStatus, formValid })
-          });
-        });
-      }
-      else {
-        //user exists
-        emailErrorStatus = 3;
-        res.status(409).json({ emailErrorStatus: emailErrorStatus, message: 'User exists' })
-      }
-    });
-  }
-});
-
-
 
 /*
 Post request from reset password page

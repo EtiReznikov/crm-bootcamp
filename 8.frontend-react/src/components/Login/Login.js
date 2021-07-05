@@ -36,24 +36,22 @@ function Login(props) {
         .then((response) => {
           setState({
             ...formState,
-            // errorValid: 0,
             errorStatus: response.data.status,
           })
           // If request went well- save user token to local storage and redirect to home page
           localStorage.setItem('user_token', response.data.token);
-          //props.onUserChange(true);
+          props.onUserChange(true);
 
         })
         .catch(function (error) {
-
           setState({
             ...formState,
-            // errorValid: 0,
             errorStatus: error.response.data.status
           })
         });
     }
     e.preventDefault();
+
   }
 
   return (
@@ -114,8 +112,7 @@ function Login(props) {
               }
           }} />
             }
-            <input className="button" type="submit" value="Submit" onClick={submitLogin
-              .bind(this)} />
+            <input className="button" type="submit" value="Submit" onClick={submitLogin} />
             <LinkHref href="/ForgotPassword" text="Forgot my password" />
           </form>
         </div>
