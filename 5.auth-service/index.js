@@ -13,6 +13,8 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
+
+
 // DB connection
 var connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -25,6 +27,10 @@ connection.connect(function (err) {
   //* TODO ask Yonatan
   if (err) throw(err);
 });
+
+
+const Auth= require('./Routes/Auth');
+app.use('/Auth', Auth);
 
 /*
 Middleware to verify that jwt is valid
@@ -137,35 +143,7 @@ app.post('/CreateUser', function (req, res) {
   }
 });
 
-/*
-Post request from login page
-*/
-app.post('/Login', function (req, res) {
-  const email = req.body.email;
-  const password = md5(req.body.password);
-  const sqlPassword = `SELECT user_id, user_password, user_name, gym_id FROM users WHERE user_email='${email}'`;
-  let status = -1;
-  connection.query(sqlPassword, function (err, resultSelectPassword) {
-    if (err) res.status(500).json({ success: false, message: 'server error' });
-    if (resultSelectPassword.length === 0) {
-      //The user not exist
-      status = 0;
-      res.status(409).json({ status: status, message: 'User not exists' })
-    }
-    else {
-      if (resultSelectPassword[0].user_password === password) {
-        const token = jwt.sign({ userId: resultSelectPassword[0].user_id, userEmail: email, businessId: resultSelectPassword[0].gym_id, name: resultSelectPassword[0].user_name }, process.env.ACCESS_TOKEN_SECRET);
-        status = 2; //log in
-        res.status(200).json({ token, status })
-      }
-      else {
-        //password incorrect
-        status = 0;
-        res.status(409).json({ status: 0, message: 'password incurrent' })
-      }
-    }
-  });
-});
+
 
 /*
 Post request from reset password page

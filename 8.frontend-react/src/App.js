@@ -48,7 +48,7 @@ function App() {
   return (
     <Router>
       <div id="app">
-        {(userState && <SideBar logout={logout} />)}
+        {(userState && <SideBar logout={logout} />)} 
         {(!userState && <Redirect to="/LoginSignup"/>)}
 
         {/* Switch path for router */}
@@ -62,12 +62,6 @@ function App() {
           <Route path="/LoginSignup">
             <LoginSignup onUserChange={handleUserChange} />
           </Route>
-          {/* <Route path="/SignUp">
-           <Signup  onUserChange={handleUserChange}/>
-          </Route>
-          <Route path="/Login" >
-           <Login onUserChange={handleUserChange}/>
-          </Route> */}
           <Route path="/Users">
             <Users />
           </Route>
