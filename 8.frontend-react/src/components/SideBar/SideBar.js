@@ -8,7 +8,6 @@ import {
   SidebarContent,
 } from "react-pro-sidebar";
 import {
-  BrowserRouter as Router,
   Link,
   useLocation
 } from "react-router-dom";

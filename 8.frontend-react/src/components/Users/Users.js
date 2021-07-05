@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '../Table/Table';
 import axios from 'axios';
 import Headline from '../Headline/Headline';
@@ -7,7 +7,6 @@ import Button from '../Button/Button';
 import './Users.scss';
 import {
     Redirect,
-    useParams,
 } from "react-router-dom";
 function Users(props) {
 
@@ -37,16 +36,16 @@ function Users(props) {
         (async () => {
             await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
                 headers: { authentication: localStorage.getItem('user_token') }
-            }).
-                then((response) => {
+            })
+                .then((response) => {
                     setData(response.data);
                 })
                 .catch(function (error) {
-                    console.log(error.response)
-                    // if (error.response.data.status === 10) {
-                    //     localStorage.removeItem('user_token');
-                    // }
-                    // setSuccessStatus(error.response.data.status);
+
+                    if (error.response.data.status === 10) {
+                        localStorage.removeItem('user_token');
+                    }
+                    setSuccessStatus(error.response.data.status);
                 });
         })();
     }, []);

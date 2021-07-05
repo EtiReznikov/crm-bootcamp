@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import InputField from '../Input/Input'
-import LabelField from '../Label/Label'
-import Button from '../Button/Button';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import axios from 'axios';
-import Headline from '../Headline/Headline';
 import Text from '../Text/Text';
 // import './InviteUser.scss'
 import '../../Views/Form.scss'
@@ -168,8 +164,7 @@ function InviteUser(props) {
                         }
 
                         <div className="input_field"> <span><i aria-hidden="true" className="fa fa-lock"></i></span>
-                            <input type="password" name="password" placeholder="Re-type Password" required
-                                placeholder="type your password again"
+                            <input type="password" name="password" placeholder="Re-type Password" 
                                 onChange={e =>
                                     setState({
                                         ...formState,
