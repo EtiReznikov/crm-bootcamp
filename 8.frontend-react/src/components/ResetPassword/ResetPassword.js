@@ -17,7 +17,7 @@ function ResetPassword(props) {
         passwordMatchValid: true,
         // successStatus: true,
     });
-    const [successStatus, setStatus] = useState(-1);
+    
 
     // token from url
     const { token } = useParams()

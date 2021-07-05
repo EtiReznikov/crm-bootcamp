@@ -3,8 +3,7 @@ import Headline from '../Headline/Headline';
 import Text from '../Text/Text';
 import LinkHref from '../Link/LinkHref';
 import './MsgPage.scss'
-import logo from '../../Views/Daco_6140061.png'
-// TODO: add middleware function
+
 
 function MsgPage(props) {
     console.log(props.location.state)

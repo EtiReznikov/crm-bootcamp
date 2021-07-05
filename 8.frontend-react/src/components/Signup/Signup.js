@@ -178,7 +178,6 @@ function Signup(props) {
               />
             </div>
             {
-              //*TODO: error message
               (formState.passwordValid === 0 && <ErrorMsg text="Password must contain at least 8 characters,1 letter and 1 number" />) ||
               (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
               (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
