@@ -84,7 +84,7 @@ function Signup(props) {
 
     <div className="form_container">
       <div className="title_container">
-        <h2>SignUp</h2>
+        {/* <h2>SignUp</h2> */}
       </div>
       <div className="row clearfix">
         <div className="">

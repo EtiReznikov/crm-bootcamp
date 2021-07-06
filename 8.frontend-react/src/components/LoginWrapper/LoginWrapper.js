@@ -30,13 +30,13 @@ function LoginSingUp(props) {
           (localStorage.getItem('user_token') && <Redirect to="/" />) ||
           (<div className="menu">
             <div className={"controller" + (isLogin ? "selected-controller" : "")}
-              onClick={showLoginBox.bind(this)}>
+              onClick={showLoginBox.bind(this)} active={isLogin}>
               Login
             </div>
 
             <div
-              className={"controller " + (isRegister ? "selected-controller" : "")}
-              onClick={showRegisterBox.bind(this)}>
+              className={"controller" + (isRegister ? "selected-controller" : "")}
+              onClick={showRegisterBox.bind(this)} active={isRegister}>
               Signup
             </div>
           </div>)}
