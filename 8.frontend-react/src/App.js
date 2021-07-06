@@ -13,9 +13,11 @@ import {
   Switch,
   Route,
   Redirect,
+  useLocation
 } from "react-router-dom";
+import { withRouter } from 'react-router';
 import LoginSignup from './components/LoginWrapper/LoginWrapper'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Calendar from './components/Calendar/Calendar';
 
 
@@ -26,11 +28,20 @@ function App(props) {
   const logout = () => {
     localStorage.removeItem('user_token');
     handleUserChange(false)
+    window.location='/LoginSignup'
   };
   //update the user when child is updating the local  storage
   const handleUserChange = (flag) => {
     setState(flag);
   }
+
+  useEffect((props) => {
+    console.log("test1");
+    if (!userState && window.location.pathname !== '/resetPassword' && window.location.pathname !== '/LoginSignup' &&  window.location.pathname !== '/forgotPassword'){
+      console.log("test2");
+      window.location='/LoginSignup'
+    }
+  }, []);
 
 
   return (
@@ -38,11 +49,7 @@ function App(props) {
       <div id="app">
         {//* TODO redirect to home page */
         }
-        {(userState && <SideBar logout={logout} />) 
-        //  ((window.location.pathname === '/resetPassword/:token' || window.location.pathname === '/LoginSignUp' || window.location.pathname === '/forgotPassword') ||
-        //   (!userState && <Redirect to="/LoginSignup" />))
-        }
-        {/* {((!userState) && (window.location.pathname !== '/resetPassword/:token' || window.location.pathname !== '/LoginSignUp' || window.location.pathname !== '/forgotPassword')) && <Redirect to="/LoginSignup" />} */}
+        {(userState && <SideBar logout={logout} />)}
 
 
 
