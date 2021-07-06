@@ -57,7 +57,7 @@ function Login(props) {
   return (
     <div className="form_container">
       <div className="title_container">
-        <h2>Login</h2>
+        {/* <h2>Login</h2> */}
       </div>
       <div className="row clearfix">
         <div className="">

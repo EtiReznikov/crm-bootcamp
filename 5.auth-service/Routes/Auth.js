@@ -26,6 +26,7 @@ Post request from signup page
 */
 
 router.post('/CreateUser', function (req, res) {
+  //* TODO async await
   const name = req.body.name;
   const email = req.body.email;
   const phone = req.body.phone;
