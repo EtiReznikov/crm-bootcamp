@@ -2,13 +2,10 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
-import Text from '../Text/Text';
-import { emailValidation } from '../../tools/validation';
+
 import '../../Views/Form.scss';
-import { phoneValidation, nameValidation } from '../../tools/validation';
-import {
-    Redirect
-} from "react-router-dom";
+
+
 import './ConfirmModal.scss'
 function ConfirmModal(props) {
 
