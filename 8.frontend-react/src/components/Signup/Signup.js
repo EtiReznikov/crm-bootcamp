@@ -64,6 +64,7 @@ function Signup(props) {
           setReqState(response.data.status);
           //If request went well- save user token to local storage and redirect to home page
           localStorage.setItem('user_token', response.data.token);
+          localStorage.setItem('business_id', response.data.businessId);
           props.onUserChange(true);
         })
         .catch(function (error) {

@@ -12,9 +12,10 @@ import {
   useLocation
 } from "react-router-dom";
 
-import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle, FiUsers } from "react-icons/fi";
+import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 import { BiCalendar } from "react-icons/bi";
-
+import { FaUserCog } from "react-icons/fa";
+import { CgGym } from "react-icons/cg"
 import './SideBar.scss';
 
 
@@ -55,7 +56,11 @@ function SideBar(props) {
                 Home
                 <Link to="/" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/Users'} icon={<FiUsers />}>
+              <MenuItem active={location.pathname === '/Clients'} icon={<CgGym />}>
+                Clients
+                <Link to="/Clients" />
+              </MenuItem>
+              <MenuItem active={location.pathname === '/Users'} icon={<FaUserCog />}>
                 Users
                 <Link to="/Users" />
               </MenuItem>

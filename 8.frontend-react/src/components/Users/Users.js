@@ -44,6 +44,7 @@ function Users(props) {
 
                     if (error.response.data.status === 10) {
                         localStorage.removeItem('user_token');
+                        localStorage.removeItem('business_id');
                     }
                     setSuccessStatus(error.response.data.status);
                 });

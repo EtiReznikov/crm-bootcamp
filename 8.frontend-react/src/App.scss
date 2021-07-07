@@ -26,3 +26,8 @@ a:visited{
 button{
     cursor: pointer;
 }
+
+.modal {
+    position: absolute;
+    inset: inherit;
+}
