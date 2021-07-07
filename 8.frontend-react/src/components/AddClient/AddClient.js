@@ -5,6 +5,7 @@ import ErrorMsg from '../ErrorMsg/ErrorMsg';
 import Text from '../Text/Text';
 import { emailValidation } from '../../tools/validation';
 import '../../Views/Form.scss';
+import './AddClient.scss'
 import { phoneValidation, nameValidation } from '../../tools/validation';
 import {
     Redirect
@@ -17,24 +18,37 @@ function AddClient(props) {
         phoneValid: 0,
     }
     );
+    const [errorMsg, setErrorMsg] = useState(false);
 
     /* when add user button is submitted*/
     const AddClient = (e) => {
+        setErrorMsg(false);
         axios.post('http://localhost:991/clients/addClient/', {
             name: formState.name,
             phone: formState.phone,
-            business_id: 10,
+            business_id: localStorage.getItem('business_id'),
         }).then(function (response) {
-            console.log(response)
+            console.log(typeof response.data)
+            if (response.data === true) {
+                props.closeModal();
+            }
+            else {
+                setErrorMsg(true);
+            }
         })
             .catch(function (error) {
                 console.log(error)
             });
-            e.preventDefault();
+        e.preventDefault();
     }
 
     return (
         <div className="form_wrapper">
+
+            <button class="exit" onClick={props.closeModal} >
+                <i className="fa fa-window-close"></i>
+            </button>
+
             <div className="form_container">
                 <div className="title_container">
                     <h2>Add New Client</h2>
@@ -51,7 +65,8 @@ function AddClient(props) {
                             setState({
                                 ...formState,
                                 name: e.target.value,
-                            })}
+                            })
+                        }
                         onKeyUp={e => {
                             setState({
                                 ...formState, nameValid: nameValidation(e.target.value)
@@ -82,11 +97,16 @@ function AddClient(props) {
                             </div>
                             {
                                 (formState.phoneValid === 0 && <ErrorMsg />) ||
-                                (formState.phoneValid === 1 && <ErrorMsg text="Phone number should contain only numbers" />) ||
+                                (formState.phoneValid === 1 && <ErrorMsg text="Phone number can only contain digits" />) ||
                                 (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />)
                             }
-                            <input className="button" type="submit" value="Submit" onClick={AddClient} />
+                            <input className="button" type="submit" value="Submit" onClick={
+                                AddClient
+                            } />
+                            {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
+                            {!errorMsg && <ErrorMsg />}
                         </form>
+
                     </div>
                 </div>
             </div>

@@ -59,8 +59,7 @@ function Signup(props) {
         confirm: formState.passwordConfirm,
       })
         .then(function (response) {
-          e.preventDefault();
-          console.log("siggup")
+          // e.preventDefault();
           setReqState(response.data.status);
           //If request went well- save user token to local storage and redirect to home page
           localStorage.setItem('user_token', response.data.token);
@@ -69,8 +68,6 @@ function Signup(props) {
         })
         .catch(function (error) {
           setReqState(error.response.data.status);
-
-          console.log(error.response.data)
           if (error.response.data.status === 1) {
             setState({
               ...formState,
@@ -147,7 +144,7 @@ function Signup(props) {
             </div>
             {
               (formState.phoneValid === 0 && <ErrorMsg text="" />) ||
-              (formState.phoneValid === 1 && <ErrorMsg text="Phone number should contain only numbers" />) ||
+              (formState.phoneValid === 1 && <ErrorMsg text="Phone number can only contain digits" />) ||
               (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />)
             }
             <div className="input_field">

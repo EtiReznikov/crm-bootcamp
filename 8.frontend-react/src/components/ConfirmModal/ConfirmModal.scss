@@ -1,0 +1,34 @@
+.confirm-buttons-warper{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.confirm-btn{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin:  auto;
+  
+}
+
+.btn-warper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+#yes-btn, #no-btn{
+    background: none;
+    font-size: 90px;
+}
+
+#yes-btn{
+    color: #5cdb5c;
+}
+
+#no-btn{
+    color: #ff0021;
+}
