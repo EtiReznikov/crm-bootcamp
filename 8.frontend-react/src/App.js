@@ -7,15 +7,13 @@ import MsgPage from './components/MsgPage/MsgPage';
 import AddUser from './components/AddUser/AddUser';
 import InviteUser from './components/InviteUser/InviteUser';
 import SideBar from './components/SideBar/SideBar';
+import Clients from './components/Clients/Clients';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
-  useLocation
 } from "react-router-dom";
-import { withRouter } from 'react-router';
 import LoginSignup from './components/LoginWrapper/LoginWrapper'
 import { useState, useEffect } from 'react';
 import Calendar from './components/Calendar/Calendar';
@@ -27,6 +25,7 @@ function App(props) {
   //logout the user
   const logout = () => {
     localStorage.removeItem('user_token');
+    localStorage.removeItem('business_id');
     handleUserChange(false)
     window.location='/LoginSignup'
   };
@@ -36,23 +35,18 @@ function App(props) {
   }
 
   useEffect((props) => {
-    console.log("test1");
-    if (!userState && window.location.pathname !== '/resetPassword' && window.location.pathname !== '/LoginSignup' &&  window.location.pathname !== '/forgotPassword'){
-      console.log("test2");
-      window.location='/LoginSignup'
+    const pathArray= window.location.pathname.split('/');
+    const path= pathArray[1];
+    if (!userState && (path !== 'ForgotPassword' && path !== 'resetPassword' && path !== 'LoginSignup')){
+      window.location='/LoginSignup';
     }
-  }, []);
+  });
 
 
   return (
     <Router>
       <div id="app">
-        {//* TODO redirect to home page */
-        }
         {(userState && <SideBar logout={logout} />)}
-
-
-
         {/* Switch path for router */}
         <Switch>
           <Route exact path="/" >
@@ -79,6 +73,9 @@ function App(props) {
           </Route>
           <Route path="/inviteUser/:token">
             <InviteUser onUserChange={handleUserChange} />
+          </Route>
+          <Route path="/Clients">
+            <Clients />
           </Route>
         </Switch>
       </div>

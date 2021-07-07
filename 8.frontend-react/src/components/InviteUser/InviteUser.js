@@ -27,14 +27,12 @@ function InviteUser(props) {
     }
     );
 
-
-    // const [IsLoggedIn , setIsLoggedIn] = useState( removeItem  ());
     const { token } = useParams()
 
     useEffect((props) => {
         localStorage.removeItem('user_token');
-        // window.location.href = "http://localhost:3000";
-        // props.onUserChange(false);
+        localStorage.removeItem('business_id');
+
     }, []);
 
 

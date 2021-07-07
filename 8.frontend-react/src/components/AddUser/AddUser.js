@@ -45,6 +45,7 @@ function AddUser(props) {
                     //Middle ware ware fails
                     if (error.response.data.status === 10) {
                         localStorage.removeItem('user_token');
+                        localStorage.removeItem('business_id');
                     }
                 });
         }
