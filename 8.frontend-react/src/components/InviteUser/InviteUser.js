@@ -132,7 +132,7 @@ function InviteUser(props) {
 
                         </div>
                         {
-                            (formState.phoneValid === 1 && <ErrorMsg text="Phone number should contain only numbers" />) ||
+                            (formState.phoneValid === 1 && <ErrorMsg text="Phone number can only contain digits" />) ||
                             (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />) ||
                             (formState.phoneValid === 0 && <ErrorMsg />)
                         }

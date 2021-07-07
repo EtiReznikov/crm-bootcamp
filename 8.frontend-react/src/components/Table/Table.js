@@ -2,7 +2,7 @@
 import React from "react";
 import { useTable } from "react-table";
 import './Table.scss'
-export default function Table({ columns, data }) {
+export default function Table({ columns, data , removeClient}) {
 
   const {
     getTableProps,
@@ -15,14 +15,25 @@ export default function Table({ columns, data }) {
     data
   });
 
+  const onRowClick = (state, rowInfo, column, instance) => {
+    return {
+        onClick: e => {
+            console.log('A Td Element was clicked!')
+            console.log('it produced this event:', e)
+            console.log('It was in this column:', column)
+            console.log('It was in this row:', rowInfo)
+            console.log('It was in this table instance:', instance)
+        }
+    }
+}
 
   return (
-    <table {...getTableProps()}>
+    <table {...getTableProps()} >
       <thead>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <th id={column.render("Header")} {...column.getHeaderProps()}>{column.render("Header")}</th>
             ))}
           </tr>
         ))}
@@ -33,7 +44,10 @@ export default function Table({ columns, data }) {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map(cell => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                return <td {...cell.getCellProps()} 
+                
+                >
+                  {cell.render("Cell")}</td>;
               })}
             </tr>
           );

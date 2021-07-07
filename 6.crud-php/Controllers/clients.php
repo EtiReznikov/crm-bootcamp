@@ -26,13 +26,23 @@ class clients extends controller
         $name = $this->data->name;
         $phone= $this->data->phone;
         $addClient = $this->model->addNewClient($gym_id, $name, $phone);
-        // $this->response["clients"] = $clients;
-        // return $clients;
         if ($addClient){
             return true;
         }
         else{
             throw new Exception('DB error');
         }
+    }
+
+    public function removeClient(){
+        $client_id=$this->data->clientId;
+        $removeClient = $this->model->removeClientById($client_id);
+        return $removeClient;
+        // if ($removeClient){
+        //     return true;
+        // }
+        // else{
+        //     throw new Exception('DB error');
+        // }
     }
 }
