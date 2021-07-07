@@ -16,8 +16,15 @@ function Clients(props) {
 
     const columns = useMemo(() => [
         {
-            Header: 'Name',
-            accessor: "client_name"
+            Header:
+                <div id="name-warper">
+                    <span id="name-head">Name</span>
+                    <div id="sort-name-warper">
+                        <button class="sort-btn" ><i class="fa fa-sort-up"></i></button>
+                        <button class="sort-btn"><i class="fa fa-sort-down"></i></button>
+                    </div>
+                </div>,
+            accessor: "client_name",
         },
         {
             Header: 'Phone',
@@ -25,7 +32,6 @@ function Clients(props) {
         },
         {
             Header: 'Update',
-
             width: '1em',
             Cell: ({ row }) => (
                 <div id="row-button-warper">
@@ -60,20 +66,7 @@ function Clients(props) {
 
 
 
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-        },
-    };
-
-    function removeClient(e, row) {
-        console.log("delete");
-    }
+ 
 
     function updateClient(e, row) {
         console.log(row.original)
@@ -81,6 +74,7 @@ function Clients(props) {
 
     useEffect(() => {
         (async () => {
+            console.log("use")
             await axios.post('http://localhost:991/clients/getClients/', {
                 business_id: localStorage.getItem('business_id'),
             })
@@ -91,8 +85,31 @@ function Clients(props) {
 
                 });
         })();
-    }, [data]);
+    }, []);
 
+    const sortByNameDesc = (isDesc) =>{
+        axios.post('http://localhost:991/clients/sortByName/', {
+            isDesc: isDesc,
+            business_id: localStorage.getItem('business_id'),
+        }).then(function (response) {
+            console.log(response.data)
+            if (response.data === true) {
+                // console.log()
+                // closeModalRemoveUser();
+            }
+            else {
+                // // openModalRemoveUser();
+                // //TODO: handle error
+                // console.log("error")
+                // // setErrorMsg(true);
+            }
+        })
+
+            .catch(function (error) {
+                console.log(error)
+            });
+    }
+   //TODO ask Yonatan^
     const DeleteClient = () => {
         console.log(row);
 
@@ -105,7 +122,10 @@ function Clients(props) {
                 closeModalRemoveUser();
             }
             else {
-                setErrorMsg(true);
+                // openModalRemoveUser();
+                //TODO: handle error
+                console.log("error")
+                // setErrorMsg(true);
             }
         })
 
@@ -133,7 +153,6 @@ function Clients(props) {
             <Modal
                 isOpen={modalIsOpenAddUser}
                 onRequestClose={closeModalAddUser}
-                // appElement={}
                 contentLabel="Add Client Modal"
                 className="modal"
             >
@@ -145,8 +164,7 @@ function Clients(props) {
                 contentLabel="Remove Client Modal"
                 className="modal"
             >
-                <ConfirmModal deleteUser={removeClient} text={`Are you sure you want to delete ${row.client_name}?`}
-                    onConfirm={DeleteClient} onDismiss={closeModalRemoveUser} />
+                <ConfirmModal onConfirm={DeleteClient} onDismiss={closeModalRemoveUser} text={`Are you sure you want to delete ${row.client_name}?`} />
             </Modal>
         </div>
     )

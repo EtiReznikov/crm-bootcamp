@@ -1,7 +1,9 @@
 
 import React from "react";
 import { useTable } from "react-table";
+import TableScrollbar from 'react-table-scrollbar';
 import './Table.scss'
+import * as Scroll from 'react-scroll';
 export default function Table({ columns, data , removeClient}) {
 
   const {
@@ -28,6 +30,7 @@ export default function Table({ columns, data , removeClient}) {
 }
 
   return (
+    <TableScrollbar  rows={30}>
     <table {...getTableProps()} >
       <thead>
         {headerGroups.map(headerGroup => (
@@ -54,5 +57,6 @@ export default function Table({ columns, data , removeClient}) {
         })}
       </tbody>
     </table>
+    </TableScrollbar>
   );
 }
