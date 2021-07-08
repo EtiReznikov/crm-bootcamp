@@ -41,6 +41,8 @@ function Login(props) {
           // If request went well- save user token to local storage and redirect to home page
           localStorage.setItem('user_token', response.data.token);
           localStorage.setItem('business_id', response.data.businessId);
+          console.log(response.data)
+          localStorage.setItem('user_name', response.data.name);
           props.onUserChange(true);
 
         })

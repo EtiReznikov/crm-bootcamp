@@ -21,7 +21,7 @@ function LoginSingUp(props) {
   }
 
   return (
-    <div className="login-warper">
+    <div className="login-wrapper">
 
       <div className="form_wrapper">
 

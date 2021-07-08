@@ -22,10 +22,10 @@ class clients extends controller
 
     public function addClient()
     {      
-        $gym_id = $this->data->business_id;
+        $gymId = $this->data->business_id;
         $name = $this->data->name;
         $phone= $this->data->phone;
-        $addClient = $this->model->addNewClient($gym_id, $name, $phone);
+        $addClient = $this->model->addNewClient($gymId, $name, $phone);
         if ($addClient){
             return true;
         }
@@ -34,15 +34,33 @@ class clients extends controller
         }
     }
 
+    public function editClientData(){
+        $clientId = $this->data->clientId;
+        $clientName = $this->data->clientName;
+        $clientPhone= $this->data->clientPhone;
+       
+        
+      
+        $editClient = $this->model->editClient($clientId, $clientName, $clientPhone);
+        if ($editClient){
+            return true;
+        }
+        else{
+            throw new Exception('DB error');
+        }
+         //*TODO add validation
+    }
+
     public function removeClient(){
-        $client_id=$this->data->clientId;
-        $removeClient = $this->model->removeClientById($client_id);
+        $clientId=$this->data->clientId;
+        $removeClient = $this->model->removeClientById($clientId);
         return $removeClient;
-        // if ($removeClient){
-        //     return true;
-        // }
-        // else{
-        //     throw new Exception('DB error');
-        // }
+        //*TODO add validation
+        if ($removeClient){
+            return true;
+        }
+        else{
+            throw new Exception('DB error');
+        }
     }
 }

@@ -2,15 +2,11 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import ErrorMsg from '../ErrorMsg/ErrorMsg';
-import Text from '../Text/Text';
-import { emailValidation } from '../../tools/validation';
 import '../../Views/Form.scss';
 import './AddClient.scss'
-import { phoneValidation, nameValidation } from '../../tools/validation';
-import {
-    Redirect
-} from "react-router-dom";
+import { phoneValidation, nameValidation, phoneLengthValidation, nameLengthValidation } from '../../tools/validation';
 function AddClient(props) {
+    console.log(props);
     const [formState, setState] = useState({
         name: "",
         phone: "",
@@ -22,23 +18,34 @@ function AddClient(props) {
 
     /* when add user button is submitted*/
     const AddClient = (e) => {
-        setErrorMsg(false);
-        axios.post('http://localhost:991/clients/addClient/', {
-            name: formState.name,
-            phone: formState.phone,
-            business_id: localStorage.getItem('business_id'),
-        }).then(function (response) {
-            console.log(typeof response.data)
-            if (response.data === true) {
-                props.closeModal();
-            }
-            else {
-                setErrorMsg(true);
-            }
+
+        const nameValid = nameLengthValidation(formState.name);
+        const phoneValid = phoneLengthValidation(formState.phone);
+        const valid = (nameValid === 0) && (phoneValid === 0);
+        setState({
+            ...formState,
+            nameValid: nameValid,
+            phoneValid: phoneValid
         })
-            .catch(function (error) {
-                console.log(error)
-            });
+        setErrorMsg(false);
+        if (valid) {
+            axios.post('http://localhost:991/clients/addClient/', {
+                name: formState.name,
+                phone: formState.phone,
+                business_id: localStorage.getItem('business_id'),
+            }).then(function (response) {
+                if (response.data === true) {
+                    props.closeModal();
+                    props.changeDataState();
+                }
+                else {
+                    setErrorMsg(true);
+                }
+            })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        }
         e.preventDefault();
     }
 

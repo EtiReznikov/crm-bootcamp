@@ -35,7 +35,12 @@ function Users(props) {
     useEffect(() => {
         (async () => {
             await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
-                headers: { authentication: localStorage.getItem('user_token') }
+                headers: {
+                    authentication: {
+                        token: localStorage.getItem('user_token'),
+                        business_id: localStorage.getItem('business_id')
+                    }
+                }
             })
                 .then((response) => {
                     setData(response.data);
@@ -56,8 +61,8 @@ function Users(props) {
 
             <Headline id="user-page-header" text="Users" />
 
-            <div id="table-warper">
-                <div id="button-warper">
+            <div id="table-wrapper">
+                <div id="button-wrapper">
                     <Button
                         className="add-user-btn"
                         onClick={() => {

@@ -13,10 +13,13 @@ import {
 } from "react-router-dom";
 
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
-import { BiCalendar } from "react-icons/bi";
+import { BiCalendar, BiRun } from "react-icons/bi";
 import { FaUserCog } from "react-icons/fa";
-import { CgGym } from "react-icons/cg"
+import { CgGym } from "react-icons/cg";
+import {AiOutlineClockCircle} from "react-icons/ai";
 import './SideBar.scss';
+
+import logo from '../../Views/Daco_6140061.png'
 
 
 
@@ -37,10 +40,12 @@ function SideBar(props) {
       <div id="header">
         <ProSidebar collapsed={menuCollapse}>
           <SidebarHeader>
-           { //TODO: changeLOGO 
-           }
+            { //TODO: changeLOGO 
+            }
             <div className="logotext">
-              <p>{menuCollapse ? "Logo" : "Big Logo"}</p>
+              <p>{menuCollapse ?
+                <img id="logo" src={logo} alt="logo" /> :
+                `Hello ${localStorage.getItem('user_name')}`}</p>
             </div>
             <div className="closemenu" onClick={menuIconClick}>
               {menuCollapse ? (
@@ -56,7 +61,7 @@ function SideBar(props) {
                 Home
                 <Link to="/" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/Clients'} icon={<CgGym />}>
+              <MenuItem active={location.pathname === '/Clients'} icon={<BiRun />}>
                 Clients
                 <Link to="/Clients" />
               </MenuItem>
@@ -67,6 +72,10 @@ function SideBar(props) {
               <MenuItem active={location.pathname === '/Calendar'} icon={<BiCalendar />}>
                 Calendar
                 <Link to="/Calendar" />
+              </MenuItem>
+              <MenuItem active={location.pathname === '/Classes'} icon={<AiOutlineClockCircle />}>
+              Classes
+              <Link to="/Classes" />
               </MenuItem>
             </Menu>
           </SidebarContent>

@@ -36,6 +36,7 @@ function AddUser(props) {
                     ...formState,
                     successStatus: response.data.status
                 })
+                props.changeDataState();
             })
                 .catch(function (error) {
                     setState({
@@ -49,6 +50,7 @@ function AddUser(props) {
                     }
                 });
         }
+       
         e.preventDefault();
     }
     return (
