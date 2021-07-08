@@ -9,6 +9,7 @@ class Model
     public function __construct()
     {
         $this->initDB();
+
     }
 
     public function initDB()
@@ -19,7 +20,7 @@ class Model
     }
 
     public function getDB()
-    {
+    {   
         return self::$db_instance;
     }
 }

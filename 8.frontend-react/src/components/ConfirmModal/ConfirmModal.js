@@ -1,7 +1,5 @@
+import React from 'react';
 
-import axios from 'axios';
-import React, { useState } from 'react';
-import ErrorMsg from '../ErrorMsg/ErrorMsg';
 
 import '../../Views/Form.scss';
 
@@ -16,14 +14,14 @@ function ConfirmModal(props) {
                 <div className="title_container">
                     <h2>{props.text}</h2>
                 </div>
-                <div class="confirm-buttons-warper">
-                    <div className="btn-warper" onClick={props.onDismiss}>
+                <div class="confirm-buttons-wrapper">
+                    <div className="btn-wrapper" onClick={props.onDismiss}>
                         <button className="confirm-btn" id="no-btn" >
                             <i className="fa fa-times"></i>
                         </button>
                         <span className="btn-txt">No</span>
                     </div>
-                    <div className="btn-warper" onClick= {props.onConfirm}>
+                    <div className="btn-wrapper" onClick= {props.onConfirm}>
                         <button class="confirm-btn" id="yes-btn">
                             <i className="fa fa-check"></i>
                         </button>

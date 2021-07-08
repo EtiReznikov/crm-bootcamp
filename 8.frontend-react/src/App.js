@@ -8,6 +8,7 @@ import AddUser from './components/AddUser/AddUser';
 import InviteUser from './components/InviteUser/InviteUser';
 import SideBar from './components/SideBar/SideBar';
 import Clients from './components/Clients/Clients';
+import Classes from './components/Classes/Classes';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
   BrowserRouter as Router,
@@ -76,6 +77,9 @@ function App(props) {
           </Route>
           <Route path="/Clients">
             <Clients />
+          </Route>
+          <Route path="/Classes">
+            <Classes />
           </Route>
         </Switch>
       </div>

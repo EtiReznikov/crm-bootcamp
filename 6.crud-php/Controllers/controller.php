@@ -18,6 +18,8 @@ class controller
         $json = file_get_contents('php://input');
         $this->data = json_decode($json);
     }
+
+    
 }
 
 

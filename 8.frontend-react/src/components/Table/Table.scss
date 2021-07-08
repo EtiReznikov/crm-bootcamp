@@ -53,3 +53,51 @@
 #Update{
 width : 10em;
 }
+
+.pagination {
+    display: flex;
+    width: 35%;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+  .table-navigate{
+    background: none;
+    color: #5a9beb;
+    font-size: 30px;
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  .input-page{
+    width: 30px;
+    border: none;
+    border-radius: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .select-page{
+    border: none;
+    border-radius: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  #sort-name-wrapper{
+    display: flex;
+    flex-direction: column;
+   
+}
+
+.sort-btn{
+    padding: 0;
+    margin: 0;
+    margin-right: 10px;
+}
+
+#sort-icon{
+  margin-left: 10px;
+}
+

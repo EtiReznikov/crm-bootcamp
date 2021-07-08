@@ -69,6 +69,7 @@ body {
 		width: 50%;
 		float: left;
 	}
+
 	.input_field {
 		position: relative;
 		margin-bottom: 0.5em;
@@ -95,7 +96,7 @@ body {
 			}
 		}
 	}
-	input {
+	input , textarea{
     &[type="text"], &[type="email"], &[type="password"] {
       width: 100%;
       padding: 8px 10px 9px 35px;
@@ -144,12 +145,12 @@ body {
     &[type="checkbox"], &[type="radio"] {
       border: 0;
       clip: rect(0 0 0 0);
-      height: 1px;
-      margin: -1px;
+      // height: 1px;
+      // margin: -1px;
       overflow: hidden;
       padding: 0;
-      position: absolute;
-      width: 1px;
+      // position: absolute;
+      // width: 1px;
     }
   }
 }
@@ -191,7 +192,7 @@ body {
           display: none;
         }
     }
-    input {
+    input, textarea {
     &:hover + label:before {
       border-color: $black;
     }
@@ -229,7 +230,7 @@ body {
       transition: all 0.2s ease;
     }
   }
-  input {
+  input, textarea{
     &:hover + label:before {
       border-color: $black;
     }
@@ -368,4 +369,9 @@ body {
     margin-bottom: 10px;
     text-align: left;
     font-size: 1em;
+}
+
+textarea{
+  font: 400 13.3333px Arial;
+  height: 10em;
 }
