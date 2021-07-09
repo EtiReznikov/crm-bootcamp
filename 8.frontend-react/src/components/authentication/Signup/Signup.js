@@ -85,8 +85,7 @@ function Signup(props) {
       <div className="title_container">
         {/* <h2>SignUp</h2> */}
       </div>
-      <div className="row clearfix">
-        <div className="">
+  
           <form>
             <div className="input_field" >
               <span>
@@ -221,8 +220,7 @@ function Signup(props) {
             }
             <input className="button" type="submit" value="Submit" onClick={submitRegister} />
           </form>
-        </div>
-      </div>
+      
     </div>
 
   );

@@ -39,7 +39,7 @@ function ForgotPassword(props) {
         <div className="title_container">
           <h2>Forgot my password</h2>
         </div>
-        <div className="row clearfix">
+       
           <div className="">
             <form>
               <div className="input_field"> <span><i aria-hidden="true" className="fa fa-envelope"></i></span>
@@ -60,7 +60,7 @@ function ForgotPassword(props) {
               <LinkHref className="info-link-forgotPass" href="/loginSignup" text="return to login page" />
             </form>
           </div>
-        </div>
+        
         {
           (formState.errorStatus === 0  && <Redirect to={{
             pathname: "/msgPage",
@@ -77,7 +77,7 @@ function ForgotPassword(props) {
               icon: "fa fa-exclamation-circle",
               headLine: "Something went wrong",
               text_1: "please ",
-              link: "/ForgotPassword",
+              link: "/forgotPassword",
               aText: "click here",
               text_2: " to try again.",
               className: "msg-page-link"

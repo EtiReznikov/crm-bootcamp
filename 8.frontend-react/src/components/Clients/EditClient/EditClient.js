@@ -80,7 +80,7 @@ function EditClient(props) {
                     {nameValid === 1 && <ErrorMsg text="Name can only contain letters and spaces" />}
                     {nameValid === 2 && <ErrorMsg text="Name must contain at least 2 letters" />}
                     {nameValid === 0 && <ErrorMsg />}
-                    {/* <div className="row clearfix"> */}
+                   
                     <div className="input_field">
                         <span>
                             <i aria-hidden="true" className="fa fa-phone">

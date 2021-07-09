@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
-import Text from '../../Text/Text';
+import Text from '../../SubComponents/Text/Text';
 import { emailValidation } from '../../../tools/validation';
 import '../../../Views/Form.scss'
 import {
@@ -60,8 +60,7 @@ function AddUser(props) {
                 <div className="title_container">
                     <h2>Add New User</h2>
                 </div>
-                <div className="row clearfix">
-                    <div className="">
+               
                         <form>
 
                             <div className="input_field">
@@ -89,8 +88,7 @@ function AddUser(props) {
                             <input className="button" type="submit" value="Submit" onClick={addUser} />
                         </form>
                     </div>
-                </div>
-            </div>
+              
             {formState.successStatus === 0 && <Redirect to={{
                 pathname: "/msgPage",
                 state: {

@@ -84,8 +84,7 @@ function AddClient(props) {
                 {formState.nameValid === 1 && <ErrorMsg text="Name can only contain letters and spaces" />}
                 {(formState.nameValid === 2 && <ErrorMsg text="Name must contain at least 2 letters" />)}
                 {formState.nameValid === 0 && <ErrorMsg />}
-                <div className="row clearfix">
-                    <div className="">
+                
                         <form>
                             <div className="input_field"> <span><i aria-hidden="true" className="fa fa-phone"></i></span>
                                 <input type="text" name="phone" placeholder="Phone Number"
@@ -113,9 +112,6 @@ function AddClient(props) {
                             {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
                             {!errorMsg && <ErrorMsg />}
                         </form>
-
-                    </div>
-                </div>
             </div>
         </div>
     )

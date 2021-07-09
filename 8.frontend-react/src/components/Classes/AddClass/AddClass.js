@@ -5,7 +5,7 @@ import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import './AddClass.scss'
 import { SketchPicker, CirclePicker } from 'react-color';
-import TimePicker from 'react-time-picker/dist/entry.nostyle';
+// import TimePicker from 'react-time-picker/dist/entry.nostyle';
 
 import { phoneValidation, nameValidation, phoneLengthValidation, nameLengthValidation } from '../../../tools/validation';
 function AddClass(props) {

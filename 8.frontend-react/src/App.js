@@ -3,7 +3,7 @@ import Home from './components/Home/Home';
 import Users from './components/Users/UsersPage/UsersPage';
 import ForgotPassword from './components/authentication/ForgotPassword/FogotPassword';
 import ResetPassword from './components/authentication/ResetPassword/ResetPassword';
-import MsgPage from './components/MsgPage/MsgPage';
+import MsgPage from './components/SubComponents/MsgPage/MsgPage';
 import AddUser from './components/Users/AddUser/AddUser';
 import InviteUser from './components/Users/InviteUser/InviteUser';
 import SideBar from './components/SideBar/SideBar';
@@ -38,7 +38,8 @@ function App(props) {
   useEffect((props) => {
     const pathArray= window.location.pathname.split('/');
     const path= pathArray[1];
-    if (!userState && (path !== 'ForgotPassword' && path !== 'resetPassword' && path !== 'LoginSignup')){
+    console.log(path)
+    if (!userState && (path !== 'forgotPassword' && path !== 'resetPassword' && path !== 'loginSignup' && path !== 'inviteUser')){
       window.location='/loginSignup';
     }
   });

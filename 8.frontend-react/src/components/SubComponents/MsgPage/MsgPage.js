@@ -1,7 +1,7 @@
 import React from 'react';
-import Headline from '../SubComponents/Headline/Headline';
+import Headline from '../Headline/Headline';
 import Text from '../Text/Text';
-import LinkHref from '../SubComponents/Link/LinkHref';
+import LinkHref from '../Link/LinkHref';
 import './MsgPage.scss'
 
 
