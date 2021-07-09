@@ -60,8 +60,7 @@ function ResetPassword(props) {
                 <div className="title_container">
                     <h2>Reset Password</h2>
                 </div>
-                <div className="row clearfix">
-                    <div className="">
+    
                         <form>
 
                             <div className="input_field">
@@ -114,7 +113,7 @@ function ResetPassword(props) {
                                         icon: "fa fa-exclamation-circle",
                                         headLine: "Something went wrong",
                                         text_1: "please ",
-                                        link: "/ForgotPassword",
+                                        link: "/forgotPassword",
                                         aText: "click here",
                                         text_2: "to Get new reset password link"
                                     }
@@ -139,7 +138,7 @@ function ResetPassword(props) {
                                         icon: "fa fa-exclamation-circle",
                                         headLine: "Invalid Password Reset Link",
                                         text: "This link is no longer valid. please request a new link below",
-                                        link: "/ForgotPassword",
+                                        link: "/forgotPassword",
                                         aText: "Get new reset password link"
                                     }
                                 }}
@@ -147,8 +146,7 @@ function ResetPassword(props) {
                             }
                             <input className="button" type="submit" value="Submit" onClick={onSubmit} />
                         </form>
-                    </div>
-                </div>
+                 
             </div>
         </div >
     )

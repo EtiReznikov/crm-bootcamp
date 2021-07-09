@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
-import { emailValidation } from '../../../tools/validation';
-import LinkHref from '../../SubComponents/Link/LinkHref';
+import ErrorMsg from '../../subComponents/ErrorMsg/ErrorMsg';
+import { emailValidation } from '../../tools/validation';
+import LinkHref from '../Link/LinkHref';
 import './Login.scss'
 import {
   Redirect
@@ -62,7 +62,7 @@ function Login(props) {
       <div className="title_container">
         {/* <h2>Login</h2> */}
       </div>
-     
+    
           <form>
             <div className="input_field"> <span><i aria-hidden="true" className="fa fa-envelope"></i></span>
               <input type="email" name="email" placeholder="Email" onChange={e =>
@@ -116,10 +116,9 @@ function Login(props) {
               }} />
             }
             <input className="button" type="submit" value="Submit" onClick={submitLogin} />
-            <LinkHref className="Login-forgot-pass" href="/forgotPassword" text="Forgot my password" />
+            <LinkHref className="Login-forgot-pass" href="/ForgotPassword" text="Forgot my password" />
           </form>
         
-    
     </div>
   );
 }

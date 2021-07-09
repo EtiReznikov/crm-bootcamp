@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import axios from 'axios';
-import Text from '../../Text/Text';
+import Text from '../../SubComponents/Text/Text';
 // import './InviteUser.scss'
 import '../../../Views/Form.scss'
 import {
@@ -83,8 +83,7 @@ function InviteUser(props) {
             <div className="title_container">
                 <h2>Register</h2>
             </div>
-            <div className="row clearfix">
-                <div className="">
+          
                     <form>
                         <Text className="form-text" text="So happy to see you! we just need a few more details." />
                         <div className="input_field" >
@@ -200,8 +199,7 @@ function InviteUser(props) {
                         <input className="button" type="submit" value="Submit" onClick={submit} />
                     </form>
                 </div>
-            </div>
-        </div>
+        
 
     );
 }
