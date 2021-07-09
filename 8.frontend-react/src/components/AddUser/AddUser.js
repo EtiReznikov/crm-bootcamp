@@ -55,7 +55,7 @@ function AddUser(props) {
     }
     return (
         <div className="form_wrapper">
-            {!localStorage.getItem('user_token') && <Redirect to="/LoginSignup" />}
+            {!localStorage.getItem('user_token') && <Redirect to="/loginSignup" />}
             <div className="form_container">
                 <div className="title_container">
                     <h2>Add New User</h2>

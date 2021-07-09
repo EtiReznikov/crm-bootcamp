@@ -57,7 +57,7 @@ function ForgotPassword(props) {
                   .bind(this)}
                 text="Submit"
               />
-              <LinkHref className="info-link-forgotPass" href="/LoginSignup" text="return to login page" />
+              <LinkHref className="info-link-forgotPass" href="/loginSignup" text="return to login page" />
             </form>
           </div>
         </div>

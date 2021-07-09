@@ -61,21 +61,21 @@ function SideBar(props) {
                 Home
                 <Link to="/" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/Clients'} icon={<BiRun />}>
+              <MenuItem active={location.pathname === '/clients'} icon={<BiRun />}>
                 Clients
-                <Link to="/Clients" />
+                <Link to="/clients" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/Users'} icon={<FaUserCog />}>
+              <MenuItem active={location.pathname === '/users'} icon={<FaUserCog />}>
                 Users
-                <Link to="/Users" />
+                <Link to="/users" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/Calendar'} icon={<BiCalendar />}>
+              <MenuItem active={location.pathname === '/calendar'} icon={<BiCalendar />}>
                 Calendar
-                <Link to="/Calendar" />
+                <Link to="/calendar" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/Classes'} icon={<AiOutlineClockCircle />}>
+              <MenuItem active={location.pathname === '/classes'} icon={<AiOutlineClockCircle />}>
               Classes
-              <Link to="/Classes" />
+              <Link to="/classes" />
               </MenuItem>
             </Menu>
           </SidebarContent>

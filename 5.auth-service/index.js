@@ -48,7 +48,7 @@ app.use(function (req, res, next) {
   const authentication = req.body.headers ? req.body.headers.authentication : undefined;
   const reqPath = req.path;
   //Paths where JWT not required 
-  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword'  || req.path === '/CreateUserByInvite' || req.path === '/SignUp' || req.path === '/LoginSignup') {
+  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword'  || req.path === '/CreateUserByInvite' || req.path === '/SignUp' || req.path === '/loginSignup') {
     next(); 
   }
 

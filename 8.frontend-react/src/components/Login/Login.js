@@ -109,7 +109,7 @@ function Login(props) {
                   icon: "fa fa-exclamation-circle",
                   headLine: "Something went wrong",
                   text_1: "please ",
-                  link: "/LoginSignup",
+                  link: "/loginSignup",
                   aText: "click here",
                   text_2: " to try again.",
                   className: "msg-page-link"

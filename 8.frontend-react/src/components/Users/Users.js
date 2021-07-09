@@ -34,11 +34,13 @@ function Users(props) {
 
     useEffect(() => {
         (async () => {
+            console.log(localStorage.getItem('business_id'))
             await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
+                businessId: localStorage.getItem('business_id'),
                 headers: {
                     authentication: {
                         token: localStorage.getItem('user_token'),
-                        business_id: localStorage.getItem('business_id')
+                       
                     }
                 }
             })
@@ -100,7 +102,7 @@ function Users(props) {
                         icon: "fa fa-exclamation-circle",
                         headLine: "Something went wrong",
                         text_1: "please ",
-                        link: "/Users",
+                        link: "/users",
                         aText: "click here",
                         text_2: " to try again.",
                         className: "msg-page-link"

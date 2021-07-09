@@ -25,7 +25,54 @@ connection.connect(function (err) {
 Post request from signup page
 */
 
-router.post('/CreateUser', function (req, res) {
+// router.post('/CreateUser', function (req, res) {
+//   //* TODO async await
+//   const name = req.body.name;
+//   const email = req.body.email;
+//   const phone = req.body.phone;
+//   const businessName = req.body.businessName;
+//   const password = md5(req.body.password);
+//   const confirm = md5(req.body.confirm);
+//   let emailErrorStatus = true;
+
+//   let status = -3;
+//   const formValid = validators.nameValidation(name) && validators.phoneValidation(phone) && validators.emailValidation(email) && validators.passwordValidation(password, confirm) && businessName.length > 0;
+//   // form data invalid
+//   if (!formValid) {
+//     res.status(403).json({ status: -3, message: 'Something is wrong with form data' })
+//   }
+//   else {
+//     const sqlEmail = `SELECT user_id FROM users WHERE user_email='${email}'`;
+//     connection.query(sqlEmail, function (err, resultSelectEmail) {
+//       if (err || typeof resultSelectEmail === 'undefined') res.status(500).json({
+//         status: -3, message: 'Failed to connect DB'
+//       });
+//       //There is no user with such mail
+//       if (resultSelectEmail.length === 0) {
+//         // Insert business to DB
+//         const sqlBusiness = `INSERT INTO gym (gym_name) VALUES ('${businessName}')`;
+//         connection.query(sqlBusiness, function (err, businessResult) {
+//           if (err || typeof sqlBusiness === 'undefined') res.status(500).json({ status: -3, message: 'Failed to connect DB' });
+//           const businessId = businessResult.insertId;
+//           const permission_id = 0; //user is manager
+//           const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id,  permission_id ) VALUES ('${name}', '${email}', '${phone}' , '${password}' ,'${businessId}', '${permission_id}')`;
+//           connection.query(sql, function (err, result) {
+//             if (err || typeof result === 'undefined') throw res.status(500).json({ status: -3, message: 'Failed to connect DB' });
+//             const userId = result.insertId;
+//             const token = jwt.sign({ userId: userId, userEmail: email, businessId: businessId, name: name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 });
+//             res.status(200).json({ token, status: 0, formValid, businessId, name })
+//           });
+//         });
+//       }
+//       else {
+//         //user exists
+//         res.status(409).json({ status: 1, message: 'User exists' })
+//       }
+//     });
+//   }
+// });
+
+router.post('/CreateUser', async (req, result) => {
   //* TODO async await
   const name = req.body.name;
   const email = req.body.email;
@@ -33,44 +80,72 @@ router.post('/CreateUser', function (req, res) {
   const businessName = req.body.businessName;
   const password = md5(req.body.password);
   const confirm = md5(req.body.confirm);
-  let emailErrorStatus = true;
+  let emailErrorStatus = -1;
 
   let status = -3;
+
+  let response = {}
   const formValid = validators.nameValidation(name) && validators.phoneValidation(phone) && validators.emailValidation(email) && validators.passwordValidation(password, confirm) && businessName.length > 0;
   // form data invalid
   if (!formValid) {
-    res.status(403).json({ status: -3, message: 'Something is wrong with form data' })
+    result.status(403).json({ status: -3, message: 'Something is wrong with form data' })
   }
   else {
-    const sqlEmail = `SELECT user_id FROM users WHERE user_email='${email}'`;
-    connection.query(sqlEmail, function (err, resultSelectEmail) {
-      if (err || typeof resultSelectEmail === 'undefined') res.status(500).json({
-        status: -3, message: 'Failed to connect DB'
-      });
-      //There is no user with such mail
-      if (resultSelectEmail.length === 0) {
-        // Insert business to DB
-        const sqlBusiness = `INSERT INTO gym (gym_name) VALUES ('${businessName}')`;
-        connection.query(sqlBusiness, function (err, businessResult) {
-          if (err || typeof sqlBusiness === 'undefined') res.status(500).json({ status: -3, message: 'Failed to connect DB' });
-          const businessId = businessResult.insertId;
-          const permission_id = 0; //user is manager
-          const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id,  permission_id ) VALUES ('${name}', '${email}', '${phone}' , '${password}' ,'${businessId}', '${permission_id}')`;
-          connection.query(sql, function (err, result) {
-            if (err || typeof result === 'undefined') throw res.status(500).json({ status: -3, message: 'Failed to connect DB' });
-            const userId = result.insertId;
-            const token = jwt.sign({ userId: userId, userEmail: email, businessId: businessId, name: name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 });
-            res.status(200).json({ token, status: 0, formValid, businessId, name })
+    try {
+      const sqlEmail = `SELECT user_id FROM users WHERE user_email='${email}'`;
+      const emailUniqPromise = await new Promise((res, rej) => {
+        connection.query(sqlEmail, (err, resultSelectEmail) => {
+          if (err || typeof resultSelectEmail === 'undefined') return rej({
+            status: 500,
+            json: { status: -3, message: 'Failed to connect DB' }
           });
+          if (resultSelectEmail.length > 0) {
+            return rej({ status: 409, json: { status: 1, emailErrorStatus: 3, message: 'User exists' } });
+          }
+          else {
+            res(resultSelectEmail)
+          }
         });
-      }
-      else {
-        //user exists
-        res.status(409).json({ status: 1, message: 'User exists' })
-      }
-    });
+      });
+      const sqlBusiness = `INSERT INTO gym (gym_name) VALUES ('${businessName}')`;
+      const CreateGymPromise = await new Promise((res, rej) => {
+        connection.query(sqlBusiness, (err, businessResult) => {
+          if (err || typeof businessResult === 'undefined') return rej(
+
+            { status: 500, json: { status: -3, message: 'Failed to connect DB' } }
+
+          );
+          else {
+            res(businessResult);
+          }
+        });
+      });
+      const businessId = CreateGymPromise.insertId;
+      const permission_id = 0;
+      const sql = `INSERT INTO users (user_name, user_email, user_phone, user_password, gym_id,  permission_id ) VALUES ('${name}', '${email}', '${phone}' , '${password}' ,'${businessId}', '${permission_id}')`;
+      const CreateUserPromise = await new Promise((res, rej) => {
+        connection.query(sql, function (err, insertResult) {
+          if (err || typeof insertResult === 'undefined') return rej({
+            status: 500,
+            json: { status: -3, message: 'Failed to connect DB' }
+          });
+          res(insertResult);
+        });
+      });
+      const userId = CreateUserPromise.insertId;
+      const token = jwt.sign({ userId: userId, userEmail: email, businessId: businessId, name: name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 });
+      response = { status: 200, json: { token, status: 0, formValid, businessId, name } }
+    }
+    catch (err) {
+      result.status(err.status);
+      result.send(err.json);
+    }
+    result.status(response.status);
+    result.send(response.json);
   }
 });
+
+
 
 /*
 Post request from login page
