@@ -28,7 +28,7 @@ function App(props) {
     localStorage.removeItem('user_token');
     localStorage.removeItem('business_id');
     handleUserChange(false)
-    window.location='/LoginSignup'
+    window.location='/loginSignup'
   };
   //update the user when child is updating the local  storage
   const handleUserChange = (flag) => {
@@ -39,7 +39,7 @@ function App(props) {
     const pathArray= window.location.pathname.split('/');
     const path= pathArray[1];
     if (!userState && (path !== 'ForgotPassword' && path !== 'resetPassword' && path !== 'LoginSignup')){
-      window.location='/LoginSignup';
+      window.location='/loginSignup';
     }
   });
 
@@ -53,13 +53,13 @@ function App(props) {
           <Route exact path="/" >
             <Home />
           </Route>
-          <Route path="/Calendar">
+          <Route path="/calendar">
             <Calendar />
           </Route>
-          <Route path="/LoginSignup">
+          <Route path="/loginSignup">
             <LoginSignup onUserChange={handleUserChange} isLogin={true} isRegister={false} />
           </Route>
-          <Route path="/Users">
+          <Route path="/users">
             <Users />
           </Route>
           <Route path="/forgotPassword">
@@ -75,10 +75,10 @@ function App(props) {
           <Route path="/inviteUser/:token">
             <InviteUser onUserChange={handleUserChange} />
           </Route>
-          <Route path="/Clients">
+          <Route path="/clients">
             <Clients />
           </Route>
-          <Route path="/Classes">
+          <Route path="/classes">
             <Classes />
           </Route>
         </Switch>

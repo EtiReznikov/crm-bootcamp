@@ -82,7 +82,7 @@ function ResetPassword(props) {
                                 />
                             </div>
                             {
-                                (formState.passwordValid === 0 && <ErrorMsg text="Password must contain at least 8 characters, 1 letter and 1 number" />) ||
+                                (formState.passwordValid === 0 && <ErrorMsg text="At least 8 characters, 1 letter and 1 number" />) ||
                                 (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
                                 (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
                                 (formState.passwordValid === 3 && <ErrorMsg text="strong password" />) ||
@@ -125,7 +125,7 @@ function ResetPassword(props) {
                                     pathname: "/msgPage",
                                     state: {
                                         headLine: "Your password has been reset.",
-                                        link: "/LoginSignup",
+                                        link: "/loginSignup",
                                         aText: "click here",
                                         text_2: "to login."
                                     }

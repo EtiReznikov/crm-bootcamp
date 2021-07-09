@@ -72,7 +72,7 @@ function Signup(props) {
           if (error.response.data.status === 1) {
             setState({
               ...formState,
-              emailValid: error.response.data.status
+              emailValid: error.response.data.emailErrorStatus
             })
           }
         });
@@ -177,7 +177,7 @@ function Signup(props) {
               />
             </div>
             {
-              (formState.passwordValid === 0 && <ErrorMsg text="Password must contain at least 8 characters,1 letter and 1 number" />) ||
+              (formState.passwordValid === 0 && <ErrorMsg text="At least 8 characters,1 letter and 1 number" />) ||
               (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
               (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
               (formState.passwordValid === 3 && <ErrorMsg text="strong password" />) ||
@@ -212,7 +212,7 @@ function Signup(props) {
                   icon: "fa fa-exclamation-circle",
                   headLine: "Something went wrong",
                   text_1: "please ",
-                  link: "/LoginSignup",
+                  link: "/loginSignup",
                   aText: "click here",
                   text_2: " to try again.",
                   className: "msg-page-link"
