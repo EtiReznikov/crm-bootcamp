@@ -1,21 +1,21 @@
 import './App.scss';
 import Home from './components/Home/Home';
-import Users from './components/Users/Users';
-import ForgotPassword from './components/ForgotPassword/FogotPassword';
-import ResetPassword from './components/ResetPassword/ResetPassword';
+import Users from './components/Users/UsersPage/UsersPage';
+import ForgotPassword from './components/authentication/ForgotPassword/FogotPassword';
+import ResetPassword from './components/authentication/ResetPassword/ResetPassword';
 import MsgPage from './components/MsgPage/MsgPage';
-import AddUser from './components/AddUser/AddUser';
-import InviteUser from './components/InviteUser/InviteUser';
+import AddUser from './components/Users/AddUser/AddUser';
+import InviteUser from './components/Users/InviteUser/InviteUser';
 import SideBar from './components/SideBar/SideBar';
-import Clients from './components/Clients/Clients';
-import Classes from './components/Classes/Classes';
+import Clients from './components/Clients/ClientsPage/ClientsPage';
+import Classes from './components/Classes/ClassesPage/ClassesPage';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
-import LoginSignup from './components/LoginWrapper/LoginWrapper'
+import LoginWrapper from './components/authentication/LoginWrapper/LoginWrapper'
 import { useState, useEffect } from 'react';
 import Calendar from './components/Calendar/Calendar';
 
@@ -57,7 +57,7 @@ function App(props) {
             <Calendar />
           </Route>
           <Route path="/loginSignup">
-            <LoginSignup onUserChange={handleUserChange} isLogin={true} isRegister={false} />
+            <LoginWrapper onUserChange={handleUserChange} isLogin={true} isRegister={false} />
           </Route>
           <Route path="/users">
             <Users />
