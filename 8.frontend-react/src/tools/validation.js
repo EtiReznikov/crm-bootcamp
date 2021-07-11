@@ -104,3 +104,45 @@ export function passwordStrengthValidation(password){
 }
 
 
+/**
+ * 
+ * check if time contains only 2 digits
+ */
+
+ export function timeValidation(time){
+    return  (time.length==2 && /^\d+$/.test(time));  
+}
+
+/**
+ * 
+ * check if hour is valid 
+ */
+
+ export function hourValidation(time){
+    var hh = parseInt(time, 10);
+    return  ( 0<= hh && hh <= 23);
+}
+
+
+/**
+ * 
+ * check if  minutes is valid
+ */
+
+ export function minValidation(time){
+    var mm = parseInt(time, 10);
+    return (0 <= mm && mm <= 59);
+}
+
+/**
+ * 
+ * check if  price is valid
+ */
+
+ export function priceValidation(price){
+    return /^\d+$/.test(price) && price>=0;
+}
+
+
+
+

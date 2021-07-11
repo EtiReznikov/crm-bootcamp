@@ -89,12 +89,10 @@ function Clients(props) {
 
    
     const DeleteClient = () => {
-        console.log(row);
-
+       
         axios.post('http://localhost:991/clients/removeClient/', {
             clientId: row.client_id
         }).then(function (response) {
-            console.log(response.data)
             closeModalRemoveUser();
             changeDataState();
             //TODO: handle error

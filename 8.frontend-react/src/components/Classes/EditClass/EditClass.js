@@ -3,12 +3,18 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
-import './AddClass.scss'
+import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';
+import 'react-edit-text/dist/index.css';
 import { SketchPicker, CirclePicker } from 'react-color';
 
+function EditClass(props) {
+    console.log(props)
+    // const [errorMsg, setErrorMsg] = useState(false);
+    // const [nameValue, setNameValue] = useState(props.clientData.client_name);
+    // const [nameValid, setNameValid] = useState(0);
+    // const [phoneValue, setPhoneValue] = useState(props.clientData.client_phone);
+    // const [phoneValid, setPhoneValid] = useState(0);
 
-import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';
-function AddClass(props) {
     const [formState, setState] = useState({
         className: "",
         classValid: 0,
@@ -32,44 +38,37 @@ function AddClass(props) {
     const [hhValid, setHHValid] = useState(true);
     const [mmValid, setMMValid] = useState(true);
     const [errorMsg, setErrorMsg] = useState(false);
-   
 
-    const AddClass = (e) => {
-        const nameValid = nameLengthValidation(formState.className);
-        setState({
-            ...formState,
-            classValid: nameValid,
-        })
-        setErrorMsg(false);
-        if (nameValid === 0) {
-            axios.post('http://localhost:991/classes/addClass/', {
-                className: formState.className,
-                classDescription: formState.classDescription,
-                color: formState.color,
-                business_id: localStorage.getItem('business_id'),
-                
-                dayAndTime:JSON.stringify( {
-                    hours: formState.hours,
-                    min: formState.minutes,
-                    days: chosenDays()
-                })
-            }).then(function (response) {
-                if (response.data === true) {
-                    props.closeModal();
-                    props.changeDataState();
-                }
-                else {
-                    setErrorMsg(true);
-                }
-            })
-                .catch(function (error) {
-                    console.log(error)
-                });
-        }
-        else {
-            console.log("name error")
-        }
-        e.preventDefault();
+
+    /* when add user button is submitted*/
+    const EditClasses = (e) => {
+        // const nameValid = nameLengthValidation(nameValue);
+        // const phoneValid = phoneLengthValidation(phoneValue);
+        // const valid = (nameValid === 0) && (phoneValid === 0);
+        // setErrorMsg(false);
+        // if (valid){
+        // axios.post('http://localhost:991/clients/editClientData/', {
+        //     clientId: props.clientData.client_id,
+        //     clientName: nameValue,
+        //     clientPhone: phoneValue
+
+        // })
+        //     .then((response) => {
+        //         console.log(response.data)
+        //         if (response.data === true){
+        //             props.closeModal();
+        //             props.changeDataState();
+        //         }
+        //         else{
+        //             setErrorMsg(true);
+        //         }
+
+        //     })
+        //     .catch(function (error) {
+
+        //     });
+        // }
+        // e.preventDefault();
     }
 
     const changeHH = (e) => {
@@ -147,21 +146,15 @@ function AddClass(props) {
         })
     }
 
-    const chosenDays = () => {
-        //obj to array
-        let daysArrays = Object.entries(formState.days);
-        //map only chosen days
-        let isTrue = daysArrays.filter(([key, value]) => value);
-        //array to object
-        let daysObj = Object.fromEntries(isTrue);
-        //return only keys
-        return Object.keys(daysObj);
-    }
+
     return (
         <div className="form_wrapper">
+
             <button class="exit" onClick={props.closeModal} >
                 <i className="fa fa-window-close"></i>
             </button>
+
+
 
             <div className="form_container">
                 <div className="title_container">
@@ -170,7 +163,7 @@ function AddClass(props) {
                 <form>
                     <div className="input_field" >
                         <span>
-                            <i aria-hidden="true" className="fa fa-object-ungroup"></i>
+                            <i aria-hidden="true" className="fa fa-user"></i>
                         </span>
                         <input
                             name="className"
@@ -188,7 +181,7 @@ function AddClass(props) {
                     {formState.classValid === 0 && <ErrorMsg />}
                     <div className="input_field" >
                         <span>
-                            <i aria-hidden="true" className="fa fa-pencil"></i>
+                            <i aria-hidden="true" className="fa fa-user"></i>
                         </span>
                         <textarea
                             name="className"
@@ -275,17 +268,15 @@ function AddClass(props) {
 
 
                     <input className="button" type="submit" value="Submit" onClick={
-                        AddClass
+                        EditClass
                     } />
                     {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
                     {!errorMsg && <ErrorMsg />}
                 </form>
-
-
             </div>
         </div>
     )
 }
 
-export default AddClass;
+export default EditClass;
 

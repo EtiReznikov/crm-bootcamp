@@ -12,11 +12,11 @@ import {
   useLocation
 } from "react-router-dom";
 
-import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
+import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle, FiPackage } from "react-icons/fi";
 import { BiCalendar, BiRun } from "react-icons/bi";
 import { FaUserCog } from "react-icons/fa";
 import { CgGym } from "react-icons/cg";
-import {AiOutlineClockCircle} from "react-icons/ai";
+import { AiOutlineClockCircle } from "react-icons/ai";
 import './SideBar.scss';
 
 import logo from '../../Views/Daco_6140061.png'
@@ -61,21 +61,25 @@ function SideBar(props) {
                 Home
                 <Link to="/" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/clients'} icon={<BiRun />}>
-                Clients
-                <Link to="/clients" />
-              </MenuItem>
-              <MenuItem active={location.pathname === '/users'} icon={<FaUserCog />}>
-                Users
-                <Link to="/users" />
-              </MenuItem>
               <MenuItem active={location.pathname === '/calendar'} icon={<BiCalendar />}>
                 Calendar
                 <Link to="/calendar" />
               </MenuItem>
+              <MenuItem active={location.pathname === '/clients'} icon={<BiRun />}>
+                Clients
+                <Link to="/clients" />
+              </MenuItem>
               <MenuItem active={location.pathname === '/classes'} icon={<AiOutlineClockCircle />}>
-              Classes
-              <Link to="/classes" />
+                Classes
+                <Link to="/classes" />
+              </MenuItem>
+              <MenuItem active={location.pathname === '/packages'} icon={<FiPackage />}>
+                Packages
+                <Link to="/packages" />
+              </MenuItem>
+              <MenuItem active={location.pathname === '/users'} icon={<FaUserCog />}>
+                Users
+                <Link to="/users" />
               </MenuItem>
             </Menu>
           </SidebarContent>
