@@ -9,6 +9,7 @@ import InviteUser from './components/Users/InviteUser/InviteUser';
 import SideBar from './components/SideBar/SideBar';
 import Clients from './components/Clients/ClientsPage/ClientsPage';
 import Classes from './components/Classes/ClassesPage/ClassesPage';
+import PackagesPage from './components/Packages/PackagesPage/PackagesPage';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
   BrowserRouter as Router,
@@ -18,6 +19,7 @@ import {
 import LoginWrapper from './components/authentication/LoginWrapper/LoginWrapper'
 import { useState, useEffect } from 'react';
 import Calendar from './components/Calendar/Calendar';
+
 
 
 
@@ -38,7 +40,6 @@ function App(props) {
   useEffect((props) => {
     const pathArray= window.location.pathname.split('/');
     const path= pathArray[1];
-    console.log(path)
     if (!userState && (path !== 'forgotPassword' && path !== 'resetPassword' && path !== 'loginSignup' && path !== 'inviteUser')){
       window.location='/loginSignup';
     }
@@ -81,6 +82,9 @@ function App(props) {
           </Route>
           <Route path="/classes">
             <Classes />
+          </Route>
+          <Route path="/packages">
+            <PackagesPage />
           </Route>
         </Switch>
       </div>

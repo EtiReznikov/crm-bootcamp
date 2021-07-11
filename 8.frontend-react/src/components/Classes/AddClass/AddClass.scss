@@ -8,14 +8,19 @@
     display: flex;
     justify-content: space-between;
     margin-top: 14px;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
-
-.weekDays-selector input {
+.weekDays-time-selector{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  align-items: center;
+}
+.weekDays-time-selector input {
     display: none!important;
   }
   
-  .weekDays-selector input[type=checkbox] + label {
+  .weekDays-time-selector input[type=checkbox] + label {
     display: inline-block;
     border-radius: 6px;
     background: #dddddd;
@@ -27,11 +32,11 @@
     cursor: pointer;
   }
   
-  .weekDays-selector input[type=checkbox]:checked + label {
+  .weekDays-time-selector input[type=checkbox]:checked + label {
     background: $menu-background;
     color: #ffffff;
   }
-  .weekDays-selector input[type=text] + label {
+  .weekDays-time-selector input[type=text] + label {
     display: inline-block;
     border-radius: 6px;
     background: #dddddd;
@@ -43,12 +48,66 @@
     cursor: pointer;
   }
   
-  .weekDays-selector input[type=text]:checked + label {
+  .weekDays-time-selector input[type=text]:checked + label {
     background: $menu-background;
     color: #ffffff;
   }
   
+  input{
+    -webkit-appearance: none; 
+  }
+  #hh-select, #mm-select{
+    display: inline !important;
+    background: #dddddd;
+    height: 40px;
+    width: 30px;
+    margin-right: 3px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    border-width: 0;
+    border-radius: 6px;
+    
+  
+  }
 
-  // #hh-select, #mm-select{
-  //   display: inline;
-  // }
+  #hh-select-error, #mm-select-error{
+    display: inline !important;
+    display: inline-block;
+    border-radius: 6px;
+    background: #dddddd;
+    height: 40px;
+    width: 30px;
+    margin-right: 3px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    -webkit-appearance: none;
+    border-width: 1px;
+    border-color: #a94442;
+    box-shadow: 0 0 2px #a94442;
+
+  }
+  
+  #hour-wrapper,  #min-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #time-wrapper{
+    display: flex;
+  }
+
+  input:focus{
+    outline: none;
+}
+
+#upHH, #downHH, #upMM, #downMM{
+  cursor: pointer;
+}
+
+#class-description{
+ height: auto;
+}
+

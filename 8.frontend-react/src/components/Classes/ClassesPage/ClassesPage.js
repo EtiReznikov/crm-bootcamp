@@ -6,12 +6,13 @@ import Button from '../../SubComponents/Button/Button';
 import './ClassesPage.scss';
 import Modal from 'react-modal';
 import AddClass from '../AddClass/AddClass';
-
+import ConfirmModal from '../../SubComponents/ConfirmModal/ConfirmModal';
+import EditClass from '../EditClass/EditClass';
 function Classes(props) {
     const [data, setData] = useState([]);
     const [modalIsOpenAddClass, setIsOpenAddClassModal] = useState(false);
-    // const [modalIsOpenRemoveUser, setIsOpenRemoveUserModal] = useState(false);
-    // const [modalIsOpenEditUser, setIsOpenEditUserModal] = useState(false);
+    const [modalIsOpenRemoveClass, setIsOpenRemoveClassModal] = useState(false);
+    const [modalIsOpenEditClass, setIsOpenEditClassModal] = useState(false);
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
 
@@ -25,22 +26,30 @@ function Classes(props) {
             accessor: "description"
         },
         {
+            Header: 'Days',
+            accessor: "days"
+        },
+        {
+            Header: 'Time',
+            accessor: "time"
+        },
+        {
             Header: 'Update',
             width: '1em',
             Cell: ({ row }) => (
                 <div id="row-button-wrapper">
                     <button class="row-button" onClick={() => {
-                        // openModalRemoveUser();
+                        openModalRemoveClass();
                         setRow(row.original);
                     }}>
                         {<i class="fa fa-trash"></i>}
                     </button>
-                    <button class="row-button" onClick={() => {
-                        // openModalEditUser();
+                    {/* <button class="row-button" onClick={() => {
+                        openModalEditClass();
                         setRow(row.original);
                     }}>
                         {<i class="fa fa-edit"></i>}
-                    </button>
+                    </button> */}
                 </div>)
         },
     ], []
@@ -58,6 +67,38 @@ function Classes(props) {
     const closeModalAddClass = () => {
         setIsOpenAddClassModal(false);
     }
+    
+    const openModalRemoveClass = () => {
+        setIsOpenRemoveClassModal(true);
+    }
+
+    const closeModalRemoveClass = () => {
+        setIsOpenRemoveClassModal(false);
+    }
+
+    const openModalEditClass = () => {
+        setIsOpenEditClassModal(true);
+    }
+
+    const closeModalEditClass= () => {
+        setIsOpenEditClassModal(false);
+    }
+
+    const DeleteClass= () => {
+       
+        axios.post('http://localhost:991/classes/removeClass/', {
+            classId: row.class_id
+        }).then(function (response) {
+            console.log(response.data)
+            closeModalRemoveClass();
+            changeDataState();
+            //TODO: handle error
+        })
+
+            .catch(function (error) {
+                console.log(error)
+            });
+    };
 
 
     useEffect(() => {
@@ -66,34 +107,28 @@ function Classes(props) {
                 business_id: localStorage.getItem('business_id'),
             })
                 .then((response) => {
-                    setData(response.data);
+                    let data =[]
+                    for (const classValue of response.data){
+                        let obj= JSON.parse(classValue.days_and_time)
+                        let days= obj.days.join(', ')
+                        let temp = {
+                            class_id : classValue.class_id,
+                            class_name : classValue.class_name,
+                            description : classValue.description,
+                            gym_id : classValue.gym_id,
+                            color: classValue.color,
+                            days: days,
+                            time: obj.hours+":"+obj.min
+                        }
+                        data.push(temp)
+                    }
+                    setData(data);
                 })
                 .catch(function (error) {
 
                 });
         })();
     }, [dataHasChanged]);
-
-
-
-    // const DeleteClient = () => {
-    //     console.log(row);
-
-    //     axios.post('http://localhost:991/clients/removeClient/', {
-    //         clientId: row.client_id
-    //     }).then(function (response) {
-    //         console.log(response.data)
-    //         closeModalRemoveUser();
-    //         changeDataState();
-    //         //TODO: handle error
-
-    //     })
-
-    //         .catch(function (error) {
-    //             console.log(error)
-    //         });
-    // };
-
 
 
 
@@ -119,24 +154,24 @@ function Classes(props) {
             >
                 <AddClass closeModal={closeModalAddClass} changeDataState={changeDataState} />
             </Modal>
-            {/* <Modal
-                isOpen={modalIsOpenRemoveUser}
-                onRequestClose={closeModalRemoveUser}
-                contentLabel="Remove Client Modal"
+            <Modal
+                isOpen={modalIsOpenRemoveClass}
+                onRequestClose={closeModalRemoveClass}
+                contentLabel="Remove Class Modal"
                 className="modal"
                 ariaHideApp={false}
             >
-                <ConfirmModal onConfirm={DeleteClient} onDismiss={closeModalRemoveUser} text={`Are you sure you want to delete ${row.client_name}?`} />
+                <ConfirmModal onConfirm={DeleteClass} onDismiss={closeModalRemoveClass} text={`Are you sure you want to delete ${row.class_name}?`} />
             </Modal>
             <Modal
-                isOpen={modalIsOpenEditUser}
-                onRequestClose={closeModalEditUser}
+                isOpen={modalIsOpenEditClass}
+                onRequestClose={closeModalEditClass}
                 contentLabel="Edit Client Modal"
                 className="modal"
                 ariaHideApp={false}
             >
-                <EditClient closeModal={closeModalEditUser} changeDataState={changeDataState} clientData={row} />
-            </Modal> */}
+                <EditClass closeModal={closeModalEditClass} changeDataState={changeDataState} classData={row} />
+            </Modal>
         </div>
     )
 }

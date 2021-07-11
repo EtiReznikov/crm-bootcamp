@@ -16,21 +16,22 @@ class Model_classes extends Model
         $classes = $this->getDB()
             ->query("SELECT * FROM  classes WHERE gym_id=$gymId")
             ->fetch_all(MYSQLI_ASSOC);
+       
         return $classes;
     }
 
-    public function addNewClass($gymId, $className, $classDescription, $color)
+    public function addNewClass($gymId, $className, $classDescription, $color, $dayAndTime)
     {
         $addClass  =  $this->getDB()
-            ->query("INSERT INTO classes (class_name, description, color, gym_id) VALUES ('$className', '$classDescription', '$color', '$gymId')");
+            ->query("INSERT INTO classes (class_name, description, color, gym_id, days_and_time) VALUES ('$className', '$classDescription', '$color', '$gymId', '$dayAndTime')");
         return $addClass;
     }
 
-    public function removeClassById($clientId)
+    public function removeClassById($classId)
     {
-        // $removeClient  =  $this->getDB()
-        //     ->query("DELETE FROM clients WHERE client_id=$clientId");
-        // return $removeClient;
+        $removeClass  =  $this->getDB()
+            ->query("DELETE FROM classes WHERE class_id=$classId");
+        return $removeClass;
     }
 
     public function editClass($clientId, $clientName, $clientPhone){

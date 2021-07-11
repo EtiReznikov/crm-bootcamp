@@ -26,7 +26,8 @@ class classes extends controller
         $className = $this->data->className;
         $classDescription = $this->data->classDescription;
         $color = $this->data->color;
-        $addClass = $this->model->addNewClient($gymId, $className, $classDescription, $color);
+        $dayAndTime = $this->data->dayAndTime;
+        $addClass = $this->model->addNewClass($gymId, $className, $classDescription, $color, $dayAndTime);
         if ($addClass){
             return true;
         }
@@ -52,12 +53,12 @@ class classes extends controller
          //*TODO add validation
     }
 
-    public function removeClient(){
-        $clientId=$this->data->clientId;
-        $removeClient = $this->model->removeClientById($clientId);
-        return $removeClient;
+    public function removeClass(){
+        $classId=$this->data->classId;
+        $removeClass = $this->model->removeClassById($classId);
+        return $removeClass;
         //*TODO add validation
-        if ($removeClient){
+        if ($removeClass){
             return true;
         }
         else{
