@@ -3,8 +3,8 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
-import '../AddPackage/AddPackage.scss'
-import Select from 'react-select'
+import '../AddPackage/AddPackage.scss';
+import Select from 'react-select';
 import { priceValidation, nameValidation, phoneLengthValidation, nameLengthValidation } from '../../../tools/validation';
 function AddPackage(props) {
     const [formState, setState] = useState({
@@ -17,7 +17,6 @@ function AddPackage(props) {
     );
     const [errorMsg, setErrorMsg] = useState(false);
     const [data, setData] = useState([]);
-    // const [selectedClasses, setSelectedClasses] = useState([]);
 
     useEffect(() => {
         (async () => {

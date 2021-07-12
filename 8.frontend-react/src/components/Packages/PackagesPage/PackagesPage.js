@@ -135,7 +135,7 @@ function PackagesPage(props) {
                 className="modal"
                 ariaHideApp={false}
             >
-                <ConfirmModal onConfirm={DeletePackage} onDismiss={closeModalRemovePackage} text={`Are you sure you want to delete ${row.class_name}?`} isEdit={false} />
+                <ConfirmModal onConfirm={DeletePackage} onDismiss={closeModalRemovePackage} text={`Are you sure you want to delete ${row.class_name}?`}  />
             </Modal>
         </div>
     )
