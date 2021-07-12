@@ -34,9 +34,9 @@ class Model_classes extends Model
         return $removeClass;
     }
 
-    public function editClass($clientId, $clientName, $clientPhone){
-        // $editClient = $this->getDB()
-        //     ->query("UPDATE clients set client_name='$clientName', client_phone='$clientPhone' WHERE client_id=$clientId");
-        // return  $editClient;
+    public function editClass($classId, $className, $description, $color, $dayAndTime){
+        $editClass = $this->getDB()
+            ->query("UPDATE classes set class_name='$className', description='$description' , color='$color' ,days_and_time='$dayAndTime' WHERE class_id=$classId");
+        return  $editClass;
     }
 }

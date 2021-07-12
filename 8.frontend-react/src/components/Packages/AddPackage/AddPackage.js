@@ -5,20 +5,17 @@ import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import '../AddPackage/AddPackage.scss'
 import Select from 'react-select'
-import makeAnimated from 'react-select/animated';
-import { BiDollar } from "react-icons/bi"
 import { priceValidation, nameValidation, phoneLengthValidation, nameLengthValidation } from '../../../tools/validation';
 function AddPackage(props) {
     const [formState, setState] = useState({
-        name: "",
-        price: "",
+        name: props.isEdit ? props.packageData.package_name : "",
+        price: props.isEdit ? props.packageData.price : "",
         nameValid: 0,
         priceValid: true,
         selectedClasses: []
     }
     );
     const [errorMsg, setErrorMsg] = useState(false);
-    const [classes, setClasses] = useState([]);
     const [data, setData] = useState([]);
     // const [selectedClasses, setSelectedClasses] = useState([]);
 
@@ -40,8 +37,30 @@ function AddPackage(props) {
                 .catch(function (error) {
 
                 });
+
+            if (props.isEdit) {
+                await axios.post('http://localhost:991/packagesClasses/getClassesByPackage/', {
+                    package_id: props.packageData.package_id,
+                })
+                    .then((response) => {
+                        let classes = []
+                        for (const classValue of response.data) {
+                            classes.push({
+                                value: classValue.class_id,
+                                label: classValue.class_name,
+                            })
+                        }
+                        setState({
+                            ...formState,
+                            selectedClasses: classes
+                        })
+                    })
+                    .catch(function (error) {
+
+                    });
+            }
         })();
-    }, []);
+    },[]);
 
 
     const onClassesSelect = (selectedOptions) => {
@@ -52,7 +71,7 @@ function AddPackage(props) {
     }
 
     /* when add user button is submitted*/
-    const AddPackage = (e) => {
+    const onSubmit = (e) => {
 
         const nameValid = nameLengthValidation(formState.name);
         // const phoneValid = phoneLengthValidation(formState.phone);
@@ -63,23 +82,47 @@ function AddPackage(props) {
         })
         setErrorMsg(false);
         if (valid) {
-            axios.post('http://localhost:991/packages/addPackage/', {
-                name: formState.name,
-                price: formState.price,
-                selectedClasses: formState.selectedClasses,
-                business_id: localStorage.getItem('business_id'),
-                    }).then(function (response) {
-                //         if (response.data === true) {
-                //             props.closeModal();
-                //             props.changeDataState();
-                //         }
-                //         else {
-                // //             setErrorMsg(true);
-                //         }
-                    })
-                        .catch(function (error) {
-                            console.log(error)
-            });
+            if (props.isEdit ) {
+                axios.post('http://localhost:991/packages/editPackageData/', {
+                    packageId: props.packageData.package_id,
+                    name: formState.name,
+                    price: formState.price,
+                    selectedClasses: formState.selectedClasses,
+                })
+                .then(function (response) {
+                    if (response.data === true) {
+                        props.closeModal();
+                        props.changeDataState();
+                    }
+                    else {
+                     
+                    }
+                })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+                   
+            }
+            else {
+                
+                axios.post('http://localhost:991/packages/addPackage/', {
+                    name: formState.name,
+                    price: formState.price,
+                    selectedClasses: formState.selectedClasses,
+                    business_id: localStorage.getItem('business_id'),
+                }).then(function (response) {
+                    if (response.data === true) {
+                        props.closeModal();
+                        props.changeDataState();
+                    }
+                    else {
+                        //             setErrorMsg(true);
+                    }
+                })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+            }
         }
         e.preventDefault();
     }
@@ -94,7 +137,7 @@ function AddPackage(props) {
 
             <div className="form_container">
                 <div className="title_container">
-                    <h2>Add New Package</h2>
+                    {props.isEdit ? <h2>Edit Package</h2> : <h2>Add New Package</h2>}
                 </div>
                 <form>
                     <div className="input_field" >
@@ -105,6 +148,7 @@ function AddPackage(props) {
                             name="name"
                             type="text"
                             placeholder="Name"
+                            value={formState.name}
                             onChange={e =>
                                 setState({
                                     ...formState,
@@ -137,6 +181,7 @@ function AddPackage(props) {
                             name="price"
                             type="text"
                             placeholder="Price"
+                            value={formState.price}
                             onChange={
                                 e =>
                                     setState({
@@ -157,7 +202,7 @@ function AddPackage(props) {
                     {formState.priceValid && <ErrorMsg />}
 
                     <input className="button" type="submit" value="Submit" id="btn-add-pck" onClick={
-                        AddPackage
+                        onSubmit
                     } />
                     {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
                     {!errorMsg && <ErrorMsg />}

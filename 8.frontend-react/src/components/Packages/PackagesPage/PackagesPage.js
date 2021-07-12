@@ -3,54 +3,46 @@ import Table from '../../SubComponents/Table/Table';
 import axios from 'axios';
 import Headline from '../../SubComponents/Headline/Headline';
 import Button from '../../SubComponents/Button/Button';
-// import './ClassesPage.scss';
 import Modal from 'react-modal';
 import AddPackage from '../AddPackage/AddPackage';
-// import AddClass from '../AddClass/AddClass';
-// import ConfirmModal from '../../SubComponents/ConfirmModal/ConfirmModal';
-// import EditClass from '../EditClass/EditClass';
+import ConfirmModal from '../../SubComponents/ConfirmModal/ConfirmModal';
+import './PackagePage.scss'
 function PackagesPage(props) {
     const [data, setData] = useState([]);
     const [modalIsOpenAddPackage, setIsOpenAddPackageModal] = useState(false);
-    // const [modalIsOpenRemoveClass, setIsOpenRemoveClassModal] = useState(false);
-    // const [modalIsOpenEditClass, setIsOpenEditClassModal] = useState(false);
+    const [modalIsOpenRemovePackage, setIsOpenRemovePackageModal] = useState(false);
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
-
+    const [isEdit, setIsEdit] = useState(false);
     const columns = useMemo(() => [
         {
-            Header: "Class Name",
-            accessor: "class_name",
+            Header: "Package Name",
+            accessor: "package_name",
         },
         {
-            Header: 'Description',
-            accessor: "description"
+            Header: 'Price',
+            accessor: "price"
         },
-        {
-            Header: 'Days',
-            accessor: "days"
-        },
-        {
-            Header: 'Time',
-            accessor: "time"
-        },
+
         {
             Header: 'Update',
             width: '1em',
             Cell: ({ row }) => (
                 <div id="row-button-wrapper">
                     <button class="row-button" onClick={() => {
-                        // openModalRemoveClass();
+                        openModalRemovePackage();
                         setRow(row.original);
                     }}>
                         {<i class="fa fa-trash"></i>}
                     </button>
-                    {/* <button class="row-button" onClick={() => {
-                        openModalEditClass();
+                    <button class="row-button" onClick={() => {
                         setRow(row.original);
+                        setIsEdit(true);
+                        openModalAddPackage();
+
                     }}>
                         {<i class="fa fa-edit"></i>}
-                    </button> */}
+                    </button>
                 </div>)
         },
     ], []
@@ -68,79 +60,60 @@ function PackagesPage(props) {
     const closeModalAddPackage = () => {
         setIsOpenAddPackageModal(false);
     }
-    
-    // const openModalRemoveClass = () => {
-    //     setIsOpenRemoveClassModal(true);
-    // }
 
-    // const closeModalRemoveClass = () => {
-    //     setIsOpenRemoveClassModal(false);
-    // }
+    const openModalRemovePackage = () => {
+        setIsOpenRemovePackageModal(true);
+    }
 
-    // const openModalEditClass = () => {
-    //     setIsOpenEditClassModal(true);
-    // }
+    const closeModalRemovePackage = () => {
+        setIsOpenRemovePackageModal(false);
+    }
 
-    // const closeModalEditClass= () => {
-    //     setIsOpenEditClassModal(false);
-    // }
+    const DeletePackage = () => {
 
-    // const DeleteClass= () => {
-       
-    //     axios.post('http://localhost:991/classes/removeClass/', {
-    //         classId: row.class_id
-    //     }).then(function (response) {
-    //         console.log(response.data)
-    //         closeModalRemoveClass();
-    //         changeDataState();
-    //         //TODO: handle error
-    //     })
+        axios.post('http://localhost:991/packages/removePackage/', {
+            packageId: row.package_id
+        }).then(function (response) {
+            closeModalRemovePackage();
+            changeDataState();
+            //TODO: handle error
+        })
 
-    //         .catch(function (error) {
-    //             console.log(error)
-    //         });
-    // };
+            .catch(function (error) {
+                console.log(error)
+            });
+    };
 
 
     useEffect(() => {
-        // (async () => {
-        //     await axios.post('http://localhost:991/pacakges/getPacakges/', {
-        //         business_id: localStorage.getItem('business_id'),
-        //     })
-        //         .then((response) => {
-        //             // let data =[]
-        //             // for (const classValue of response.data){
-        //             //     let obj= JSON.parse(classValue.days_and_time)
-        //             //     let days= obj.days.join(', ')
-        //             //     let temp = {
-        //             //         class_id : classValue.class_id,
-        //             //         class_name : classValue.class_name,
-        //             //         description : classValue.description,
-        //             //         gym_id : classValue.gym_id,
-        //             //         color: classValue.color,
-        //             //         days: days,
-        //             //         time: obj.hours+":"+obj.min
-        //             //     }
-        //             //     data.push(temp)
-        //             // }
-        //             setData(response.data);
-        //         })
-        //         .catch(function (error) {
+        (async () => {
+            await axios.post('http://localhost:991/packages/getPackages/', {
+                business_id: localStorage.getItem('business_id'),
+            })
+                .then((response) => {
+                    setData(response.data);
+                })
+                .catch(function (error) {
 
-        //         });
-        // })();
+                });
+        })();
     }, [dataHasChanged]);
 
-
+    const OnAddPackageClick = () => {
+        setIsEdit(false);
+        openModalAddPackage();
+    }
 
     return (
-        <div id="classes-page">
+        <div id="package-page">
             <Headline id="user-page-header" text="Packages" />
-             <div id="table-wrapper">
+            <div id="table-wrapper">
                 <div id="button-wrapper">
                     <Button
                         className="add-class-btn"
-                        onClick={openModalAddPackage}
+                        onClick={
+                            OnAddPackageClick
+                        }
                         text={<i class="fa fa-calendar-plus-o"></i>}
                     />
                 </div>
@@ -153,26 +126,17 @@ function PackagesPage(props) {
                 className="modal"
                 ariaHideApp={false}
             >
-                 <AddPackage closeModal={closeModalAddPackage} changeDataState={changeDataState} />
-            </Modal>
-            {/* <Modal
-                isOpen={modalIsOpenRemoveClass}
-                onRequestClose={closeModalRemoveClass}
-                contentLabel="Remove Class Modal"
-                className="modal"
-                ariaHideApp={false}
-            >
-                <ConfirmModal onConfirm={DeleteClass} onDismiss={closeModalRemoveClass} text={`Are you sure you want to delete ${row.class_name}?`} />
+                <AddPackage closeModal={closeModalAddPackage} changeDataState={changeDataState} packageData={row} isEdit={isEdit} />
             </Modal>
             <Modal
-                isOpen={modalIsOpenEditClass}
-                onRequestClose={closeModalEditClass}
-                contentLabel="Edit Client Modal"
+                isOpen={modalIsOpenRemovePackage}
+                onRequestClose={closeModalRemovePackage}
+                contentLabel="Remove Package Modal"
                 className="modal"
                 ariaHideApp={false}
             >
-                <EditClass closeModal={closeModalEditClass} changeDataState={changeDataState} classData={row} />
-            </Modal>  */}
+                <ConfirmModal onConfirm={DeletePackage} onDismiss={closeModalRemovePackage} text={`Are you sure you want to delete ${row.class_name}?`} isEdit={false} />
+            </Modal>
         </div>
     )
 }

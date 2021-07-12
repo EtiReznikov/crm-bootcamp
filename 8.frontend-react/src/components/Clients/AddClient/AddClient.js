@@ -6,10 +6,10 @@ import '../../../Views/Form.scss';
 import './AddClient.scss'
 import { phoneValidation, nameValidation, phoneLengthValidation, nameLengthValidation } from '../../../tools/validation';
 function AddClient(props) {
-    console.log(props);
+    console.log(props)
     const [formState, setState] = useState({
-        name: "",
-        phone: "",
+        name: props.isEdit ? props.classData.name : "",
+        phone: props.isEdit ? props.classData.phone : "",
         nameValid: 0,
         phoneValid: 0,
     }
@@ -17,7 +17,7 @@ function AddClient(props) {
     const [errorMsg, setErrorMsg] = useState(false);
 
     /* when add user button is submitted*/
-    const AddClient = (e) => {
+    const onSubmit = (e) => {
 
         const nameValid = nameLengthValidation(formState.name);
         const phoneValid = phoneLengthValidation(formState.phone);
@@ -29,22 +29,27 @@ function AddClient(props) {
         })
         setErrorMsg(false);
         if (valid) {
-            axios.post('http://localhost:991/clients/addClient/', {
-                name: formState.name,
-                phone: formState.phone,
-                business_id: localStorage.getItem('business_id'),
-            }).then(function (response) {
-                if (response.data === true) {
-                    props.closeModal();
-                    props.changeDataState();
-                }
-                else {
-                    setErrorMsg(true);
-                }
-            })
-                .catch(function (error) {
-                    console.log(error)
-                });
+            if (props.isEdit) {
+
+            }
+            else {
+                axios.post('http://localhost:991/clients/addClient/', {
+                    name: formState.name,
+                    phone: formState.phone,
+                    business_id: localStorage.getItem('business_id'),
+                }).then(function (response) {
+                    if (response.data === true) {
+                        props.closeModal();
+                        props.changeDataState();
+                    }
+                    else {
+                        setErrorMsg(true);
+                    }
+                })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+            }
         }
         e.preventDefault();
     }
@@ -58,7 +63,7 @@ function AddClient(props) {
 
             <div className="form_container">
                 <div className="title_container">
-                    <h2>Add New Client</h2>
+                   { props.isEdit ?  <h2>Edit Client</h2> : <h2>Add New Client</h2>}
                 </div>
                 <div className="input_field" >
                     <span>
@@ -84,34 +89,34 @@ function AddClient(props) {
                 {formState.nameValid === 1 && <ErrorMsg text="Name can only contain letters and spaces" />}
                 {(formState.nameValid === 2 && <ErrorMsg text="Name must contain at least 2 letters" />)}
                 {formState.nameValid === 0 && <ErrorMsg />}
-                
-                        <form>
-                            <div className="input_field"> <span><i aria-hidden="true" className="fa fa-phone"></i></span>
-                                <input type="text" name="phone" placeholder="Phone Number"
-                                    onChange={e =>
-                                        setState({
-                                            ...formState,
-                                            phone: e.target.value,
-                                        })}
-                                    onKeyUp={e => {
-                                        setState({
-                                            ...formState, phoneValid: phoneValidation(e.target.value)
-                                        })
-                                    }
-                                    }
-                                />
-                            </div>
-                            {
-                                (formState.phoneValid === 0 && <ErrorMsg />) ||
-                                (formState.phoneValid === 1 && <ErrorMsg text="Phone number can only contain digits" />) ||
-                                (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />)
+
+                <form>
+                    <div className="input_field"> <span><i aria-hidden="true" className="fa fa-phone"></i></span>
+                        <input type="text" name="phone" placeholder="Phone Number"
+                            onChange={e =>
+                                setState({
+                                    ...formState,
+                                    phone: e.target.value,
+                                })}
+                            onKeyUp={e => {
+                                setState({
+                                    ...formState, phoneValid: phoneValidation(e.target.value)
+                                })
                             }
-                            <input className="button" type="submit" value="Submit" onClick={
-                                AddClient
-                            } />
-                            {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
-                            {!errorMsg && <ErrorMsg />}
-                        </form>
+                            }
+                        />
+                    </div>
+                    {
+                        (formState.phoneValid === 0 && <ErrorMsg />) ||
+                        (formState.phoneValid === 1 && <ErrorMsg text="Phone number can only contain digits" />) ||
+                        (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />)
+                    }
+                    <input className="button" type="submit" value="Submit" onClick={
+                        onSubmit
+                    } />
+                    {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
+                    {!errorMsg && <ErrorMsg />}
+                </form>
             </div>
         </div>
     )

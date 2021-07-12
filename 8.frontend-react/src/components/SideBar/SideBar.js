@@ -74,7 +74,7 @@ function SideBar(props) {
                 <Link to="/classes" />
               </MenuItem>
               <MenuItem active={location.pathname === '/packages'} icon={<FiPackage />}>
-                Packages
+              Packages
                 <Link to="/packages" />
               </MenuItem>
               <MenuItem active={location.pathname === '/users'} icon={<FaUserCog />}>

@@ -15,6 +15,7 @@ function Classes(props) {
     const [modalIsOpenEditClass, setIsOpenEditClassModal] = useState(false);
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
 
     const columns = useMemo(() => [
         {
@@ -44,12 +45,14 @@ function Classes(props) {
                     }}>
                         {<i class="fa fa-trash"></i>}
                     </button>
-                    {/* <button class="row-button" onClick={() => {
-                        openModalEditClass();
+                    <button class="row-button" onClick={() => {
                         setRow(row.original);
+                        setIsEdit(true);
+                        openModalAddClass();
+                        
                     }}>
                         {<i class="fa fa-edit"></i>}
-                    </button> */}
+                    </button>
                 </div>)
         },
     ], []
@@ -152,7 +155,7 @@ function Classes(props) {
                 className="modal"
                 ariaHideApp={false}
             >
-                <AddClass closeModal={closeModalAddClass} changeDataState={changeDataState} />
+                <AddClass closeModal={closeModalAddClass} changeDataState={changeDataState} classData={row} isEdit={isEdit}/>
             </Modal>
             <Modal
                 isOpen={modalIsOpenRemoveClass}
@@ -163,7 +166,7 @@ function Classes(props) {
             >
                 <ConfirmModal onConfirm={DeleteClass} onDismiss={closeModalRemoveClass} text={`Are you sure you want to delete ${row.class_name}?`} />
             </Modal>
-            <Modal
+            {/* <Modal
                 isOpen={modalIsOpenEditClass}
                 onRequestClose={closeModalEditClass}
                 contentLabel="Edit Client Modal"
@@ -171,7 +174,7 @@ function Classes(props) {
                 ariaHideApp={false}
             >
                 <EditClass closeModal={closeModalEditClass} changeDataState={changeDataState} classData={row} />
-            </Modal>
+            </Modal> */}
         </div>
     )
 }

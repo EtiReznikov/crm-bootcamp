@@ -18,7 +18,7 @@ import {
 } from "react-router-dom";
 import LoginWrapper from './components/authentication/LoginWrapper/LoginWrapper'
 import { useState, useEffect } from 'react';
-import Calendar from './components/Calendar/Calendar';
+import CalendarPage from './components/CalendarPage/CalendarPage';
 
 
 
@@ -56,7 +56,7 @@ function App(props) {
             <Home />
           </Route>
           <Route path="/calendar">
-            <Calendar />
+            <CalendarPage />
           </Route>
           <Route path="/loginSignup">
             <LoginWrapper onUserChange={handleUserChange} isLogin={true} isRegister={false} />
