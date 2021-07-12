@@ -4,37 +4,45 @@ import React, { useState } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import './AddClass.scss'
-import { SketchPicker, CirclePicker } from 'react-color';
+import { CirclePicker } from 'react-color';
+import 'material-design-inspired-color-picker'
 
 
 import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';
 function AddClass(props) {
+    console.log(props.classData)
+    const daysObjTemp = {};
+    if (props.isEdit) {
+        const daysTemp = props.classData.days.split(', ');
+        for (let day of daysTemp) {
+            daysObjTemp[day] = true;
+        }
+    }
     const [formState, setState] = useState({
-        className: "",
+        className: props.isEdit ? props.classData.class_name : "",
         classValid: 0,
-        classDescription: "",
-        classColor: '#E7E7E7',
-        hours: '10',
-        minutes: '00',
+        classDescription: props.isEdit ? props.classData.description : "",
+        classColor: props.isEdit ? props.classData.color : "#2196f3",
+        hours: props.isEdit ? props.classData.time.substring(0, 2) : "10",
+        minutes: props.isEdit ? props.classData.time.substring(3) : "00",
         days: {
-            monday: false,
-            thursday: false,
-            wednesday: false,
-            tuesday: false,
-            friday: false,
-            saturday: false,
-            sunday: false
+            monday: props.isEdit && daysObjTemp.monday ? daysObjTemp.monday : false,
+            thursday: props.isEdit && daysObjTemp.thursday ? daysObjTemp.thursday : false,
+            wednesday: props.isEdit && daysObjTemp.wednesday ? daysObjTemp.wednesday : false,
+            tuesday: props.isEdit && daysObjTemp.tuesday ? daysObjTemp.tuesday : false,
+            friday: props.isEdit && daysObjTemp.friday ? daysObjTemp.friday : false,
+            saturday: props.isEdit && daysObjTemp.saturday ? daysObjTemp.saturday : false,
+            sunday: props.isEdit && daysObjTemp.sunday ? daysObjTemp.sunday : false,
         },
     }
     );
 
-
     const [hhValid, setHHValid] = useState(true);
     const [mmValid, setMMValid] = useState(true);
     const [errorMsg, setErrorMsg] = useState(false);
-   
 
-    const AddClass = (e) => {
+
+    const onSubmit = (e) => {
         const nameValid = nameLengthValidation(formState.className);
         setState({
             ...formState,
@@ -42,29 +50,55 @@ function AddClass(props) {
         })
         setErrorMsg(false);
         if (nameValid === 0) {
-            axios.post('http://localhost:991/classes/addClass/', {
-                className: formState.className,
-                classDescription: formState.classDescription,
-                color: formState.color,
-                business_id: localStorage.getItem('business_id'),
-                
-                dayAndTime:JSON.stringify( {
-                    hours: formState.hours,
-                    min: formState.minutes,
-                    days: chosenDays()
+            if (props.isEdit) {
+                axios.post('http://localhost:991/classes/editClassData/', {
+                    className: formState.className,
+                    classDescription: formState.classDescription,
+                    color: formState.classColor,
+                    classId: props.classData.class_id,
+                    dayAndTime: JSON.stringify({
+                        hours: formState.hours,
+                        min: formState.minutes,
+                        days: chosenDays()
+                    })
+                }).then(function (response) {
+                    if (response.data === true) {
+                        props.closeModal();
+                        props.changeDataState();
+                    }
+                    else {
+                        setErrorMsg(true);
+                    }
                 })
-            }).then(function (response) {
-                if (response.data === true) {
-                    props.closeModal();
-                    props.changeDataState();
-                }
-                else {
-                    setErrorMsg(true);
-                }
-            })
-                .catch(function (error) {
-                    console.log(error)
-                });
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+            }
+            else {
+                axios.post('http://localhost:991/classes/addClass/', {
+                    className: formState.className,
+                    classDescription: formState.classDescription,
+                    color: formState.classColor,
+                    business_id: localStorage.getItem('business_id'),
+
+                    dayAndTime: JSON.stringify({
+                        hours: formState.hours,
+                        min: formState.minutes,
+                        days: chosenDays()
+                    })
+                }).then(function (response) {
+                    if (response.data === true) {
+                        props.closeModal();
+                        props.changeDataState();
+                    }
+                    else {
+                        setErrorMsg(true);
+                    }
+                })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+            }
         }
         else {
             console.log("name error")
@@ -90,7 +124,7 @@ function AddClass(props) {
 
     const hourUp = () => {
         var hh = parseInt(formState.hours);
-        if (hh == 23) hh = 0;
+        if (hh === 23) hh = 0;
         else hh++;
         if (0 <= hh && hh <= 9)
             hh = '0' + hh;
@@ -102,7 +136,7 @@ function AddClass(props) {
 
     const hourDown = () => {
         var hh = parseInt(formState.hours);
-        if (hh == 0) hh = 23;
+        if (hh === 0) hh = 23;
         else hh--;
         if (0 <= hh && hh <= 9)
             hh = '0' + hh;
@@ -114,7 +148,7 @@ function AddClass(props) {
 
     const minutesUp = () => {
         var mm = parseInt(formState.minutes);
-        if (mm == 59) mm = 0;
+        if (mm === 59) mm = 0;
         else mm++;
         if (0 <= mm && mm <= 9)
             mm = '0' + mm;
@@ -126,7 +160,7 @@ function AddClass(props) {
 
     const minutesDown = () => {
         var mm = parseInt(formState.minutes);
-        if (mm == 0) mm = 59;
+        if (mm === 0) mm = 59;
         else mm--;
         if (0 <= mm && mm <= 9)
             mm = '0' + mm;
@@ -137,10 +171,8 @@ function AddClass(props) {
     }
 
     const handleCheckClick = (e, day) => {
-        // console.log(e);
-        console.log(day.day)
         const days = formState.days
-        days[day.day] = !days[day]
+        days[day.day] = !days[day.day]
         setState({
             ...formState,
             days: days
@@ -165,7 +197,7 @@ function AddClass(props) {
 
             <div className="form_container">
                 <div className="title_container">
-                    <h2>Add New Class</h2>
+                    {props.isEdit ? <h2>Edit Class</h2> : <h2>Add New Class</h2>}
                 </div>
                 <form>
                     <div className="input_field" >
@@ -176,6 +208,7 @@ function AddClass(props) {
                             name="className"
                             type="text"
                             placeholder="Class Name"
+                            value={formState.className}
                             onChange={e =>
                                 setState({
                                     ...formState,
@@ -195,6 +228,7 @@ function AddClass(props) {
                             type="text"
                             placeholder="Description"
                             id="class-description"
+                            value={formState.classDescription}
                             onChange={e =>
                                 setState({
                                     ...formState,
@@ -207,10 +241,10 @@ function AddClass(props) {
                         <label for="color-picker" class="color-picker">
                             Pick A Color:
                         </label>
-                        <CirclePicker id="color-picker" circleSize={25} onChange={(e) => {
+                        <CirclePicker id="color-picker" color={formState.classColor} circleSize={26} onChange={(e) => {
                             setState({
                                 ...formState,
-                                color: e.hex
+                                classColor: e.hex
                             })
                         }} />
                     </div>
@@ -221,15 +255,16 @@ function AddClass(props) {
 
                         <div id="weekday-wrapper">
                             {
-                                ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map(
-                                    day => <>
-                                        <input type="checkbox" id={`weekday-'${day}'`} class="weekday" value={day}
-                                            onClick={(e) => { handleCheckClick(e, { day }) }}
-                                        />
-                                        <label for={`weekday-'${day}'`}>
-                                            {day.charAt(0).toUpperCase()}
-                                        </label>
-                                    </>
+                                ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map(
+                                    day =>
+                                        <>
+                                            <input type="checkbox" id={`weekday-'${day}'`} class="weekday" value={day} checked={formState.days[day]}
+                                                onClick={(e) => { handleCheckClick(e, { day }) }}
+                                            />
+                                            <label for={`weekday-'${day}'`}>
+                                                {day.charAt(0).toUpperCase()}
+                                            </label>
+                                        </>
                                 )
                             }
                         </div>
@@ -239,13 +274,13 @@ function AddClass(props) {
                                     hourUp
                                 }></i>
                                 {
-                                    (hhValid && <input class="weekday" id="hh-select" value={formState.hours} placeholder="hh" maxLength="2"
+                                    (hhValid && <input class="weekday" id="hh-select" value={formState.hours} placeholder="hh" value={formState.hours} maxLength="2"
                                         onChange={e => {
                                             changeHH(e);
                                         }
                                         }></input>)
                                     ||
-                                    (!hhValid && <input class="weekday" id="hh-select-error" value={formState.hours} placeholder="hh" maxLength="2"
+                                    (!hhValid && <input class="weekday" id="hh-select-error" value={formState.hours} placeholder="hh" value={formState.hours} maxLength="2"
                                         onChange={e => {
                                             changeHH(e);
                                         }
@@ -256,13 +291,13 @@ function AddClass(props) {
                             <div id="min-wrapper">
                                 <i id="upMM" class="fa fa-chevron-up" onClick={minutesUp}></i>
                                 {
-                                    (mmValid && <input class="weekday" id="mm-select" value={formState.minutes} placeholder="mm" maxLength="2"
+                                    (mmValid && <input class="weekday" id="mm-select" value={formState.minutes} placeholder="mm" value={formState.minutes} maxLength="2"
                                         onChange={e => {
                                             changeMM(e);
                                         }
                                         }></input>)
                                     ||
-                                    (!mmValid && <input class="weekday" id="mm-select-error" value={formState.minutes} placeholder="mm" maxLength="2"
+                                    (!mmValid && <input class="weekday" id="mm-select-error" value={formState.minutes} placeholder="mm" value={formState.minutes} maxLength="2"
                                         onChange={e => {
                                             changeMM(e);
                                         }
@@ -275,7 +310,7 @@ function AddClass(props) {
 
 
                     <input className="button" type="submit" value="Submit" onClick={
-                        AddClass
+                        onSubmit
                     } />
                     {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
                     {!errorMsg && <ErrorMsg />}

@@ -37,20 +37,20 @@ class classes extends controller
     }
 
     public function editClassData(){
-        // $clientId = $this->data->clientId;
-        // $clientName = $this->data->clientName;
-        // $clientPhone= $this->data->clientPhone;
-       
+        $classId = $this->data->classId;
+        $className = $this->data->className;
+        $description = $this->data->classDescription;
+        $color = $this->data->color;
+        $dayAndTime = $this->data->dayAndTime;
         
-      
-        // $editClient = $this->model->editClient($clientId, $clientName, $clientPhone);
-        // if ($editClient){
-        //     return true;
-        // }
-        // else{
-        //     throw new Exception('DB error');
-        // }
-         //*TODO add validation
+        $editClass = $this->model->editClass($classId, $className, $description, $color, $dayAndTime);
+        if ($editClass){
+            return true;
+        }
+        else{
+            throw new Exception('DB error');
+        }
+        //*TODO add validation
     }
 
     public function removeClass(){

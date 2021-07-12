@@ -35,33 +35,35 @@ class packages extends controller
         }
     }
 
-    // public function editClientData(){
-    //     $clientId = $this->data->clientId;
-    //     $clientName = $this->data->clientName;
-    //     $clientPhone= $this->data->clientPhone;
-       
+    public function editPackageData(){
+        // $clientId = $this->data->clientId;
+        // $clientName = $this->data->clientName;
+        // $clientPhone= $this->data->clientPhone;
+        $packageId = $this->data->packageId;
+        $name = $this->data->name;
+        $price = $this->data->price;
+        $selectedClasses= $this->data->selectedClasses;
         
-      
-    //     $editClient = $this->model->editClient($clientId, $clientName, $clientPhone);
-    //     if ($editClient){
-    //         return true;
-    //     }
-    //     else{
-    //         throw new Exception('DB error');
-    //     }
-    //      //*TODO add validation
-    // }
+        $editPackage = $this->model->editPackage($packageId, $name, $price, $selectedClasses );
+        if ($editPackage){
+            return true;
+        }
+        else{
+            throw new Exception('DB error');
+        }
+         //*TODO add validation
+    }
 
-    // public function removeClient(){
-    //     $clientId=$this->data->clientId;
-    //     $removeClient = $this->model->removeClientById($clientId);
-    //     return $removeClient;
-    //     //*TODO add validation
-    //     if ($removeClient){
-    //         return true;
-    //     }
-    //     else{
-    //         throw new Exception('DB error');
-    //     }
-    // }
+    public function removePackage(){
+        $packageId=$this->data->packageId;
+        $removePackage = $this->model->removePackageById($packageId);
+        return $removePackage;
+        //*TODO add validation
+        if ($removePackage){
+            return true;
+        }
+        else{
+            throw new Exception('DB error');
+        }
+    }
 }

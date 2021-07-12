@@ -44,10 +44,10 @@ function AddUser(props) {
                         successStatus: error.response.data.status
                     })
                     //Middle ware ware fails
-                    if (error.response.data.status === 10) {
-                        localStorage.removeItem('user_token');
-                        localStorage.removeItem('business_id');
-                    }
+                    // if (error.response.data.status === 10) {
+                    //     localStorage.removeItem('user_token');
+                    //     localStorage.removeItem('business_id');
+                    // }
                 });
         }
        

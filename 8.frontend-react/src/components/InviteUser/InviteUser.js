@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ErrorMsg from '../../subComponents/ErrorMsg/ErrorMsg';
 import axios from 'axios';
-import Text from '../../Text/Text';
+import Text from '../SubComponents/Text/Text';
 // import './InviteUser.scss'
 import '../../Views/Form.scss'
 import {
