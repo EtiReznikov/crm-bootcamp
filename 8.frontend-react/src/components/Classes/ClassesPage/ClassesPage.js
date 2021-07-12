@@ -7,7 +7,7 @@ import './ClassesPage.scss';
 import Modal from 'react-modal';
 import AddClass from '../AddClass/AddClass';
 import ConfirmModal from '../../SubComponents/ConfirmModal/ConfirmModal';
-import EditClass from '../EditClass/EditClass';
+
 function Classes(props) {
     const [data, setData] = useState([]);
     const [modalIsOpenAddClass, setIsOpenAddClassModal] = useState(false);
@@ -133,7 +133,10 @@ function Classes(props) {
         })();
     }, [dataHasChanged]);
 
-
+    const OnAddClassClick = () => {
+        setIsEdit(false);
+        openModalAddClass();
+    }
 
     return (
         <div id="classes-page">
@@ -142,7 +145,7 @@ function Classes(props) {
                 <div id="button-wrapper">
                     <Button
                         className="add-class-btn"
-                        onClick={openModalAddClass}
+                        onClick={OnAddClassClick}
                         text={<i class="fa fa-calendar-plus-o"></i>}
                     />
                 </div>

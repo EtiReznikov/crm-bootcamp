@@ -7,15 +7,15 @@ import './ClientsPage.scss';
 import Modal from 'react-modal';
 import AddClient from '../AddClient/AddClient';
 import ConfirmModal from '../../SubComponents/ConfirmModal/ConfirmModal';
-import EditClient from '../EditClient/EditClient';
 function Clients(props) {
-    const [data, setData] = useState([]);
-    const [modalIsOpenAddUser, setIsOpenAddUserModal] = useState(false);
-    const [modalIsOpenRemoveUser, setIsOpenRemoveUserModal] = useState(false);
-    const [modalIsOpenEditUser, setIsOpenEditUserModal] = useState(false);
+
+    const [modalIsOpenAddClient, setIsOpenAddClientModal] = useState(false);
+    const [modalIsOpenRemoveClient, setIsOpenRemoveClientModal] = useState(false);
+    const [modalIsOpenEditClient, setIsOpenEditClientModal] = useState(false);
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
-
+    const [isEdit, setIsEdit] = useState(false);
+    const [data, setData] = useState([]);
     const columns = useMemo(() => [
         {
             Header: "Name",
@@ -31,14 +31,16 @@ function Clients(props) {
             Cell: ({ row }) => (
                 <div id="row-button-wrapper">
                     <button class="row-button" onClick={() => {
-                        openModalRemoveUser();
+                        openModalRemoveClient();
                         setRow(row.original);
                     }}>
                         {<i class="fa fa-trash"></i>}
                     </button>
                     <button class="row-button" onClick={() => {
-                        openModalEditUser();
+                        setIsEdit(true);
                         setRow(row.original);
+                        openModalAddClient();
+                        
                     }}>
                         {<i class="fa fa-edit"></i>}
                     </button>
@@ -50,27 +52,27 @@ function Clients(props) {
     function changeDataState() {
         setDataHasChanged(!dataHasChanged);
     }
-    const openModalRemoveUser = () => {
-        setIsOpenRemoveUserModal(true);
+    const openModalRemoveClient = () => {
+        setIsOpenRemoveClientModal(true);
     }
 
-    const closeModalRemoveUser = () => {
-        setIsOpenRemoveUserModal(false);
+    const closeModalRemoveClient = () => {
+        setIsOpenRemoveClientModal(false);
     }
 
-    const openModalAddUser = () => {
-        setIsOpenAddUserModal(true);
+    const openModalAddClient = () => {
+        setIsOpenAddClientModal(true);
     }
 
-    const closeModalAddUser = () => {
-        setIsOpenAddUserModal(false);
+    const closeModalAddClient = () => {
+        setIsOpenAddClientModal(false);
     }
-    const openModalEditUser = () => {
-        setIsOpenEditUserModal(true);
+    const openModalEditClient = () => {
+        setIsOpenEditClientModal(true);
     }
 
-    const closeModalEditUser = () => {
-        setIsOpenEditUserModal(false);
+    const closeModalEditClient = () => {
+        setIsOpenEditClientModal(false);
     }
 
     useEffect(() => {
@@ -93,7 +95,7 @@ function Clients(props) {
         axios.post('http://localhost:991/clients/removeClient/', {
             clientId: row.client_id
         }).then(function (response) {
-            closeModalRemoveUser();
+            closeModalRemoveClient();
             changeDataState();
             //TODO: handle error
 
@@ -104,8 +106,10 @@ function Clients(props) {
             });
     };
 
-
-
+    const OnAddClientClick = () => {
+        setIsEdit(false);
+        openModalAddClient();
+    }
 
     return (
         <div id="clients-page">
@@ -114,39 +118,39 @@ function Clients(props) {
                 <div id="button-wrapper">
                     <Button
                         className="add-client-btn"
-                        onClick={openModalAddUser}
+                        onClick={OnAddClientClick}
                         text={<i class="fa fa-user-plus"></i>}
                     />
                 </div>
                 <Table columns={columns} data={data} />
             </div>
             <Modal
-                isOpen={modalIsOpenAddUser}
-                onRequestClose={closeModalAddUser}
+                isOpen={modalIsOpenAddClient}
+                onRequestClose={closeModalAddClient}
                 contentLabel="Add Client Modal"
                 className="modal"
                 ariaHideApp={false}
             >
-                <AddClient closeModal={closeModalAddUser} changeDataState={changeDataState} />
+                <AddClient closeModal={closeModalAddClient} changeDataState={changeDataState} clientData={row} isEdit={isEdit}  />
             </Modal>
             <Modal
-                isOpen={modalIsOpenRemoveUser}
-                onRequestClose={closeModalRemoveUser}
+                isOpen={modalIsOpenRemoveClient}
+                onRequestClose={closeModalRemoveClient}
                 contentLabel="Remove Client Modal"
                 className="modal"
                 ariaHideApp={false}
             >
-                <ConfirmModal onConfirm={DeleteClient} onDismiss={closeModalRemoveUser} text={`Are you sure you want to delete ${row.client_name}?`} />
+                <ConfirmModal onConfirm={DeleteClient} onDismiss={closeModalRemoveClient} text={`Are you sure you want to delete ${row.client_name}?`} />
             </Modal>
-            <Modal
-                isOpen={modalIsOpenEditUser}
-                onRequestClose={closeModalEditUser}
+            {/* <Modal
+                isOpen={modalIsOpenEditClient}
+                onRequestClose={closeModalEditClient}
                 contentLabel="Edit Client Modal"
                 className="modal"
                 ariaHideApp={false}
             >
-                <EditClient closeModal={closeModalEditUser} changeDataState={changeDataState} clientData={row} />
-            </Modal>
+                <EditClient closeModal={closeModalEditClient} changeDataState={changeDataState} clientData={row} />
+            </Modal> */}
         </div>
     )
 }
