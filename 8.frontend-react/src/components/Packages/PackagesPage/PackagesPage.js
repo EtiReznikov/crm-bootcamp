@@ -29,19 +29,19 @@ function PackagesPage(props) {
             width: '1em',
             Cell: ({ row }) => (
                 <div id="row-button-wrapper">
-                    <button class="row-button" onClick={() => {
+                    <button className="row-button" onClick={() => {
                         openModalRemovePackage();
                         setRow(row.original);
                     }}>
-                        {<i class="fa fa-trash"></i>}
+                        {<i className="fa fa-trash"></i>}
                     </button>
-                    <button class="row-button" onClick={() => {
+                    <button className="row-button" onClick={() => {
                         setRow(row.original);
                         setIsEdit(true);
                         openModalAddPackage();
 
                     }}>
-                        {<i class="fa fa-edit"></i>}
+                        {<i className="fa fa-edit"></i>}
                     </button>
                 </div>)
         },
@@ -105,18 +105,27 @@ function PackagesPage(props) {
     }
 
     return (
-        <div id="package-page">
-            <Headline id="user-page-header" text="Packages" />
+        <div id="package-page" className="page-wrapper">
+            {
+            // !errorMsg &&
+                <>
+                    <div id="btn-head-wrapper">
+                        <Headline id="client-page-head" text="Packages" />
+                        <button className="add-row" onClick={ OnAddPackageClick}>
+                            Add Package
+                        </button>
+                    </div>
+
             <div id="table-wrapper">
-                <div id="button-wrapper">
+                {/* <div id="button-wrapper">
                     <Button
                         className="add-class-btn"
                         onClick={
                             OnAddPackageClick
                         }
-                        text={<i class="fa fa-calendar-plus-o"></i>}
+                        text={<i className="fa fa-calendar-plus-o"></i>}
                     />
-                </div>
+                </div> */}
                 <Table columns={columns} data={data} />
             </div>
             <Modal
@@ -137,6 +146,13 @@ function PackagesPage(props) {
             >
                 <ConfirmModal onConfirm={DeletePackage} onDismiss={closeModalRemovePackage} text={`Are you sure you want to delete ${row.class_name}?`}  />
             </Modal>
+            </>
+}
+{/* {errorMsg &&
+                <>
+                    <Headline id="user-page-header" text="Clients" />
+                    <ErrorComponent text="Error" />
+                </>} */}
         </div>
     )
 }

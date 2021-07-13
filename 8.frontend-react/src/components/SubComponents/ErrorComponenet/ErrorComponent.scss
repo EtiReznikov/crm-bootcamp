@@ -1,0 +1,18 @@
+@import '../../../Views/colors.scss';
+.error-comp{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#msg-comp-icon{
+    font-size: 5vw;
+    margin-top: 20px;
+       // color: $menu-background;
+}
+
+#msg-comp-text{
+    font-size: 1vw;
+    // color: $menu-background;
+    margin-top: 20px;
+}

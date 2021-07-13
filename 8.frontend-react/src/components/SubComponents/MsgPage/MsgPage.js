@@ -6,7 +6,6 @@ import './MsgPage.scss'
 
 
 function MsgPage(props) {
-    console.log(props.location.state)
     return (
         <div className="msg-page">
             <i id="msg-page-icon" className={props.location.state.icon}></i>

@@ -1,3 +1,4 @@
+@import '../../../Views/colors.scss';
 .confirm-buttons-wrapper{
     display: flex;
     justify-content: space-evenly;
@@ -20,15 +21,39 @@
     cursor: pointer;
 }
 
-#yes-btn, #no-btn{
-    background: none;
-    font-size: 90px;
+// #yes-btn, #no-btn{
+//     background: none;
+//     font-size: 90px;
+// }
+
+#ok-btn{
+    border-radius: 3px;
+    width: 125px;
+    font-weight: bold;
 }
 
-#yes-btn{
-    color: #5cdb5c;
-}
+// #yes-btn{
+//     color: #5cdb5c;
+// }
 
 #no-btn{
-    color: #ff0021;
+    background-color: #FFFFFF;
+    color: $menu-background;
+    border-color: $menu-background;
+    border: 0.5px solid;
+    border-radius: 3px;
+    width: 125px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#error-confirm{
+    margin-top: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#confirm-title{
+    font-size: 11px;
+    margin-bottom: 25px;
 }

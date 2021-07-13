@@ -1,3 +1,5 @@
+
+
 export function getNextDay (dayName, hour, minutes, weekDiff) {
 
 	// The current day
@@ -18,9 +20,10 @@ export function getNextDay (dayName, hour, minutes, weekDiff) {
 
 	// Get the timestamp for the desired day
 	var nextDayTimestamp = date.getTime() + (1000 * 60 * 60 * 24 * diff);
-    var date= new Date(nextDayTimestamp);
-    date.setHours(hour, minutes)
+    var dateResult= new Date(nextDayTimestamp);
+    dateResult.setHours(hour, minutes)
 	// Get the next day
-	return new Date(date);
-
+	return new Date(dateResult);
 };
+
+

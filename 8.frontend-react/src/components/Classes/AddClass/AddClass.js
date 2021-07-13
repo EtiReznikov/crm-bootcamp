@@ -10,7 +10,6 @@ import 'material-design-inspired-color-picker'
 
 import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';
 function AddClass(props) {
-    console.log(props.classData)
     const daysObjTemp = {};
     if (props.isEdit) {
         const daysTemp = props.classData.days.split(', ');
@@ -71,7 +70,7 @@ function AddClass(props) {
                     }
                 })
                     .catch(function (error) {
-                        console.log(error)
+                        setErrorMsg(true);
                     });
             }
             else {
@@ -96,7 +95,7 @@ function AddClass(props) {
                     }
                 })
                     .catch(function (error) {
-                        console.log(error)
+                        setErrorMsg(true);
                     });
             }
         }
@@ -191,8 +190,8 @@ function AddClass(props) {
     }
     return (
         <div className="form_wrapper">
-            <button class="exit" onClick={props.closeModal} >
-                <i className="fa fa-window-close"></i>
+            <button className="exit" onClick={props.closeModal} >
+                <i id="exit-wind" className="fa fa-times"></i>
             </button>
 
             <div className="form_container">
@@ -209,11 +208,13 @@ function AddClass(props) {
                             type="text"
                             placeholder="Class Name"
                             value={formState.className}
-                            onChange={e =>
+                            onChange={e => {
+                                setErrorMsg(false);
                                 setState({
                                     ...formState,
                                     className: e.target.value,
                                 })
+                            }
                             }
                         />
                     </div>
@@ -229,37 +230,44 @@ function AddClass(props) {
                             placeholder="Description"
                             id="class-description"
                             value={formState.classDescription}
-                            onChange={e =>
+                            onChange={e => {
+                                setErrorMsg(false);
                                 setState({
                                     ...formState,
                                     classDescription: e.target.value,
                                 })
                             }
+                            }
                         />
                     </div>
                     <div className="input_field" id="color-wrapper">
-                        <label for="color-picker" class="color-picker">
+                        <label for="color-picker" className="color-picker">
                             Pick A Color:
                         </label>
-                        <CirclePicker id="color-picker" color={formState.classColor} circleSize={26} onChange={(e) => {
-                            setState({
-                                ...formState,
-                                classColor: e.hex
-                            })
-                        }} />
+                        <CirclePicker id="color-picker" color={formState.classColor} circleSize={25}
+                            onChange={(e) => {
+                                setErrorMsg(false);
+                                setState({
+                                    ...formState,
+                                    classColor: e.hex
+                                })
+                            }} />
                     </div>
-                    <label for="color-picker" class="color-picker">
+                    <label for="color-picker" className="color-picker">
                         Pick Date and Time:
                     </label>
-                    <div class="weekDays-time-selector">
+                    <div className="weekDays-time-selector">
 
                         <div id="weekday-wrapper">
                             {
                                 ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map(
                                     day =>
                                         <>
-                                            <input type="checkbox" id={`weekday-'${day}'`} class="weekday" value={day} checked={formState.days[day]}
-                                                onClick={(e) => { handleCheckClick(e, { day }) }}
+                                            <input type="checkbox" id={`weekday-'${day}'`} className="weekday" value={day} checked={formState.days[day]}
+                                                onClick={(e) => {
+                                                    setErrorMsg(false);
+                                                    handleCheckClick(e, { day })
+                                                }}
                                             />
                                             <label for={`weekday-'${day}'`}>
                                                 {day.charAt(0).toUpperCase()}
@@ -270,40 +278,55 @@ function AddClass(props) {
                         </div>
                         <div id="time-wrapper">
                             <div id="hour-wrapper">
-                                <i id="upHH" class="fa fa-chevron-up" onClick={
-                                    hourUp
-                                }></i>
+                                <i id="upHH" className="fa fa-chevron-up" onClick={() => {
+                                    setErrorMsg(false);
+                                    hourUp()
+                                }}></i>
                                 {
-                                    (hhValid && <input class="weekday" id="hh-select" value={formState.hours} placeholder="hh" value={formState.hours} maxLength="2"
+                                    hhValid && <input className="weekday" id="hh-select" placeholder="hh" value={formState.hours} maxLength="2"
                                         onChange={e => {
+                                            setErrorMsg(false);
                                             changeHH(e);
                                         }
-                                        }></input>)
-                                    ||
-                                    (!hhValid && <input class="weekday" id="hh-select-error" value={formState.hours} placeholder="hh" value={formState.hours} maxLength="2"
-                                        onChange={e => {
-                                            changeHH(e);
-                                        }
-                                        }></input>)
+                                        }></input>}
+
+                                {!hhValid && <input className="weekday" id="hh-select-error" placeholder="hh" value={formState.hours} maxLength="2"
+                                    onChange={e => {
+                                        setErrorMsg(false);
+                                        changeHH(e);
+                                    }
+                                    }></input>
                                 }
-                                <i id="downHH" class="fa fa-chevron-down" onClick={hourDown}></i>
+                                <i id="downHH" className="fa fa-chevron-down" onClick={() => {
+                                    setErrorMsg(false);
+                                    hourDown()
+                                }}></i>
                             </div>
                             <div id="min-wrapper">
-                                <i id="upMM" class="fa fa-chevron-up" onClick={minutesUp}></i>
+                                <i id="upMM" className="fa fa-chevron-up" onClick={() => {
+                                    setErrorMsg(false);
+                                    minutesUp()
+                                }}></i>
                                 {
-                                    (mmValid && <input class="weekday" id="mm-select" value={formState.minutes} placeholder="mm" value={formState.minutes} maxLength="2"
+                                    (mmValid && <input className="weekday" id="mm-select" placeholder="mm" value={formState.minutes} maxLength="2"
                                         onChange={e => {
+                                            setErrorMsg(false);
                                             changeMM(e);
                                         }
                                         }></input>)
                                     ||
-                                    (!mmValid && <input class="weekday" id="mm-select-error" value={formState.minutes} placeholder="mm" value={formState.minutes} maxLength="2"
+                                    (!mmValid && <input className="weekday" id="mm-select-error" placeholder="mm" value={formState.minutes} maxLength="2"
                                         onChange={e => {
+                                            setErrorMsg(false);
                                             changeMM(e);
                                         }
                                         }></input>)
                                 }
-                                <i id="downMM" class="fa fa-chevron-down" onClick={minutesDown}></i>
+                                <i id="downMM" className="fa fa-chevron-down"
+                                    onClick={() => {
+                                        setErrorMsg(false);
+                                        minutesDown()
+                                    }}></i>
                             </div>
                         </div>
                     </div>

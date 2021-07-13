@@ -5,7 +5,7 @@ import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import '../AddPackage/AddPackage.scss';
 import Select from 'react-select';
-import { priceValidation, nameValidation, phoneLengthValidation, nameLengthValidation } from '../../../tools/validation';
+import { priceValidation, nameValidation, nameLengthValidation } from '../../../tools/validation';
 function AddPackage(props) {
     const [formState, setState] = useState({
         name: props.isEdit ? props.packageData.package_name : "",
@@ -59,10 +59,11 @@ function AddPackage(props) {
                     });
             }
         })();
-    },[]);
+    }, []);
 
 
     const onClassesSelect = (selectedOptions) => {
+        console.log(selectedOptions);
         setState({
             ...formState,
             selectedClasses: selectedOptions
@@ -81,29 +82,29 @@ function AddPackage(props) {
         })
         setErrorMsg(false);
         if (valid) {
-            if (props.isEdit ) {
+            if (props.isEdit) {
                 axios.post('http://localhost:991/packages/editPackageData/', {
                     packageId: props.packageData.package_id,
                     name: formState.name,
                     price: formState.price,
                     selectedClasses: formState.selectedClasses,
                 })
-                .then(function (response) {
-                    if (response.data === true) {
-                        props.closeModal();
-                        props.changeDataState();
-                    }
-                    else {
-                     
-                    }
-                })
+                    .then(function (response) {
+                        if (response.data === true) {
+                            props.closeModal();
+                            props.changeDataState();
+                        }
+                        else {
+
+                        }
+                    })
                     .catch(function (error) {
                         console.log(error)
                     });
-                   
+
             }
             else {
-                
+
                 axios.post('http://localhost:991/packages/addPackage/', {
                     name: formState.name,
                     price: formState.price,
@@ -130,8 +131,8 @@ function AddPackage(props) {
     return (
         <div className="form_wrapper">
 
-            <button class="exit" onClick={props.closeModal} >
-                <i className="fa fa-window-close"></i>
+            <button className="exit" onClick={props.closeModal} >
+                <i id="exit-wind" className="fa fa-times"></i>
             </button>
 
             <div className="form_container">
@@ -141,7 +142,7 @@ function AddPackage(props) {
                 <form>
                     <div className="input_field" >
                         <span>
-                            <i aria-hidden="true" className="fa fa-object-ungroup"></i>
+                            <i aria-hidden="true" className="fa fa-object-un-group"></i>
                         </span>
                         <input
                             name="name"
@@ -164,7 +165,7 @@ function AddPackage(props) {
                     {(formState.nameValid === 2 && <ErrorMsg text="Name must contain at least 2 letters" />)}
                     {formState.nameValid === 0 && <ErrorMsg />}
                     <div className="input_field" >
-                        <label class="classes-picker">
+                        <label className="classes-picker">
                             Pick Classes:
                         </label>
 

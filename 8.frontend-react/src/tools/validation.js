@@ -110,7 +110,7 @@ export function passwordStrengthValidation(password){
  */
 
  export function timeValidation(time){
-    return  (time.length==2 && /^\d+$/.test(time));  
+    return  (time.length===2 && /^\d+$/.test(time));  
 }
 
 /**

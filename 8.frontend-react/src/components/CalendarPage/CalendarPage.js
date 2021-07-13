@@ -23,21 +23,7 @@ function CalendarPage(props) {
     };
   }
 
-  const [myEventsList, setEventsList] = useState([
-    {
-      'title': 'All Day Event very long title',
-      'allDay': true,
-      'start': getNextDay('Monday'),
-      'end': getNextDay('Monday'),
-      'color': "red"
-
-    },
-    {
-      'title': 'Long Event',
-      'start': getNextDay('Friday'),
-      'end': getNextDay('Friday'),
-    },
-  ]);
+  const [myEventsList, setEventsList] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -46,7 +32,6 @@ function CalendarPage(props) {
       })
         .then((response) => {
           let data = []
-          var startDate = new Date();
           for (const classValue of response.data) {
             let obj = JSON.parse(classValue.days_and_time)
             for (let week=-10; week<10; week++){
@@ -72,15 +57,15 @@ function CalendarPage(props) {
   }, []);
 
 
-  return <div className="calendar-page">
-    <Headline id="user-page-header" text="Calendar" />
+  return <div id="calendar-page" className="page-wrapper">
+    <Headline id="calendar-page-header" text="Calendar" />
     <Calendar
-      views={['month', 'week','day']}
+      views={['month', 'week','day', ]}
       localizer={localizer}
       events={myEventsList}
       startAccessor="start"
       endAccessor="end"
-      style={{ width: "70%", height: "85%" }}
+      style={{ width: "100%", height: "85%" }}
       eventPropGetter={(eventStyleGetter)}
     />
   </div>
