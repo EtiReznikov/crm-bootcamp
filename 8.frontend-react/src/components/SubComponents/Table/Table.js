@@ -45,7 +45,7 @@ export default function Table({ columns, data }) {
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render('Header')}
                   <span>
-                  {column.canSort && <i id="sort-icon" class="fa fa-sort"></i> }
+                  {column.canSort && <i id="sort-icon" className="fa fa-sort"></i> }
                   </span></th>
               ))}
             </tr>
@@ -72,19 +72,19 @@ export default function Table({ columns, data }) {
       <div className="pagination">
         <button className="table-navigate" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {/* {'<<'} */}
-          <i class="fa fa-angle-double-left"></i>
+          <i className="fa fa-angle-double-left"></i>
         </button>{' '}
         <button className="table-navigate" onClick={() => previousPage()} disabled={!canPreviousPage}>
           {/* {'<'} */}
-          <i class="fa fa-angle-left"></i>
+          <i className="fa fa-angle-left"></i>
         </button>{' '}
         <button className="table-navigate" onClick={() => nextPage()} disabled={!canNextPage}>
           {/* {'>'} */}
-          <i class="fa fa-angle-right"></i>
+          <i className="fa fa-angle-right"></i>
         </button>{' '}
         <button className="table-navigate" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
           {/* {'>>'} */}
-          <i class="fa fa-angle-double-right"></i>
+          <i className="fa fa-angle-double-right"></i>
         </button>{' '}
         <span>
           Page{' '}

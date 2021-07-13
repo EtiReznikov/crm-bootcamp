@@ -71,12 +71,12 @@ function Users(props) {
                             onAddUser(true);
                         }
                         }
-                        text={<i class="fa fa-user-plus"></i>}
+                        text={<i className="fa fa-user-plus"></i>}
                     />
                     <Button
                         className="remove-user-btn"
                         //TODO add remove function
-                        text={<i class="fa fa-user-times"></i>}
+                        text={<i className="fa fa-user-times"></i>}
                     />
 
                 </div>

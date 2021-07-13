@@ -1,9 +1,10 @@
 @import "../../../Views/colors.scss";
-#user-page-header{
-    font-size: 3em;
+#user-page-menu-header, #calendar-page-header{
+    font-size: 2em;
     margin-bottom: 0.5em;
     margin-top: 8px;
-    color: $menu-background;
+    color: #000408;
     font-weight: bold;
 }
+
 

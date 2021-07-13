@@ -7,31 +7,27 @@ ini_set('display_errors', '1');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Credentials: true");
-header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token , Authorization');
 $data = array();
 
-try 
-{
-        if(isset($_GET["cls"]) && isset($_GET["method"]))
-        {
-            $method = $_GET["method"];
-            $cls = $_GET["cls"];
-            $key = $_GET["key"] ?? null;
-            require_once(__DIR__."/Controllers/$cls.php");
-            $instance = new $cls();
-            $response = $instance->$method($key);
-            exit(json_encode($response));
-        }
-        else 
-        {
-            throw new Exception("Invalid Params");
-        }
-
-} 
-catch(Exception $e) 
-{
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        exit();
+    }
+    if (isset($_GET["cls"]) && isset($_GET["method"])) {
+        $method = $_GET["method"];
+        $cls = $_GET["cls"];
+        $key = $_GET["key"] ?? null;
+        require_once(__DIR__ . "/Controllers/$cls.php");
+        $instance = new $cls();
+        $response = $instance->$method($key);
+        exit(json_encode($response));
+    } else {
+        throw new Exception("Invalid Params");
+    }
+} catch (Exception $e) {
     exit(json_encode([
-        "error"=>$e
+        "error" => $e
     ]));
 }

@@ -1,9 +1,11 @@
 @import '../../../Views/colors.scss';
-#clients-page{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+// #clients-page{
+
+//     display: flex;
+//     flex-direction: column;
+//     align-items: flex-start;
+//     padding:0 2.5%;
+// }
 
 #table-wrapper{
   
@@ -14,25 +16,14 @@
     justify-content: center;
 }
 
-button{
-    background-color: $menu-background;
-    border: none;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    border-radius: 50%;
-    margin-left: 1em;
-}
+
 
 .row-button{
     background: none;
     color:$menu-background;
     font-size: 20px;
     padding: none;
+    
     
 }
 
@@ -45,4 +36,27 @@ button{
     margin-left: 20px;
     display: flex;
     align-items: center;
+}
+
+#btn-head-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.add-row{
+    border-radius: 3px;
+    padding: 8px 12px;
+
+}
+
+#client-page-head{
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    margin-top: 8px;
+    color: #000408;
+    font-weight: bold;
+    line-height: 10px;
 }

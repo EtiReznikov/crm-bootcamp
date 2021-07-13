@@ -1,5 +1,6 @@
 
 #app{
+    background-color: white;
     display: flex;
     flex-direction: column;
     font-family: Verdana, Geneva, sans-serif;
@@ -34,4 +35,17 @@ button{
 
 html, body, #root, #app{
     height: 100%;
+}
+
+#app{
+    display: flex;
+    flex-direction: row;
+}
+
+.page-wrapper{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding:0 2.5%;
 }

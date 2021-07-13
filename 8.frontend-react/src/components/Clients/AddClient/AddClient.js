@@ -131,8 +131,8 @@ function AddClient(props) {
     return (
         <div className="form_wrapper">
 
-            <button class="exit" onClick={props.closeModal} >
-                <i className="fa fa-window-close"></i>
+            <button className="exit" onClick={props.closeModal} >
+                <i id="exit-wind" className="fa fa-times"></i>
             </button>
 
             <div className="form_container">
@@ -188,8 +188,8 @@ function AddClient(props) {
                         (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />)
                     }
                      <div className="input_field" >
-                        <label class="classes-picker">
-                            Pick Classes:
+                        <label className="classes-picker">
+                            Pick Package:
                         </label>
 
                         <Select  name="packages" isSearchable={true} value={formState.selectedPackage[0]} onChange={onPackagesSelect} options={data} className="package-selector"

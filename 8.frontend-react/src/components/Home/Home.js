@@ -1,7 +1,6 @@
 import React from 'react';
 import Headline from '../SubComponents/Headline/Headline';
 import './Home.scss'
-import axios from 'axios';
 function Home(props) {
 
     

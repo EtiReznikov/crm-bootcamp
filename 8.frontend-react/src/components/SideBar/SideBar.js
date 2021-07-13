@@ -15,11 +15,10 @@ import {
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle, FiPackage } from "react-icons/fi";
 import { BiCalendar, BiRun } from "react-icons/bi";
 import { FaUserCog } from "react-icons/fa";
-import { CgGym } from "react-icons/cg";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import './SideBar.scss';
 
-import logo from '../../Views/Daco_6140061.png'
+import logo from '../../Views/logo.png'
 
 
 
@@ -28,7 +27,7 @@ function SideBar(props) {
   //create initial menuCollapse state using useState hook
   const [menuCollapse, setMenuCollapse] = useState(false);
 
-  //create a custom function that will change menucollapse state from false to true and true to false
+  //create a custom function that will change menu collapse state from false to true and true to false
   const menuIconClick = () => {
     //condition checking to change state from true to false and vice versa
     menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
@@ -37,17 +36,17 @@ function SideBar(props) {
 
   return (
     <>
-      <div id="header">
+      <div id="menu-wrapper">
         <ProSidebar collapsed={menuCollapse}>
           <SidebarHeader>
             { //TODO: changeLOGO 
             }
-            <div className="logotext">
+            <div className="logo-text">
               <p>{menuCollapse ?
                 <img id="logo" src={logo} alt="logo" /> :
                 `Hello ${localStorage.getItem('user_name')}`}</p>
             </div>
-            <div className="closemenu" onClick={menuIconClick}>
+            <div className="close-menu" onClick={menuIconClick}>
               {menuCollapse ? (
                 <FiArrowRightCircle />
               ) : (
