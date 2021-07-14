@@ -15,6 +15,7 @@ import {
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle, FiPackage } from "react-icons/fi";
 import { BiCalendar, BiRun } from "react-icons/bi";
 import { FaUserCog } from "react-icons/fa";
+import {RiUserSettingsLine} from "react-icons/ri"
 import { AiOutlineClockCircle } from "react-icons/ai";
 import './SideBar.scss';
 
@@ -60,13 +61,13 @@ function SideBar(props) {
                 Home
                 <Link to="/" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/calendar'} icon={<BiCalendar />}>
-                Calendar
-                <Link to="/calendar" />
-              </MenuItem>
               <MenuItem active={location.pathname === '/clients'} icon={<BiRun />}>
                 Clients
                 <Link to="/clients" />
+              </MenuItem>
+              <MenuItem active={location.pathname === '/calendar'} icon={<BiCalendar />}>
+                Calendar
+                <Link to="/calendar" />
               </MenuItem>
               <MenuItem active={location.pathname === '/classes'} icon={<AiOutlineClockCircle />}>
                 Classes
@@ -76,7 +77,7 @@ function SideBar(props) {
               Packages
                 <Link to="/packages" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/users'} icon={<FaUserCog />}>
+              <MenuItem active={location.pathname === '/users'} icon={<RiUserSettingsLine />}>
                 Users
                 <Link to="/users" />
               </MenuItem>

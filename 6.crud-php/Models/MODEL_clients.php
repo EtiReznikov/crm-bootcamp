@@ -67,7 +67,7 @@ class Model_clients extends Model
         $clientPhone = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $clientPhone);
         $selectedPackage= $selectedPackage[0];
         $editClient = $this->getDB()
-            ->query("UPDATE clients set client_name='$clientName', client_phone='$clientPhone' WHERE client_id=$clientId");
+            ->query("UPDATE clients set client_name='$clientName', client_phone='$clientPhone'  WHERE client_id=$clientId");
 
         $removePackageClient  =  $this->getDB()
             ->query("DELETE FROM package_client WHERE client_id=$clientId");

@@ -8,6 +8,7 @@ import Select from 'react-select';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import { phoneValidation, nameValidation, phoneLengthValidation, nameLengthValidation } from '../../../tools/validation';
+import FileUpload from '../../FileUpload/FileUpload';
 function AddClient(props) {
     const [formState, setState] = useState({
         name: props.isEdit ? props.clientData.client_name : "",
@@ -20,6 +21,8 @@ function AddClient(props) {
     const [errorMsg, setErrorMsg] = useState(false);
     const [data, setData] = useState([]);
     const [btnActive, setBtnActive] = useState(true);
+  
+
 
 
     useEffect(() => {
@@ -84,7 +87,7 @@ function AddClient(props) {
                     clientId: props.clientData.client_id,
                     clientName: formState.name,
                     clientPhone: formState.phone,
-                    selectedPackage: formState.selectedPackage
+                    selectedPackage: formState.selectedPackage,
                 })
                     .then((response) => {
                         if (response.data === true) {
@@ -107,7 +110,7 @@ function AddClient(props) {
                     name: formState.name,
                     phone: formState.phone,
                     business_id: localStorage.getItem('business_id'),
-                    selectedPackage: formState.selectedPackage
+                    selectedPackage: formState.selectedPackage,
                 }).then(function (response) {
                     if (response.data === true) {
                         props.closeModal();
@@ -124,6 +127,9 @@ function AddClient(props) {
                     });
             }
         }
+        else{
+            setBtnActive(true);
+        }
         e.preventDefault();
     }
 
@@ -133,7 +139,6 @@ function AddClient(props) {
             selectedPackage: selectedOptions
         })
     }
-
 
     return (
         <div className="form_wrapper">
@@ -202,6 +207,7 @@ function AddClient(props) {
                         <Select name="packages" isSearchable={true} value={formState.selectedPackage[0]} onChange={onPackagesSelect} options={data} className="package-selector"
                             classNamePrefix="select" />
                     </div>
+                   
                     {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
                         onClick={(e) => {
                             setBtnActive(false);

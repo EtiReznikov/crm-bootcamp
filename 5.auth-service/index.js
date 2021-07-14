@@ -8,6 +8,8 @@ var Mailgun = require('mailgun-js');
 const validators = require('./tools/validation');
 const jwt = require('jsonwebtoken');
 const app = express();
+app.use(express.static('public'));  
+app.use('/uploads', express.static('uploads')); 
 
 app.use(express.json());
 app.use(cors());
@@ -38,7 +40,8 @@ app.use('/Password', Password);
 const Accounts = require('./Routes/Accounts');
 app.use('/Accounts', Accounts);
 
-
+const Files = require('./Routes/Files');
+app.use('/Files', Files)
 
 /*
 Middleware to verify that jwt is valid
@@ -46,9 +49,10 @@ Middleware to verify that jwt is valid
 
 app.use(function (req, res, next) {
   const authentication = req.body.headers ? req.body.headers.authentication : undefined;
-  const reqPath = req.path;
+
   //Paths where JWT not required 
-  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword'  || req.path === '/CreateUserByInvite' || req.path === '/SignUp' || req.path === '/loginSignup') {
+  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword'  || req.path === '/CreateUserByInvite' || req.path === '/SignUp' || req.path === '/loginSignup' || req.path === '/Files' ) {
+    console.log(true)
     next(); 
   }
 
