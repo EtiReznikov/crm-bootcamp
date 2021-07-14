@@ -5,6 +5,8 @@ import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import Text from '../../SubComponents/Text/Text';
 import { emailValidation } from '../../../tools/validation';
 import '../../../Views/Form.scss'
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 import {
     Redirect
 } from "react-router-dom";
@@ -16,6 +18,8 @@ function AddUser(props) {
         successStatus: -1
     }
     );
+
+    const [btnActive, setBtnActive] = useState(true);
 
     /* when add user button is submitted*/
     const addUser = (e) => {
@@ -43,14 +47,10 @@ function AddUser(props) {
                         ...formState,
                         successStatus: error.response.data.status
                     })
-                    //Middle ware ware fails
-                    // if (error.response.data.status === 10) {
-                    //     localStorage.removeItem('user_token');
-                    //     localStorage.removeItem('business_id');
-                    // }
+                    btnActive(true);
                 });
         }
-       
+
         e.preventDefault();
     }
     return (
@@ -60,35 +60,42 @@ function AddUser(props) {
                 <div className="title_container">
                     <h2>Add New User</h2>
                 </div>
-               
-                        <form>
 
-                            <div className="input_field">
-                                <span>
-                                    <i aria-hidden="true" className="fa fa-envelope"></i>
-                                </span>
-                                <input type="text" name="email" placeholder="Email" onChange={e =>
-                                    setState({
-                                        ...formState,
-                                        email: e.target.value,
-                                        emailValid: 0
-                                    })}
-                                />
-                            </div>
-                            <Text className="form-text" text="Your employee will get an invitation to his email address."></Text>
-                            {
-                                /* show email error msg if needed */
-                                (formState.emailValid === 2 && <ErrorMsg text="Invalid email address" />) ||
-                                (formState.emailValid === 1 && <ErrorMsg text="Email address is required" />) ||
-                                (formState.emailValid === -1 && <ErrorMsg />)
+                <form>
 
-                            }
-                            {formState.successStatus === -1 && <ErrorMsg />}
-                            {formState.successStatus === 1 && <ErrorMsg text="The user already exists" />}
-                            <input className="button" type="submit" value="Submit" onClick={addUser} />
-                        </form>
+                    <div className="input_field">
+                        <span>
+                            <i aria-hidden="true" className="fa fa-envelope"></i>
+                        </span>
+                        <input type="text" name="email" placeholder="Email" onChange={e =>
+                            setState({
+                                ...formState,
+                                email: e.target.value,
+                                emailValid: 0
+                            })}
+                        />
                     </div>
-              
+                    <Text className="form-text" text="Your employee will get an invitation to his email address."></Text>
+                    {
+                        /* show email error msg if needed */
+                        (formState.emailValid === 2 && <ErrorMsg text="Invalid email address" />) ||
+                        (formState.emailValid === 1 && <ErrorMsg text="Email address is required" />) ||
+                        (formState.emailValid === -1 && <ErrorMsg />)
+
+                    }
+                    {formState.successStatus === -1 && <ErrorMsg />}
+                    {formState.successStatus === 1 && <ErrorMsg text="The user already exists" />}
+                    {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
+                        onClick={(e) => {
+                            setBtnActive(false);
+                            addUser(e);
+                        }
+                        } />}
+                    {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
+                    {/* <input className="button" type="submit" value="Submit" onClick={addUser} /> */}
+                </form>
+            </div>
+
             {formState.successStatus === 0 && <Redirect to={{
                 pathname: "/msgPage",
                 state: {

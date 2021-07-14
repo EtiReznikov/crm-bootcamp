@@ -375,3 +375,33 @@ textarea{
   font: 400 13.3333px Arial;
   height: 10em;
 }
+
+.button-div{
+  background: $blue-background;
+        // background: $menu-background;
+		height: 35px;
+		line-height: 35px;
+		width: 100%;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		color: #fff;
+		font-size: 1.1em;
+		margin-bottom: 10px;
+		-webkit-transition: all 0.30s ease-in-out;
+		-moz-transition: all 0.30s ease-in-out;
+		-ms-transition: all 0.30s ease-in-out;
+		transition: all 0.30s ease-in-out;
+		&:hover {
+			background: darken($blue-background,7%);
+		}
+		&:focus {
+			background: darken($blue-background,7%);
+		}
+}
+
+.button-div{
+  display: flex;
+    align-items: center;
+    justify-content: center;
+}

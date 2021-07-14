@@ -59,7 +59,7 @@ function Users(props) {
     }, []);
 
     return (
-        <div id="users-page">
+        <div id="users-page" className="page-wrapper">
 
             <Headline id="user-page-header" text="Users" />
 
