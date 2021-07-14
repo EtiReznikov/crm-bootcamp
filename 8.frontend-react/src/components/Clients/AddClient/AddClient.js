@@ -1,10 +1,12 @@
 
 import axios from 'axios';
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import './AddClient.scss';
 import Select from 'react-select';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 import { phoneValidation, nameValidation, phoneLengthValidation, nameLengthValidation } from '../../../tools/validation';
 function AddClient(props) {
     const [formState, setState] = useState({
@@ -17,6 +19,7 @@ function AddClient(props) {
     );
     const [errorMsg, setErrorMsg] = useState(false);
     const [data, setData] = useState([]);
+    const [btnActive, setBtnActive] = useState(true);
 
 
     useEffect(() => {
@@ -41,7 +44,7 @@ function AddClient(props) {
 
             if (props.isEdit) {
                 await axios.post('http://localhost:991/packageClient/getPackageByClient/', {
-                   client_id: props.clientData.client_id,
+                    client_id: props.clientData.client_id,
                 })
                     .then((response) => {
                         let packages = []
@@ -62,7 +65,7 @@ function AddClient(props) {
                     });
             }
         })();
-    },[]);
+    }, []);
 
     /* when add user button is submitted*/
     const onSubmit = (e) => {
@@ -90,11 +93,13 @@ function AddClient(props) {
                         }
                         else {
                             setErrorMsg(true);
+                            setBtnActive(true);
                         }
 
                     })
                     .catch(function (error) {
-
+                        setErrorMsg(true);
+                        setBtnActive(true);
                     });
             }
             else {
@@ -110,10 +115,12 @@ function AddClient(props) {
                     }
                     else {
                         setErrorMsg(true);
+                        setBtnActive(true);
                     }
                 })
                     .catch(function (error) {
-                        console.log(error)
+                        setErrorMsg(true);
+                        setBtnActive(true);
                     });
             }
         }
@@ -187,17 +194,22 @@ function AddClient(props) {
                         (formState.phoneValid === 1 && <ErrorMsg text="Phone number can only contain digits" />) ||
                         (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />)
                     }
-                     <div className="input_field" >
+                    <div className="input_field" >
                         <label className="classes-picker">
                             Pick Package:
                         </label>
 
-                        <Select  name="packages" isSearchable={true} value={formState.selectedPackage[0]} onChange={onPackagesSelect} options={data} className="package-selector"
+                        <Select name="packages" isSearchable={true} value={formState.selectedPackage[0]} onChange={onPackagesSelect} options={data} className="package-selector"
                             classNamePrefix="select" />
                     </div>
-                    <input className="button" type="submit" value="Submit" onClick={
-                        onSubmit
-                    } />
+                    {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
+                        onClick={(e) => {
+                            setBtnActive(false);
+                            onSubmit(e);
+                        }
+                        } />}
+                    {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
+
                     {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
                     {!errorMsg && <ErrorMsg />}
                 </form>

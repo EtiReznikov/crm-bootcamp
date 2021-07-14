@@ -5,7 +5,8 @@ import { emailValidation, phoneValidation, nameValidation, nameLengthValidation,
 import {
   Redirect
 } from "react-router-dom";
-
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 function Signup(props) {
 
@@ -27,6 +28,7 @@ function Signup(props) {
   );
 
   const [reqState, setReqState] = useState(-1);
+  const [btnActive, setBtnActive] = useState(true)
 
   //On submit form
   const submitRegister = (e) => {
@@ -75,6 +77,7 @@ function Signup(props) {
               emailValid: error.response.data.emailErrorStatus
             })
           }
+          setBtnActive(true);
         });
     }
     e.preventDefault();
@@ -218,7 +221,13 @@ function Signup(props) {
                 }
               }} />
             }
-            <input className="button" type="submit" value="Submit" onClick={submitRegister} />
+            {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
+                        onClick={(e) => {
+                            setBtnActive(false);
+                            submitRegister(e);
+                        }
+                        } />}
+                    {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
           </form>
       
     </div>

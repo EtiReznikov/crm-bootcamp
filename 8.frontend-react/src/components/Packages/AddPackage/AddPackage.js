@@ -6,6 +6,8 @@ import '../../../Views/Form.scss';
 import '../AddPackage/AddPackage.scss';
 import Select from 'react-select';
 import { priceValidation, nameValidation, nameLengthValidation } from '../../../tools/validation';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 function AddPackage(props) {
     const [formState, setState] = useState({
         name: props.isEdit ? props.packageData.package_name : "",
@@ -17,6 +19,8 @@ function AddPackage(props) {
     );
     const [errorMsg, setErrorMsg] = useState(false);
     const [data, setData] = useState([]);
+    const [btnActive, setBtnActive] = useState(true);
+
 
     useEffect(() => {
         (async () => {
@@ -95,10 +99,13 @@ function AddPackage(props) {
                             props.changeDataState();
                         }
                         else {
-
+                            setErrorMsg(true);
+                            setBtnActive(true);
                         }
                     })
                     .catch(function (error) {
+                        setErrorMsg(true);
+                        setBtnActive(true);
                         console.log(error)
                     });
 
@@ -116,10 +123,14 @@ function AddPackage(props) {
                         props.changeDataState();
                     }
                     else {
+                        setErrorMsg(true);
+                        setBtnActive(true);
                         //             setErrorMsg(true);
                     }
                 })
                     .catch(function (error) {
+                        setErrorMsg(true);
+                        setBtnActive(true);
                         console.log(error)
                     });
             }
@@ -172,7 +183,7 @@ function AddPackage(props) {
                         <Select isMulti name="classes" isSearchable={true} value={formState.selectedClasses} onChange={onClassesSelect} options={data} className="class-selector"
                             classNamePrefix="select" />
                     </div>
-                    <errorMsg />
+                    {/* <errorMsg /> */}
                     <div className="input_field" id="price-picker" >
                         <span>
                             <i aria-hidden="true" className="fa fa-dollar"></i>
@@ -200,10 +211,14 @@ function AddPackage(props) {
                     </div>
                     {(!formState.priceValid && <ErrorMsg text="Price should be a positive number" />)}
                     {formState.priceValid && <ErrorMsg />}
-
-                    <input className="button" type="submit" value="Submit" id="btn-add-pck" onClick={
-                        onSubmit
-                    } />
+                    {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
+                        onClick={(e) => {
+                            setBtnActive(false);
+                            onSubmit(e);
+                        }
+                        } />}
+                    {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
+                    
                     {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
                     {!errorMsg && <ErrorMsg />}
                 </form>

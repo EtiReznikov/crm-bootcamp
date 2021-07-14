@@ -7,6 +7,8 @@ import './Login.scss'
 import {
   Redirect
 } from "react-router-dom";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 
 function Login(props) {
@@ -18,6 +20,7 @@ function Login(props) {
     emailValid: -1
   }
   );
+  const [btnActive, setBtnActive] = useState(true)
 
 
   //On submit form
@@ -51,10 +54,10 @@ function Login(props) {
             ...formState,
             errorStatus: error.response.data.status
           })
+          setBtnActive(true);
         });
     }
     e.preventDefault();
-
   }
 
   return (
@@ -115,7 +118,13 @@ function Login(props) {
                 }
               }} />
             }
-            <input className="button" type="submit" value="Submit" onClick={submitLogin} />
+            {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
+                        onClick={(e) => {
+                            setBtnActive(false);
+                            submitLogin(e);
+                        }
+                        } />}
+            {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
             <LinkHref className="Login-forgot-pass" href="/forgotPassword" text="Forgot my password" />
           </form>
         

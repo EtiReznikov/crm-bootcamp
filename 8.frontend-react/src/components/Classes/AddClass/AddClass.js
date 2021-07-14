@@ -6,7 +6,8 @@ import '../../../Views/Form.scss';
 import './AddClass.scss'
 import { CirclePicker } from 'react-color';
 import 'material-design-inspired-color-picker'
-
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';
 function AddClass(props) {
@@ -39,6 +40,7 @@ function AddClass(props) {
     const [hhValid, setHHValid] = useState(true);
     const [mmValid, setMMValid] = useState(true);
     const [errorMsg, setErrorMsg] = useState(false);
+    const [btnActive, setBtnActive] = useState(true);
 
 
     const onSubmit = (e) => {
@@ -67,10 +69,12 @@ function AddClass(props) {
                     }
                     else {
                         setErrorMsg(true);
+                        setBtnActive(true);
                     }
                 })
                     .catch(function (error) {
                         setErrorMsg(true);
+                        setBtnActive(true);
                     });
             }
             else {
@@ -91,16 +95,19 @@ function AddClass(props) {
                         props.changeDataState();
                     }
                     else {
+                        console.log("error")
                         setErrorMsg(true);
+                        setBtnActive(true);
                     }
                 })
                     .catch(function (error) {
                         setErrorMsg(true);
+                        setBtnActive(true);
                     });
             }
         }
         else {
-            console.log("name error")
+            setBtnActive(true);
         }
         e.preventDefault();
     }
@@ -331,10 +338,16 @@ function AddClass(props) {
                         </div>
                     </div>
 
-
-                    <input className="button" type="submit" value="Submit" onClick={
+                    {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
+                        onClick={(e) => {
+                            setBtnActive(false);
+                            onSubmit(e);
+                        }
+                        } />}
+                    {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
+                    {/* <input className="button" type="submit" value="Submit" onClick={
                         onSubmit
-                    } />
+                    } /> */}
                     {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
                     {!errorMsg && <ErrorMsg />}
                 </form>
