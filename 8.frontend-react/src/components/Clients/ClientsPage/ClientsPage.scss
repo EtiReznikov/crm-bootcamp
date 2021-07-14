@@ -60,3 +60,13 @@
     font-weight: bold;
     line-height: 10px;
 }
+
+#avatar-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#name-row{
+    font-size: 14px;
+}

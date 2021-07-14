@@ -8,10 +8,15 @@ import Modal from 'react-modal';
 import AddClient from '../AddClient/AddClient';
 import ConfirmModal from '../../SubComponents/ConfirmModal/ConfirmModal';
 import ErrorComponent from '../../SubComponents/ErrorComponenet/ErrorComponent';
+import FileUploadModal from '../../FileUploadModal/FileUploadModal';
+
+import Avatar from 'react-avatar';
+import img from '../../../Views/logo.png'
 function Clients(props) {
 
     const [modalIsOpenAddClient, setIsOpenAddClientModal] = useState(false);
     const [modalIsOpenRemoveClient, setIsOpenRemoveClientModal] = useState(false);
+    const [modalIsOpenAddImg, setIsOpenAddImgModal] = useState(false);
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -21,7 +26,7 @@ function Clients(props) {
     const columns = useMemo(() => [
         {
             Header: "Name",
-            accessor: "client_name",
+            accessor: "client_name_avatar",
         },
         {
             Header: 'Phone',
@@ -45,6 +50,14 @@ function Clients(props) {
 
                     }}>
                         {<i className="fa fa-edit"></i>}
+                    </button>
+                    <button className="row-button" onClick={() => {
+                        setIsEdit(true);
+                        setRow(row.original);
+                        openModalAddImg();
+
+                    }}>
+                        {<i className="fa fa-upload"></i>}
                     </button>
                 </div>)
         },
@@ -71,7 +84,16 @@ function Clients(props) {
         setIsOpenAddClientModal(false);
     }
 
+    const openModalAddImg = () => {
+        setIsOpenAddImgModal(true);
+    }
+
+    const closeModalAddImg = () => {
+        setIsOpenAddImgModal(false);
+    }
+
     useEffect(() => {
+        let data = [];
         (async () => {
             await axios.post('http://localhost:991/clients/getClients/', {
                 business_id: localStorage.getItem('business_id'),
@@ -81,8 +103,28 @@ function Clients(props) {
                         setData([]);
                     else if (Array.isArray(response.data)) {
 
+                        console.log(response.data)
+                        for (const clientValue of response.data) {
+                            let temp = {
+                                client_id: clientValue.client_id,
+                                client_name:clientValue.client_name,
+                                client_name_avatar: <div id="avatar-wrapper">
+                                    <Avatar name={clientValue.client_name} src={'http://localhost:8005/uploads/' + clientValue.file} size="90" round={true} />
+                                    <div id="name-row">{clientValue.client_name}</div>
+
+                                </div>,
+                                gym_id: clientValue.gym_id,
+                                client_phone: clientValue.client_phone,
+                                // color: classValue.color,
+                                // days: days,
+                                // time: obj.hours + ":" + obj.min
+                            }
+                            data.push(temp)
+                        }
+                        console.log(data)
                         setError(false);
-                        setData(response.data);
+                        setData(data);
+
                     }
                     else {
                         setError(true);
@@ -153,6 +195,15 @@ function Clients(props) {
                         ariaHideApp={false}
                     >
                         <ConfirmModal onConfirm={DeleteClient} onDismiss={closeModalRemoveClient} text={`Are you sure you want to delete ${row.client_name}?`} errorMsg={ErrorDelete} />
+                    </Modal>
+                    <Modal
+                        isOpen={modalIsOpenAddImg}
+                        onRequestClose={closeModalAddImg}
+                        contentLabel="Add Img Modal"
+                        className="modal"
+                        ariaHideApp={false}
+                    >
+                        <FileUploadModal closeModal={closeModalAddImg} clientData={row} changeDataState={changeDataState} />
                     </Modal>
                 </>
             }

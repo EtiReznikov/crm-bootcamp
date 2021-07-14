@@ -60,7 +60,7 @@ function CalendarPage(props) {
   return <div id="calendar-page" className="page-wrapper">
     <Headline id="calendar-page-header" text="Calendar" />
     <Calendar
-      views={['month', 'week','day', ]}
+      views={['month', 'week','day']}
       localizer={localizer}
       events={myEventsList}
       startAccessor="start"
