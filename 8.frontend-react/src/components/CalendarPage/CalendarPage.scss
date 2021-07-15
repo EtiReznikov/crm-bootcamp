@@ -2,3 +2,10 @@
 #calendar-page{
     width: 100%;
 }
+
+#calendar-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: inherit;
+}

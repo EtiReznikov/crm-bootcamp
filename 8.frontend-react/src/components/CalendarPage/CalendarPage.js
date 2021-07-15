@@ -26,6 +26,8 @@ function CalendarPage(props) {
 
   const [groupTrainingsList, setGroupTrainingsList] = useState([]);
   const [personalTrainingsList, setPersonalTrainingsList] = useState([]);
+  const [view, setView] = useState("all");
+  const [Events, setEvents]= useState([]);
 
 
   useEffect(async () => {
@@ -75,11 +77,11 @@ function CalendarPage(props) {
           let data = []
           console.log(response)
           for (const classValue of response.data) {
-            let start= new Date(classValue.date)
-            let end= new Date(classValue.date);
-            end.setHours(1+end.getHours())
+            let start = new Date(classValue.date)
+            let end = new Date(classValue.date);
+            end.setHours(1 + end.getHours())
             let temp = {
-              'title': classValue.client_name+" & "+classValue.user_name,
+              'title': classValue.client_name + " & " + classValue.user_name,
               'start': start,
               'end': end
             }
@@ -100,11 +102,24 @@ function CalendarPage(props) {
 
 
   return <div id="calendar-page" className="page-wrapper">
-    <Headline id="calendar-page-header" text="Calendar" />
+    <div id="calendar-wrapper">
+      <Headline id="calendar-page-header" text="Calendar" />
+      <div className="input_field" >
+        <label for="views">View:</label>
+        <select id="views" name="views" onChange={(e) =>{
+          setView(e.target.value)
+        }
+        }>
+          <option selected="selected" value="all">All</option>
+          <option value="groupTrainings">Group Trainings</option>
+          <option value="personalTrainings">Personal Trainings</option>
+        </select>
+      </div>
+    </div>
     <Calendar
       views={['month', 'week', 'day']}
       localizer={localizer}
-      events={personalTrainingsList.concat(groupTrainingsList)}
+      events={ view === 'all' ? personalTrainingsList.concat(groupTrainingsList) : view === 'groupTrainings' ? groupTrainingsList : personalTrainingsList }
       // events={groupTrainingsList.concat(personalTrainingsList)}
       startAccessor="start"
       endAccessor="end"
