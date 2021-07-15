@@ -14,20 +14,17 @@ function FileUploadModal(props) {
         setSelectedFile(file);
     }
     const [errorMsg, setErrorMsg] = useState(-1);
+    const [FileUploaded, setFileUploaded] = useState(false);
 
 
     const onSubmit = (e) => {
-        console.log(typeof(selectedFile) === 'object')
-        // if (typeof(selectedFile) === 'object') {
-        //     setErrorMsg(3);
-        //     setBtnActive(true);
-        // }
-        // else 
-        // if (!(selectedFile.mimetype == "image/png" || selectedFile.mimetype == "image/jpg" || selectedFile.mimetype == "image/jpeg")) {
-        //     setErrorMsg(3);
-        //     setBtnActive(true);
-        // }
-        // else {
+        if (selectedFile.type === undefined)
+            setErrorMsg(4)
+        else if (!(selectedFile.type === "image/png" || selectedFile.type === "image/jpg" || selectedFile.type === "image/jpeg")) {
+            setErrorMsg(3);
+            setBtnActive(true);
+        }
+        else {
             const data = new FormData()
             data.append('file', selectedFile)
             data.append('client_id', props.clientData.client_id)
@@ -37,23 +34,21 @@ function FileUploadModal(props) {
                 }
             };
             // data.append('client_id', props.clientData.client_id)
-            console.log(selectedFile)
             axios.post('http://crossfit.com:8005/Files/addImgToClient', data, config, {
                 clientId: props.clientData.clientId
             }
             ).then(function (response) {
-                
+
                 props.closeModal();
                 props.changeDataState();
                 setErrorMsg(1);
             })
                 .catch(function (error) {
-                    console.log(error.response)
                     setErrorMsg(error.response.data.status);
                     setBtnActive(true)
-            
+
                 });
-        // }
+        }
         e.preventDefault();
     }
 
@@ -67,16 +62,18 @@ function FileUploadModal(props) {
             <div className="form_container">
                 <FileUpload title={"Upload client image"} setSelectedFile={onFileUpload} />
             </div>
-            {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive && FileUpload}
+            {errorMsg === 2 && <ErrorMsg text="Something went wrong, please try again" />}
+            {errorMsg === 4 && <ErrorMsg text="You must choose a file" />}
+            {errorMsg === 3 && <ErrorMsg text="Only JPEG, JPG and PNG image formats are allowed" />}
+            {errorMsg === 1 && <ErrorMsg />}
+            {btnActive && <input className="button" type="submit" value="Save" disabled={!btnActive}
                 onClick={(e) => {
-                    
+
                     setBtnActive(false);
                     onSubmit(e);
                 }
                 } />}
-            {errorMsg === 2 && <ErrorMsg text="Something went wrong, please try again" />}
-            {errorMsg === 3 && <ErrorMsg text="You must choose an image. (Only JPEG, JPG and PNG image formats are allowed)" />}
-            {errorMsg === 1 && <ErrorMsg />}
+
             {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
         </div>
     )

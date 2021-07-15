@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, PropTypes } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import './AddClass.scss'
@@ -8,6 +8,8 @@ import { CirclePicker } from 'react-color';
 import 'material-design-inspired-color-picker'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+
 
 import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';
 function AddClass(props) {
@@ -260,6 +262,11 @@ function AddClass(props) {
                                 })
                             }} />
                     </div>
+                    {/* <div>
+                        <GooglePlacesAutocomplete
+                            apiKey='AIzaSyC0LnvgDzKrHvGI1WcBdKmQX1peUH1ODq4'
+                        />
+                    </div> */}
                     <label for="color-picker" className="color-picker">
                         Pick Date and Time:
                     </label>

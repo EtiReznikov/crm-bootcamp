@@ -114,17 +114,13 @@ router.post('/CreateUserByInvite', function (req, res) {
 /** get Users list to users table */
 router.post('/getUsersList', function (req, res) {
     const businessId = req.body.businessId;
-    const sql = `SELECT user_name, user_phone,  permission_id, user_email FROM users WHERE gym_id= '${businessId}'`
-    console
+    const sql = `SELECT user_name, user_phone,  permission_id, user_email, user_id FROM users WHERE gym_id= '${businessId}'`
     connection.query(sql, function (err, result) {
         if (err) res.status(500).json({
             status : 2,
             message: 'server error'
         });
         else {
-            for (row in result) {
-                result[row].permission_id = result[row].permission_id == 0 ? 'Manager' : 'Employee'
-            }
             res.send(result);
         }
     });

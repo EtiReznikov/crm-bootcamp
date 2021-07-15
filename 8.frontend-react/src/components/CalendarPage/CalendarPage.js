@@ -5,6 +5,7 @@ import axios from 'axios';
 import Headline from '../SubComponents/Headline/Headline';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { getNextDay } from '../../tools/dateCalculate';
+
 import './CalendarPage.scss';
 const localizer = momentLocalizer(moment);
 function CalendarPage(props) {
@@ -23,46 +24,88 @@ function CalendarPage(props) {
     };
   }
 
-  const [myEventsList, setEventsList] = useState([]);
+  const [groupTrainingsList, setGroupTrainingsList] = useState([]);
+  const [personalTrainingsList, setPersonalTrainingsList] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      await axios.post('http://localhost:991/classes/getClasses/', {
+
+  useEffect(async () => {
+
+    const classes = await getClasses();
+    const personalTrainings = await getPersonalTrainings();
+  }, []);
+
+  const getClasses = () => {
+    return new Promise(resolve => {
+      axios.post('http://localhost:991/classes/getClasses/', {
         business_id: localStorage.getItem('business_id'),
       })
         .then((response) => {
           let data = []
           for (const classValue of response.data) {
             let obj = JSON.parse(classValue.days_and_time)
-            for (let week=-10; week<10; week++){
-            for (const day of obj.days) {
-              let temp = {
-                'title': classValue.class_name,
-                'color': classValue.color,
-                'start': getNextDay(day, parseInt(obj.hours), parseInt(obj.min), week),
-                'end': getNextDay(day, parseInt(obj.hours)+1, parseInt(obj.min), week),
-                // days: days,
-                // time: obj.hours + ":" + obj.min
+            for (let week = -10; week < 10; week++) {
+              for (const day of obj.days) {
+                let temp = {
+                  'title': classValue.class_name,
+                  'color': classValue.color,
+                  'start': getNextDay(day, parseInt(obj.hours), parseInt(obj.min), week),
+                  'end': getNextDay(day, parseInt(obj.hours) + 1, parseInt(obj.min), week),
+                }
+                data.push(temp)
               }
-              data.push(temp)
             }
           }
-          }
-          setEventsList(data);
+          setGroupTrainingsList(data);
+          resolve(data);
         })
         .catch(function (error) {
+          resolve(error)
+        })
 
-        });
-    })();
-  }, []);
+
+    })
+  }
+
+  const getPersonalTrainings = () => {
+    return new Promise(resolve => {
+      axios.post('http://localhost:991/personalTraining/getPersonalTraining/', {
+        business_id: localStorage.getItem('business_id'),
+      })
+        .then((response) => {
+          let data = []
+          console.log(response)
+          for (const classValue of response.data) {
+            let start= new Date(classValue.date)
+            let end= new Date(classValue.date);
+            end.setHours(1+end.getHours())
+            let temp = {
+              'title': classValue.client_name+" & "+classValue.user_name,
+              'start': start,
+              'end': end
+            }
+            data.push(temp)
+          }
+          setPersonalTrainingsList(data);
+          resolve(data);
+        })
+        .catch(function (error) {
+          resolve(error)
+        })
+
+
+    })
+  }
+
+
 
 
   return <div id="calendar-page" className="page-wrapper">
     <Headline id="calendar-page-header" text="Calendar" />
     <Calendar
-      views={['month', 'week','day']}
+      views={['month', 'week', 'day']}
       localizer={localizer}
-      events={myEventsList}
+      events={personalTrainingsList.concat(groupTrainingsList)}
+      // events={groupTrainingsList.concat(personalTrainingsList)}
       startAccessor="start"
       endAccessor="end"
       style={{ width: "100%", height: "85%" }}

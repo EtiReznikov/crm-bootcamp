@@ -35,30 +35,33 @@ var upload = multer({
             cb(null, true);
         } else {
             cb(null, false);
-            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+            cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
         }
     }
+}).single('file');
+
+router.post('/addImgToClient', function (req, res) {
+
+    upload(req, res, function (err) {
+        console.log(err)
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json({status: 3 , err} )
+        } else if (err) {
+            return res.status(500).json({status: 2 ,err})
+        }
+        // return res.status(200).send(req.file)
+        else {
+            const pathNewFile = '/' + req.file.filename
+            const clientId = req.body.client_id;
+            const sql = `UPDATE clients SET file = '${pathNewFile}' WHERE client_id='${clientId}'`;
+            connection.query(sql, function (err, result) {
+                if (err) res.status(500).json({ status: 2, message: 'Failed to update data' });
+                else return res.status(200).json({ status: 1 })
+            });
+        }
+    })
+
 });
-
-var upload = multer({ storage: storage })
-
-router.post('/addImgToClient', upload.single('file'), (req, res) => {
-    // if (multer.MulterError) {
-    //     res.status(500).json({ status: 2, message: 'something wrong with saving the file' });
-    // }
-    // else {
-        console.log(req.file)
-        const pathNewFile = '/' + req.file.filename
-        console.log(req.body.client_id)
-        const clientId = req.body.client_id;
-        const sql = `UPDATE clients SET file = '${pathNewFile}' WHERE client_id='${clientId}'`;
-        console.log(sql)
-        connection.query(sql, function (err, result) {
-            if (err) res.status(500).json({ status: 2, message: 'Failed to update data' });
-            else return res.status(200).json({ status: 1 })
-        });
-    // }
-})
 
 
 

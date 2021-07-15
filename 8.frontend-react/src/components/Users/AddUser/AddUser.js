@@ -50,6 +50,9 @@ function AddUser(props) {
                     btnActive(true);
                 });
         }
+        else{
+            setBtnActive(true);
+        }
 
         e.preventDefault();
     }
@@ -67,12 +70,13 @@ function AddUser(props) {
                         <span>
                             <i aria-hidden="true" className="fa fa-envelope"></i>
                         </span>
-                        <input type="text" name="email" placeholder="Email" onChange={e =>
+                        <input type="text" name="email" placeholder="Email" onChange={(e) =>{
+                            setBtnActive(true)
                             setState({
                                 ...formState,
                                 email: e.target.value,
                                 emailValid: 0
-                            })}
+                            })}}
                         />
                     </div>
                     <Text className="form-text" text="Your employee will get an invitation to his email address."></Text>

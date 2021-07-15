@@ -9,7 +9,7 @@ import AddClient from '../AddClient/AddClient';
 import ConfirmModal from '../../SubComponents/ConfirmModal/ConfirmModal';
 import ErrorComponent from '../../SubComponents/ErrorComponenet/ErrorComponent';
 import FileUploadModal from '../../FileUploadModal/FileUploadModal';
-
+import AddPersonalTraining from '../../AddPersonalTraining/AddPersonalTraining';
 import Avatar from 'react-avatar';
 import img from '../../../Views/logo.png'
 function Clients(props) {
@@ -17,6 +17,7 @@ function Clients(props) {
     const [modalIsOpenAddClient, setIsOpenAddClientModal] = useState(false);
     const [modalIsOpenRemoveClient, setIsOpenRemoveClientModal] = useState(false);
     const [modalIsOpenAddImg, setIsOpenAddImgModal] = useState(false);
+    const [modalIsOpenPersonalTraining, setIsOpenPersonalTrainingModal] = useState(false);
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -57,7 +58,20 @@ function Clients(props) {
                         openModalAddImg();
 
                     }}>
-                        {<i className="fa fa-upload"></i>}
+                        {<i className="fa fa-image"></i>}
+                    </button>
+                </div>)
+        },
+        {
+            Header: 'Personal training',
+            // width: '',
+            Cell: ({ row }) => (
+                <div id="row-button-wrapper">
+                    <button className="row-button" onClick={() => {
+                        setRow(row.original);
+                        openModalAddPersonalTraining ();
+                    }}>
+                        {<i className="fa fa-cart-plus"></i>}
                     </button>
                 </div>)
         },
@@ -92,6 +106,14 @@ function Clients(props) {
         setIsOpenAddImgModal(false);
     }
 
+    const openModalAddPersonalTraining = () => {
+        setIsOpenPersonalTrainingModal(true);
+    }
+
+    const closeModalPersonalTraining = () => {
+        setIsOpenPersonalTrainingModal(false);
+    }
+
     useEffect(() => {
         let data = [];
         (async () => {
@@ -109,19 +131,15 @@ function Clients(props) {
                                 client_id: clientValue.client_id,
                                 client_name:clientValue.client_name,
                                 client_name_avatar: <div id="avatar-wrapper">
-                                    <Avatar name={clientValue.client_name} src={'http://localhost:8005/uploads/' + clientValue.file} size="90" round={true} />
+                                    <Avatar className="avatar" name={clientValue.client_name} src={'http://localhost:8005/uploads/' + clientValue.file} size="60" round={true} />
                                     <div id="name-row">{clientValue.client_name}</div>
 
                                 </div>,
                                 gym_id: clientValue.gym_id,
                                 client_phone: clientValue.client_phone,
-                                // color: classValue.color,
-                                // days: days,
-                                // time: obj.hours + ":" + obj.min
                             }
                             data.push(temp)
                         }
-                        console.log(data)
                         setError(false);
                         setData(data);
 
@@ -204,6 +222,15 @@ function Clients(props) {
                         ariaHideApp={false}
                     >
                         <FileUploadModal closeModal={closeModalAddImg} clientData={row} changeDataState={changeDataState} />
+                    </Modal>
+                    <Modal
+                        isOpen={modalIsOpenPersonalTraining}
+                        onRequestClose={closeModalPersonalTraining}
+                        contentLabel="Add Personal Training Modal"
+                        className="modal"
+                        ariaHideApp={false}
+                    >
+                        <AddPersonalTraining closeModal={closeModalPersonalTraining} clientData={row} changeDataState={changeDataState} />
                     </Modal>
                 </>
             }

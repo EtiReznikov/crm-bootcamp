@@ -40,12 +40,24 @@ function Users(props) {
                 headers: {
                     authentication: {
                         token: localStorage.getItem('user_token'),
-                       
+
                     }
                 }
             })
                 .then((response) => {
-                    setData(response.data);
+                    console.log(response.data)
+                    let data = []
+                    for (const userValue of response.data) {
+                        let temp= {
+                            user_name: userValue.user_name, 
+                            user_phone: userValue.user_phone,
+                            permission_id: userValue.permission_id === 0 ? 'Manager' : 'Trainer',
+                            user_email: userValue.user_email,
+                            user_id: userValue.user_id
+                        }
+                        data.push(temp)
+                    }
+                    setData(data);
                 })
                 .catch(function (error) {
 
@@ -60,11 +72,20 @@ function Users(props) {
 
     return (
         <div id="users-page" className="page-wrapper">
-
-            <Headline id="user-page-header" text="Users" />
+            <div id="btn-head-wrapper">
+                <Headline id="users-page-head" text="Users" />
+                <button className="add-row" onClick={() => {
+                            onAddUser(true);
+                        }}>
+                    Add User
+                </button>
+            </div>
+            {/* <Headline id="user-page-header" text="Users" /> */}
 
             <div id="table-wrapper">
-                <div id="button-wrapper">
+
+                {/* <div id="button-wrapper">
+
                     <Button
                         className="add-user-btn"
                         onClick={() => {
@@ -73,13 +94,13 @@ function Users(props) {
                         }
                         text={<i className="fa fa-user-plus"></i>}
                     />
-                    <Button
+                    {<Button
                         className="remove-user-btn"
                         //TODO add remove function
                         text={<i className="fa fa-user-times"></i>}
-                    />
+                    /> 
 
-                </div>
+                </div> */}
 
                 <Table columns={columns} data={data} />
                 {addUser && <Redirect to="/addUser" />}
