@@ -17,7 +17,10 @@ class personalTraining extends controller
         $client_id = $this->data->clientId;
         $date= $this->data->date;
         $business_id = $this->data->business_id;
-        $addPersonalTraining = $this->model->addNewPersonalTraining($user_id, $client_id, $date, $business_id);
+        $price = $this->data->totalPrice;
+        $transaction = $this->data->transaction;
+        $createTime= $this->data->createTime;
+        $addPersonalTraining = $this->model->addNewPersonalTraining($user_id, $client_id, $date, $business_id, $price ,$transaction, $createTime);
         if ($addPersonalTraining){
             return true;
         }

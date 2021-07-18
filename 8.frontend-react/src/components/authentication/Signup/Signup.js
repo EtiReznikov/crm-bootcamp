@@ -80,6 +80,9 @@ function Signup(props) {
           setBtnActive(true);
         });
     }
+    else {
+      setBtnActive(true);
+    }
     e.preventDefault();
   }
   return (
@@ -88,148 +91,145 @@ function Signup(props) {
       <div className="title_container">
         {/* <h2>SignUp</h2> */}
       </div>
-  
-          <form>
-            <div className="input_field" >
-              <span>
-                <i aria-hidden="true" className="fa fa-user"></i>
-              </span>
-              <input
-                name="name"
-                type="text"
-                placeholder="Name"
-                onChange={e =>
-                  setState({
-                    ...formState,
-                    name: e.target.value,
-                  })}
-                onKeyUp={e => {
-                  setState({
-                    ...formState, nameValid: nameValidation(e.target.value)
-                  })
-                }} />
 
-            </div>
-            {formState.nameValid === 1 && <ErrorMsg text="Name can only contain letters and spaces" />}
-            {(formState.nameValid === 2 && <ErrorMsg text="Name must contain at least 2 letters" />)}
-            {formState.nameValid === 0 && <ErrorMsg />}
-            <div className="input_field">
-              <span>
-                <i aria-hidden="true" className="fa fa-envelope"></i>
-              </span>
-              <input type="text" name="email" placeholder="Email" onChange={e =>
-                setState({
-                  ...formState,
-                  email: e.target.value,
-                })}
-              />
-            </div>
-            {
-              (formState.emailValid === 0 && <ErrorMsg />) ||
-              (formState.emailValid === 1 && <ErrorMsg text="Email address is required" />) ||
-              (formState.emailValid === 2 && <ErrorMsg text="Invalid email address" />) ||
-              (formState.emailValid === 3 && <ErrorMsg text="The user already exists" />)
-            }
-            <div className="input_field"> <span><i aria-hidden="true" className="fa fa-phone"></i></span>
-              <input type="text" name="phone" placeholder="Phone Number"
-                onChange={e =>
-                  setState({
-                    ...formState,
-                    phone: e.target.value,
-                  })}
-                onKeyUp={e => {
-                  setState({
-                    ...formState, phoneValid: phoneValidation(e.target.value)
-                  })
-                }
-                }
-              />
-            </div>
-            {
-              (formState.phoneValid === 0 && <ErrorMsg text="" />) ||
-              (formState.phoneValid === 1 && <ErrorMsg text="Phone number can only contain digits" />) ||
-              (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />)
-            }
-            <div className="input_field">
-              <span>
-                <i aria-hidden="true" className="fa fa-briefcase"></i>
-              </span>
-              <input type="text" name="business" placeholder="Business Name" onChange={e =>
-                setState({
-                  ...formState,
-                  businessName: e.target.value,
-                })}
-              />
-            </div>
-            {!formState.businessValid && <ErrorMsg text="Business Name is required" />}
-            {formState.businessValid && <ErrorMsg />}
-            <div className="input_field"> <span><i aria-hidden="true" className="fa fa-lock"></i></span>
-              <input type="password" name="password" placeholder="Password"
-                onChange={e =>
-                  setState({
-                    ...formState,
-                    password: e.target.value,
-                  })}
-                onKeyUp={e => {
-                  setState({
-                    ...formState, passwordValid: passwordStrengthValidation(e.target.value)
-                  })
-                }
-                }
-              />
-            </div>
-            {
-              (formState.passwordValid === 0 && <ErrorMsg text="At least 8 characters,1 letter and 1 number" />) ||
-              (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
-              (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
-              (formState.passwordValid === 3 && <ErrorMsg text="strong password" />) ||
-              (formState.passwordValid === -1 && <ErrorMsg />)
-            }
+      <form>
+        <div className="input_field" >
+          <span>
+            <i aria-hidden="true" className="fa fa-user"></i>
+          </span>
+          <input
+            name="name"
+            type="text"
+            placeholder="Name"
+            onChange={e =>
+              setState({
+                ...formState,
+                name: e.target.value,
+              })}
+            onKeyUp={e => {
+              setState({
+                ...formState, nameValid: nameValidation(e.target.value)
+              })
+            }} />
 
-            <div className="input_field"> <span><i aria-hidden="true" className="fa fa-lock"></i></span>
-              <input type="password" name="password" placeholder="Re-type Password" required
-                onChange={e =>
-                  setState({
-                    ...formState,
-                    passwordConfirm: e.target.value,
-                  })}
-              />
-            </div>
-            {
-              (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Passwords do not match" />
+        </div>
+        {formState.nameValid === 1 && <ErrorMsg text="Name can only contain letters and spaces" />}
+        {(formState.nameValid === 2 && <ErrorMsg text="Name must contain at least 2 letters" />)}
+        {formState.nameValid === 0 && <ErrorMsg />}
+        <div className="input_field">
+          <span>
+            <i aria-hidden="true" className="fa fa-envelope"></i>
+          </span>
+          <input type="text" name="email" placeholder="Email" onChange={e => {
+            setState({
+              ...formState,
+              email: e.target.value,
+            })
+            setBtnActive(true);
+          }}
+          />
+        </div>
+        {
+          (formState.emailValid === 0 && <ErrorMsg />) ||
+          (formState.emailValid === 1 && <ErrorMsg text="Email address is required" />) ||
+          (formState.emailValid === 2 && <ErrorMsg text="Invalid email address" />) ||
+          (formState.emailValid === 3 && <ErrorMsg text="The user already exists" />)
+        }
+        <div className="input_field"> <span><i aria-hidden="true" className="fa fa-phone"></i></span>
+          <input type="text" name="phone" placeholder="Phone Number"
+            onChange={e => {
+              setState({
+                ...formState,
+                phone: e.target.value,
+              })
+              setBtnActive(true);
+            }}
+            onKeyUp={e => {
+              setState({
+                ...formState, phoneValid: phoneValidation(e.target.value)
+              })
             }
-            {
-              formState.passwordValid === -1 && formState.passwordMatchValid && <ErrorMsg />
             }
-            {
-              reqState === 0
-              && <Redirect to="/" />
+          />
+        </div>
+        {
+          (formState.phoneValid === 0 && <ErrorMsg text="" />) ||
+          (formState.phoneValid === 1 && <ErrorMsg text="Phone number can only contain digits" />) ||
+          (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />)
+        }
+        <div className="input_field">
+          <span>
+            <i aria-hidden="true" className="fa fa-briefcase"></i>
+          </span>
+          <input type="text" name="business" placeholder="Business Name" onChange={e => {
+            setState({
+              ...formState,
+              businessName: e.target.value,
+            })
+            setBtnActive(true);
+          }}
+          />
+        </div>
+        {!formState.businessValid && <ErrorMsg text="Business Name is required" />}
+        {formState.businessValid && <ErrorMsg />}
+        <div className="input_field"> <span><i aria-hidden="true" className="fa fa-lock"></i></span>
+          <input type="password" name="password" placeholder="Password"
+            onChange={e => {
+              setState({
+                ...formState,
+                password: e.target.value,
+              })
+              setBtnActive(true);
+            }}
+            onKeyUp={e => {
+              setState({
+                ...formState, passwordValid: passwordStrengthValidation(e.target.value)
+              })
             }
-            {
-              reqState === 3
-              && <Redirect to={{
-                //*TODO redirect to signup
-                pathname: "/msgPage",
-                state: {
-                  icon: "fa fa-exclamation-circle",
-                  headLine: "Something went wrong",
-                  text_1: "please ",
-                  link: "/loginSignup",
-                  aText: "click here",
-                  text_2: " to try again.",
-                  className: "msg-page-link"
-                }
-              }} />
             }
-            {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
-                        onClick={(e) => {
-                            setBtnActive(false);
-                            submitRegister(e);
-                        }
-                        } />}
-                    {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
-          </form>
-      
+          />
+        </div>
+        {
+          (formState.passwordValid === 0 && <ErrorMsg text="At least 8 characters,1 letter and 1 number" />) ||
+          (formState.passwordValid === 1 && <ErrorMsg text="weak password" />) ||
+          (formState.passwordValid === 2 && <ErrorMsg text="medium password" />) ||
+          (formState.passwordValid === 3 && <ErrorMsg text="strong password" />) ||
+          (formState.passwordValid === -1 && <ErrorMsg />)
+        }
+
+        <div className="input_field"> <span><i aria-hidden="true" className="fa fa-lock"></i></span>
+          <input type="password" name="password" placeholder="Re-type Password" required
+            onChange={e => {
+              setState({
+                ...formState,
+                passwordConfirm: e.target.value,
+              })
+              setBtnActive(true);
+            }}
+          />
+        </div>
+        {
+          (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Passwords do not match" />
+        }
+        {
+          formState.passwordValid === -1 && formState.passwordMatchValid && <ErrorMsg />
+        }
+        {
+          reqState === 0
+          && <Redirect to="/" />
+        }
+        {
+          reqState === 3 && <ErrorMsg test="something went wrong, please try again" />
+        }
+        {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
+          onClick={(e) => {
+            setBtnActive(false);
+            submitRegister(e);
+          }
+          } />}
+        {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
+      </form>
+
     </div>
 
   );

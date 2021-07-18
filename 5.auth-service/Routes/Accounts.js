@@ -110,6 +110,19 @@ router.post('/CreateUserByInvite', function (req, res) {
         });
     }
 });
+router.post('/removeUser', function (req, res) {
+    const userId = req.body.userId;
+    const sql = `DELETE FROM users WHERE user_id='${userId}'`
+    connection.query(sql, function (err, result) {
+        if (err) res.status(500).json({
+            status : 2,
+            message: 'server error'
+        });
+        else {
+            res.send(result);
+        }
+    });
+});
 
 /** get Users list to users table */
 router.post('/getUsersList', function (req, res) {

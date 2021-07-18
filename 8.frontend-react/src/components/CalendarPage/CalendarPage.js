@@ -5,7 +5,8 @@ import axios from 'axios';
 import Headline from '../SubComponents/Headline/Headline';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { getNextDay } from '../../tools/dateCalculate';
-
+import Modal from 'react-modal';
+import AddPersonalTraining from '../store/PersonalTrainings/AddPersonalTraining/AddPersonalTraining';
 import './CalendarPage.scss';
 const localizer = momentLocalizer(moment);
 function CalendarPage(props) {
@@ -26,15 +27,15 @@ function CalendarPage(props) {
 
   const [groupTrainingsList, setGroupTrainingsList] = useState([]);
   const [personalTrainingsList, setPersonalTrainingsList] = useState([]);
+  const [modalIsOpenPersonalTraining, setIsOpenPersonalTrainingModal] = useState(false);
   const [view, setView] = useState("all");
-  const [Events, setEvents]= useState([]);
-
+  const [dataHasChanged, setDataHasChanged] = useState(false);
 
   useEffect(async () => {
 
     const classes = await getClasses();
     const personalTrainings = await getPersonalTrainings();
-  }, []);
+  }, [dataHasChanged]);
 
   const getClasses = () => {
     return new Promise(resolve => {
@@ -75,7 +76,6 @@ function CalendarPage(props) {
       })
         .then((response) => {
           let data = []
-          console.log(response)
           for (const classValue of response.data) {
             let start = new Date(classValue.date)
             let end = new Date(classValue.date);
@@ -98,6 +98,17 @@ function CalendarPage(props) {
     })
   }
 
+  function changeDataState() {
+    setDataHasChanged(!dataHasChanged);
+  }
+
+  const openModalAddPersonalTraining = () => {
+    setIsOpenPersonalTrainingModal(true);
+  }
+
+  const closeModalPersonalTraining = () => {
+    setIsOpenPersonalTrainingModal(false);
+  }
 
 
 
@@ -106,7 +117,7 @@ function CalendarPage(props) {
       <Headline id="calendar-page-header" text="Calendar" />
       <div className="input_field" >
         <label for="views">View:</label>
-        <select id="views" name="views" onChange={(e) =>{
+        <select id="views" name="views" onChange={(e) => {
           setView(e.target.value)
         }
         }>
@@ -119,13 +130,30 @@ function CalendarPage(props) {
     <Calendar
       views={['month', 'week', 'day']}
       localizer={localizer}
-      events={ view === 'all' ? personalTrainingsList.concat(groupTrainingsList) : view === 'groupTrainings' ? groupTrainingsList : personalTrainingsList }
+      events={view === 'all' ? personalTrainingsList.concat(groupTrainingsList) : view === 'groupTrainings' ? groupTrainingsList : personalTrainingsList}
       // events={groupTrainingsList.concat(personalTrainingsList)}
       startAccessor="start"
       endAccessor="end"
+      selectable={true}
+      onSelectSlot={
+        (slot) => {
+          console.log(slot)
+          openModalAddPersonalTraining();
+        }
+      }
       style={{ width: "100%", height: "85%" }}
       eventPropGetter={(eventStyleGetter)}
     />
+
+    <Modal
+      isOpen={modalIsOpenPersonalTraining}
+      onRequestClose={closeModalPersonalTraining}
+      contentLabel="Add Personal Training Modal"
+      className="modal"
+      ariaHideApp={false}
+    >
+      <AddPersonalTraining closeModal={closeModalPersonalTraining} changeDataState={changeDataState} />
+    </Modal>
   </div>
 }
 

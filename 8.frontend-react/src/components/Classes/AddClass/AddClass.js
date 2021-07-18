@@ -278,7 +278,7 @@ function AddClass(props) {
                                     day =>
                                         <>
                                             <input type="checkbox" id={`weekday-'${day}'`} className="weekday" value={day} checked={formState.days[day]}
-                                                onClick={(e) => {
+                                                onChange={(e) => {
                                                     setErrorMsg(false);
                                                     handleCheckClick(e, { day })
                                                 }}

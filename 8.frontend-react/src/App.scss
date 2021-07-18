@@ -49,3 +49,8 @@ html, body, #root, #app{
     align-items: flex-start;
     padding:0 2.5%;
 }
+
+.ReactModalPortal{
+    position: relative;
+    z-index: 10000;
+}

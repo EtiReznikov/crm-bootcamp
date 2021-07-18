@@ -25,7 +25,7 @@ function PackagesPage(props) {
         },
 
         {
-            Header: 'Update',
+            Header: 'UUpdate & Delete',
             width: '1em',
             Cell: ({ row }) => (
                 <div id="row-button-wrapper">

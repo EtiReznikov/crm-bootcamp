@@ -37,7 +37,7 @@ function Classes(props) {
             accessor: "time"
         },
         {
-            Header: 'Update',
+            Header: 'Update & Delete',
             width: '1em',
             Cell: ({ row }) => (
                 <div id="row-button-wrapper">
@@ -159,13 +159,6 @@ function Classes(props) {
                         </button>
                     </div>
                     <div id="table-wrapper">
-                        {/* <div id="button-wrapper">
-                            <Button
-                                className="add-class-btn"
-                                onClick={OnAddClassClick}
-                                text={<i className="fa fa-calendar-plus-o"></i>}
-                            />
-                        </div> */}
                         <Table columns={columns} data={data} />
                     </div>
                     <Modal

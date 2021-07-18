@@ -47,10 +47,10 @@ function AddUser(props) {
                         ...formState,
                         successStatus: error.response.data.status
                     })
-                    btnActive(true);
+                    setBtnActive(true);
                 });
         }
-        else{
+        else {
             setBtnActive(true);
         }
 
@@ -58,6 +58,9 @@ function AddUser(props) {
     }
     return (
         <div className="form_wrapper">
+            <button className="exit" onClick={props.closeModal} >
+                <i id="exit-wind" className="fa fa-times"></i>
+            </button>
             {!localStorage.getItem('user_token') && <Redirect to="/loginSignup" />}
             <div className="form_container">
                 <div className="title_container">
@@ -70,13 +73,14 @@ function AddUser(props) {
                         <span>
                             <i aria-hidden="true" className="fa fa-envelope"></i>
                         </span>
-                        <input type="text" name="email" placeholder="Email" onChange={(e) =>{
+                        <input type="text" name="email" placeholder="Email" onChange={(e) => {
                             setBtnActive(true)
                             setState({
                                 ...formState,
                                 email: e.target.value,
                                 emailValid: 0
-                            })}}
+                            })
+                        }}
                         />
                     </div>
                     <Text className="form-text" text="Your employee will get an invitation to his email address."></Text>
@@ -89,6 +93,7 @@ function AddUser(props) {
                     }
                     {formState.successStatus === -1 && <ErrorMsg />}
                     {formState.successStatus === 1 && <ErrorMsg text="The user already exists" />}
+                    {formState.successStatus === 2 && <ErrorMsg text="Something went wrong, please try again" />}
                     {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
                         onClick={(e) => {
                             setBtnActive(false);
@@ -99,29 +104,13 @@ function AddUser(props) {
                     {/* <input className="button" type="submit" value="Submit" onClick={addUser} /> */}
                 </form>
             </div>
+            {formState.successStatus === 0 && <Text text="Your employee will get an invitation soon."/> }
 
-            {formState.successStatus === 0 && <Redirect to={{
-                pathname: "/msgPage",
-                state: {
-                    icon: "fa fa-check-circle",
-                    headLine: "Your employee will get an invitation soon.",
-                    link: "/",
-                    aText: "Back to home page"
-                }
-            }} />}
-            {formState.successStatus === 2 && <Redirect to={{
-                pathname: "/msgPage",
-                state: {
-                    headLine: "Your employee will get an invitation soon.",
-                    link: "/",
-                    aText: "Back to home page"
-                }
-            }} />}
             {formState.successStatus === 10 && <Redirect to={{
                 pathname: "/msgPage",
                 state: {
                     headLine: "Something went wrong",
-                    text_1: "please ",
+                    text_1: "please",
                     link: "/LoginSignUp",
                     aText: "click here",
                     text_2: "to Login"

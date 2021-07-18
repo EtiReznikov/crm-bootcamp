@@ -4,6 +4,10 @@ import axios from 'axios';
 import Text from '../../SubComponents/Text/Text';
 // import './InviteUser.scss'
 import '../../../Views/Form.scss'
+import './InviteUser.scss'
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
+
 import {
     Redirect,
     useParams,
@@ -26,6 +30,7 @@ function InviteUser(props) {
         passwordMatchValid: true,
     }
     );
+    const [btnActive, setBtnActive] = useState(true)
 
     const { token } = useParams()
 
@@ -73,13 +78,18 @@ function InviteUser(props) {
                         ...formState,
                         AfterSubmitErrorStatus: error.response.data.successStatus,
                     })
+                    setBtnActive(true);
                 });
+        }
+        else{
+            setBtnActive(true);
         }
         e.preventDefault();
     }
 
     return (
-        <div className="form_wrapper">
+        <div className="form_wrapper" id="invite-user-form">
+          
             <div className="title_container">
                 <h2>Register</h2>
             </div>
@@ -94,11 +104,13 @@ function InviteUser(props) {
                                 name="name"
                                 type="text"
                                 placeholder="Name"
-                                onChange={e =>
+                                onChange={e =>{
                                     setState({
                                         ...formState,
                                         name: e.target.value,
-                                    })}
+                                    })
+                                    setBtnActive(true);
+                                }}
                                 onKeyUp={e => {
                                     setState({
                                         ...formState, nameValid: nameValidation(e.target.value)
@@ -115,11 +127,13 @@ function InviteUser(props) {
 
                         <div className="input_field"> <span><i aria-hidden="true" className="fa fa-phone"></i></span>
                             <input type="text" name="phone" placeholder="Phone Number"
-                                onChange={e =>
+                                onChange={e =>{
                                     setState({
                                         ...formState,
                                         phone: e.target.value,
-                                    })}
+                                    })
+                                    setBtnActive(true);
+                                }}
                                 onKeyUp={e => {
                                     setState({
                                         ...formState, phoneValid: phoneValidation(e.target.value)
@@ -137,11 +151,13 @@ function InviteUser(props) {
                         }
                         <div className="input_field"> <span><i aria-hidden="true" className="fa fa-lock"></i></span>
                             <input type="password" name="password" placeholder="Password"
-                                onChange={e =>
+                                onChange={e =>{
                                     setState({
                                         ...formState,
                                         password: e.target.value,
-                                    })}
+                                    })   
+                                    setBtnActive(true);
+                                }}
                                 onKeyUp={e => {
                                     setState({
                                         ...formState, passwordValid: passwordStrengthValidation(e.target.value)
@@ -162,41 +178,24 @@ function InviteUser(props) {
 
                         <div className="input_field"> <span><i aria-hidden="true" className="fa fa-lock"></i></span>
                             <input type="password" name="password" placeholder="Re-type Password" 
-                                onChange={e =>
+                                onChange={e =>{
                                     setState({
                                         ...formState,
                                         passwordConfirm: e.target.value,
-                                    })}
+                                })
+                                setBtnActive(true);
+                            }}
                             />
                         </div>
                         {
-                            (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Oops! Passwords do not match" />
+                            (formState.passwordValid === 1 || formState.passwordValid === 2 || formState.passwordValid === 3) && formState.passwordMatchValid === 1 && <ErrorMsg text="Passwords do not match" />
                         }
 
                         {(formState.passwordValid === -1) && formState.passwordMatchValid && <ErrorMsg />}
-
                         {
-                            formState.AfterSubmitErrorStatus === 2 && <Redirect to={{
-                                pathname: "/msgPage",
-                                state: {
-                                    icon: "fa fa-exclamation-circle",
-                                    headLine: "Something went wrong."
-                                }
-                            }} />}
-                        {
-                            formState.AfterSubmitErrorStatus === 1 &&
-                            <Redirect to={{
-                                pathname: "/msgPage",
-                                state: {
-                                    icon: "fa fa-check-circle",
-                                    headLine: "Account created successfully ",
-                                    link: "/",
-                                    aText: "Go to home page"
-                                }
-                            }}
-                            />
-                        }
+                            formState.AfterSubmitErrorStatus === 2 && <ErrorMsg text="Something went wrong. please try again"/>}
                         <input className="button" type="submit" value="Submit" onClick={submit} />
+                        {formState.successStatus === 1  && <Redirect to="/" /> }
                     </form>
                 </div>
         

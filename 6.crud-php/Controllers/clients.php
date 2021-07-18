@@ -25,9 +25,9 @@ class clients extends controller
         $gymId = $this->data->business_id;
         $name = $this->data->name;
         $phone= $this->data->phone;
-        $selectedPackage= $this->data->selectedPackage;
+        // $selectedPackage= $this->data->selectedPackage;
         
-        $addClient = $this->model->addNewClient($gymId, $name, $phone, $selectedPackage);
+        $addClient = $this->model->addNewClient($gymId, $name, $phone);
         if ($addClient){
             return true;
         }
@@ -40,10 +40,10 @@ class clients extends controller
         $clientId = $this->data->clientId;
         $clientName = $this->data->clientName;
         $clientPhone= $this->data->clientPhone;
-        $selectedPackage= $this->data->selectedPackage;
+        // $selectedPackage= $this->data->selectedPackage;
     
 
-        $editClient = $this->model->editClient($clientId, $clientName, $clientPhone, $selectedPackage);
+        $editClient = $this->model->editClient($clientId, $clientName, $clientPhone);
         if ($editClient){
             return true;
         }

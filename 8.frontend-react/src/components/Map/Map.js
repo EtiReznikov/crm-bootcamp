@@ -18,20 +18,19 @@ function Map (props) {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       })
-
     });
     },[]);
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
-        <GoogleMapReact
+        {/* <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP__MAP_KEY }}
           defaultCenter={userCurrentLocation}
           defaultZoom={zoom}
         >
           
           <MapPin />
-        </GoogleMapReact>
+        </GoogleMapReact> */}
       </div>
     );
   }

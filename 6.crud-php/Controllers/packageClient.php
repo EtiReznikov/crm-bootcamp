@@ -19,6 +19,18 @@ class packageClient extends controller
         return $package;
     }
 
+    public function addPackageSell()
+    {
+        $packageId= $this->data->packageId;
+        $clientId= $this->data->clientId;
+        $startDate= $this->data->startDate;
+        $endDate= $this->data->endDate;
+        $totalPrice= $this->data->totalPrice;
+        $transaction= $this->data->transaction;
+        $createTime= $this->data->createTime;
+        $addPackageSell = $this->model->addNewPackageSell($packageId, $clientId, $startDate, $endDate,  $totalPrice, $transaction, $createTime);
+        return $addPackageSell;
+    }
 
    
 }

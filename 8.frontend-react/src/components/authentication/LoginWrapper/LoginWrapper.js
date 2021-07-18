@@ -26,7 +26,6 @@ function LoginSingUp(props) {
       <div className="form_wrapper">
 
         {
-          //* TODO: change color of chosen
           (localStorage.getItem('user_token') && <Redirect to="/" />) ||
           (<div className="menu">
             <div className={"controller" + (isLogin ? "selected-controller" : "")}

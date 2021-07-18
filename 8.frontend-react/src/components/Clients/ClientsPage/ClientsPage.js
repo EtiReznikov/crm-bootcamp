@@ -9,15 +9,18 @@ import AddClient from '../AddClient/AddClient';
 import ConfirmModal from '../../SubComponents/ConfirmModal/ConfirmModal';
 import ErrorComponent from '../../SubComponents/ErrorComponenet/ErrorComponent';
 import FileUploadModal from '../../FileUploadModal/FileUploadModal';
-import AddPersonalTraining from '../../AddPersonalTraining/AddPersonalTraining';
+// import AddPersonalTraining from '../../PersonalTrainings/AddPersonalTraining/AddPersonalTraining';
 import Avatar from 'react-avatar';
+import StoreWrapper from '../../store/StoreWrapper/StoreWrapper';
 import img from '../../../Views/logo.png'
+
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 function Clients(props) {
 
     const [modalIsOpenAddClient, setIsOpenAddClientModal] = useState(false);
     const [modalIsOpenRemoveClient, setIsOpenRemoveClientModal] = useState(false);
     const [modalIsOpenAddImg, setIsOpenAddImgModal] = useState(false);
-    const [modalIsOpenPersonalTraining, setIsOpenPersonalTrainingModal] = useState(false);
+    const [modalIsOpenStore, setIsOpenStoreModal] = useState(false);
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -34,7 +37,7 @@ function Clients(props) {
             accessor: "client_phone"
         },
         {
-            Header: 'Update',
+            Header: 'Update & Delete',
             width: '1em',
             Cell: ({ row }) => (
                 <div id="row-button-wrapper">
@@ -63,15 +66,27 @@ function Clients(props) {
                 </div>)
         },
         {
-            Header: 'Personal training',
+            Header: 'Store',
             // width: '',
             Cell: ({ row }) => (
                 <div id="row-button-wrapper">
                     <button className="row-button" onClick={() => {
                         setRow(row.original);
-                        openModalAddPersonalTraining ();
+                        openModalStore ();
                     }}>
                         {<i className="fa fa-cart-plus"></i>}
+                    </button>
+                </div>)
+        },
+        {
+            Header: 'Payment history',
+            Cell: ({ row }) => (
+                <div id="row-button-wrapper">
+                    <button className="row-button" onClick={() => {
+                        setRow(row.original);
+                        openModalStore ();
+                    }}>
+                        {<i className="fa fa-clipboard"></i>}
                     </button>
                 </div>)
         },
@@ -106,12 +121,12 @@ function Clients(props) {
         setIsOpenAddImgModal(false);
     }
 
-    const openModalAddPersonalTraining = () => {
-        setIsOpenPersonalTrainingModal(true);
+    const openModalStore= () => {
+        setIsOpenStoreModal(true);
     }
 
-    const closeModalPersonalTraining = () => {
-        setIsOpenPersonalTrainingModal(false);
+    const closeModalStore = () => {
+        setIsOpenStoreModal(false);
     }
 
     useEffect(() => {
@@ -125,7 +140,6 @@ function Clients(props) {
                         setData([]);
                     else if (Array.isArray(response.data)) {
 
-                        console.log(response.data)
                         for (const clientValue of response.data) {
                             let temp = {
                                 client_id: clientValue.client_id,
@@ -192,6 +206,7 @@ function Clients(props) {
                             Add Client
                         </button>
                     </div>
+              
                     <div id="table-wrapper">
 
                         <Table columns={columns} data={data} />
@@ -224,13 +239,14 @@ function Clients(props) {
                         <FileUploadModal closeModal={closeModalAddImg} clientData={row} changeDataState={changeDataState} />
                     </Modal>
                     <Modal
-                        isOpen={modalIsOpenPersonalTraining}
-                        onRequestClose={closeModalPersonalTraining}
+                        isOpen={modalIsOpenStore}
+                        onRequestClose={closeModalStore}
                         contentLabel="Add Personal Training Modal"
                         className="modal"
                         ariaHideApp={false}
                     >
-                        <AddPersonalTraining closeModal={closeModalPersonalTraining} clientData={row} changeDataState={changeDataState} />
+                        <StoreWrapper closeModal={closeModalStore} clientData={row} changeDataState={changeDataState}/>
+                        {/* <AddPersonalTraining closeModal={closeModalPersonalTraining} clientData={row} changeDataState={changeDataState} /> */}
                     </Modal>
                 </>
             }

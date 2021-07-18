@@ -31,17 +31,7 @@ connection.connect(function (err) {
 });
 
 
-const Auth = require('./Routes/Auth');
-app.use('/Auth', Auth);
 
-const Password = require('./Routes/Password');
-app.use('/Password', Password);
-
-const Accounts = require('./Routes/Accounts');
-app.use('/Accounts', Accounts);
-
-const Files = require('./Routes/Files');
-app.use('/Files', Files)
 
 /*
 Middleware to verify that jwt is valid
@@ -51,8 +41,7 @@ app.use(function (req, res, next) {
   const authentication = req.body.headers ? req.body.headers.authentication : undefined;
 
   //Paths where JWT not required 
-  if (req.path === '/Login' || req.path === '/CreateUser' || req.path === '/ResetPasswordReq' || req.path === '/NewPassword'  || req.path === '/CreateUserByInvite' || req.path === '/SignUp' || req.path === '/loginSignup' || req.path === '/Files' ) {
-    console.log(true)
+  if ( req.path === '/Auth/CreateUser' || req.path === 'Password/ResetPasswordReq' || req.path === '/Password/NewPassword'  || req.path === '/Accounts/CreateUserByInvite' || req.path === '/Auth/Login' || req.path === '/Files/addImgToClient' || req.path === '/Accounts/getUsersList' ) {
     next(); 
   }
 
@@ -80,7 +69,10 @@ app.use(function (req, res, next) {
             });
           }
           //success
-          else next();
+          else {
+            next();
+
+          }
         });
       }
     });
@@ -89,10 +81,24 @@ app.use(function (req, res, next) {
     // if JWT token wasn't sent
     return res.status(403).send({
       success: false,
-      message: 'token invalid'
+      message: "token wasn't sent"
     });
   }
 });
+
+
+const Auth = require('./Routes/Auth');
+app.use('/Auth', Auth);
+
+const Password = require('./Routes/Password');
+app.use('/Password', Password);
+
+const Accounts = require('./Routes/Accounts');
+app.use('/Accounts', Accounts);
+
+const Files = require('./Routes/Files');
+app.use('/Files', Files)
+
 
 app.post('/home', function (req, res) {
   res.send('home');

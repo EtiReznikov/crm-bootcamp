@@ -57,6 +57,9 @@ function Login(props) {
           setBtnActive(true);
         });
     }
+    else{
+      setBtnActive(true);
+    }
     e.preventDefault();
   }
 
@@ -68,12 +71,14 @@ function Login(props) {
      
           <form>
             <div className="input_field"> <span><i aria-hidden="true" className="fa fa-envelope"></i></span>
-              <input type="email" name="email" placeholder="Email" onChange={e =>
+              <input type="email" name="email" placeholder="Email" onChange={e =>{
+              setBtnActive(true)
                 setState({
                   ...formState,
+                  errorStatus:-1,
                   email: e.target.value,
                   emailValid: 0
-                })}
+                })}}
               />
             </div>
             {
@@ -84,8 +89,10 @@ function Login(props) {
             }
             <div className="input_field"> <span><i aria-hidden="true" className="fa fa-lock"></i></span>
               <input type="password" name="password" placeholder="Password" onChange={e => {
+                 setBtnActive(true)
                 setState({
                   ...formState,
+                  errorStatus: -1,
                   password: e.target.value,
                 })
               }}
@@ -105,18 +112,7 @@ function Login(props) {
             }
             {
               formState.errorStatus === 3
-              && <Redirect to={{
-                pathname: "/msgPage",
-                state: {
-                  icon: "fa fa-exclamation-circle",
-                  headLine: "Something went wrong",
-                  text_1: "please ",
-                  link: "/loginSignup",
-                  aText: "click here",
-                  text_2: " to try again.",
-                  className: "msg-page-link"
-                }
-              }} />
+              && <ErrorMsg text="Something went wrong, please try again" />
             }
             {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
                         onClick={(e) => {

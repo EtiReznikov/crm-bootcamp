@@ -153,7 +153,7 @@ function AddPackage(props) {
                 <form>
                     <div className="input_field" >
                         <span>
-                            <i aria-hidden="true" className="fa fa-object-un-group"></i>
+                            <i aria-hidden="true" className="fa fa-cube"></i>
                         </span>
                         <input
                             name="name"
@@ -183,7 +183,6 @@ function AddPackage(props) {
                         <Select isMulti name="classes" isSearchable={true} value={formState.selectedClasses} onChange={onClassesSelect} options={data} className="class-selector"
                             classNamePrefix="select" />
                     </div>
-                    {/* <errorMsg /> */}
                     <div className="input_field" id="price-picker" >
                         <span>
                             <i aria-hidden="true" className="fa fa-dollar"></i>
@@ -191,7 +190,7 @@ function AddPackage(props) {
                         <input
                             name="price"
                             type="text"
-                            placeholder="Price"
+                            placeholder="Price per month"
                             value={formState.price}
                             onChange={
                                 e =>

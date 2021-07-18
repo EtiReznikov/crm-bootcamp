@@ -10,16 +10,19 @@ class Model_personalTraining extends Model
         parent::__construct();
     }
 
-    public function addNewPersonalTraining($user_id, $client_id, $date, $business_id)
+    public function addNewPersonalTraining($user_id, $client_id, $date, $business_id, $price, $transaction, $createTime)
     {
         //prevent mysql injection
         $user_id = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $user_id);
         $client_id = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $client_id);
-      
+
         $addPersonalTraining  =  $this->getDB()
             ->query("INSERT INTO personal_trainings (user_id, client_id, date, gym_id) VALUES ('$user_id', '$client_id', '$date', '$business_id')");
-        if ($addPersonalTraining ) {
-            return $addPersonalTraining ;
+        if ($addPersonalTraining) {
+            $PersonalTraining_id = $this->getDB()->insert_id;
+            $transactionInsert = $this->getDB()
+                ->query("INSERT INTO transactions  ( sell_id , transaction, date, type) VALUES ('$PersonalTraining_id ', '$transaction', '$createTime', 'personalTraining')");
+            return $transactionInsert;
         } else {
             return  $this->getDB()->error;
         }
@@ -37,6 +40,4 @@ class Model_personalTraining extends Model
 
         return $trainings;
     }
-
-
 }
