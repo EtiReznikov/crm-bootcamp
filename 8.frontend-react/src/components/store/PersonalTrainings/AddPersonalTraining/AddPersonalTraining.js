@@ -78,7 +78,7 @@ function AddPersonalTraining(props) {
         })
             .then(function (response) {
                 if (response.data === true) {
-                    props.closeModal();
+                    props.setPaymentSuccess(1);
                     props.changeDataState();
                 }
                 else {

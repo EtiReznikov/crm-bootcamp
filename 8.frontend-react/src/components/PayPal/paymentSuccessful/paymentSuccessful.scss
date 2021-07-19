@@ -1,0 +1,16 @@
+#success-page{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    opacity: 0.8;
+}
+
+#payment-success-icon{
+    font-size: 100px;
+}
+
+#payment-success-text{
+    margin-top: 15px;
+    font-size: 35px;
+}

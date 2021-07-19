@@ -1,17 +1,18 @@
 import React from 'react';
-import Headline from '../../SubComponents/Headline/Headline';
+import Text from '../../SubComponents/Text/Text';
 import './paymentSuccessful.scss'
-function paymentSuccessful(props) {
+function PaymentSuccessful(props) {
     console.log(props)
 
     return (
-    <div className="form_container" >
+    <div className="form_container" id="success-page">
         <form>
-            <Headline className="head-msg" text="Home page" />
+        <i class="fa fa-check-circle" id="payment-success-icon"></i>
+            <div  id="payment-success-text">{props.text}</div>
         </form>
     </div>
     )
 }
 
 
-export default paymentSuccessful;
+export default PaymentSuccessful;

@@ -5,7 +5,7 @@ import PackageSell from '../PackageSell/PackageSell';
 // import Signup from '../Signup/Signup';
 import AddPersonalTraining from '../PersonalTrainings/AddPersonalTraining/AddPersonalTraining';
 import Loader from "react-loader-spinner";
-import paymentSuccessful from '../../PayPal/paymentSuccessful/paymentSuccessful'
+import PaymentSuccessful from '../../PayPal/paymentSuccessful/PaymentSuccessful'
 import {
     Redirect
 } from "react-router-dom";
@@ -27,12 +27,15 @@ function StoreWrapper(props) {
         <div className="store-wrapper">
 
             <div className="form_wrapper">
-                {paymentSuccess === 0 && <>
-                    <button className="exit" onClick={props.closeModal} >
-                        <i id="exit-wind" className="fa fa-times"></i>
-                    </button>
-                    {
-                        (<div className="menu">
+
+                <button className="exit" onClick={props.closeModal} >
+                    <i id="exit-wind" className="fa fa-times"></i>
+                </button>
+
+
+                {paymentSuccess === 0 &&
+                    <>
+                        <div className="menu">
                             <div className={"controller" + (isPackage ? "selected-controller" : "")}
                                 onClick={showPackageBox.bind(this)} active={isPackage.toString()}>
                                 Package
@@ -43,14 +46,17 @@ function StoreWrapper(props) {
                                 onClick={showPersonalTrainingBox.bind(this)} active={isPersonalTraining.toString()}>
                                 Personal Training
                             </div>
-                        </div>)}
-                    {
-                        (isPackage && <PackageSell closeModal={props.closeModal} clientData={props.clientData} changeDataState={props.changeDataState} setPaymentSuccess={setPaymentSuccess} />) ||
-                        (isPersonalTraining && <AddPersonalTraining closeModal={props.closeModal} clientData={props.clientData} changeDataState={props.changeDataState} setPaymentSuccess={setPaymentSuccess} />)
-                    }
-                </>
+                        </div>
+
+                        {
+                            (isPackage && <PackageSell closeModal={props.closeModal} clientData={props.clientData} changeDataState={props.changeDataState} setPaymentSuccess={setPaymentSuccess} />) ||
+                            (isPersonalTraining && <AddPersonalTraining closeModal={props.closeModal} clientData={props.clientData} changeDataState={props.changeDataState} setPaymentSuccess={setPaymentSuccess} />)
+                        }
+                    </>
                 }
-                {paymentSuccess === 1 && <paymentSuccessful text="test" />}
+
+
+                {paymentSuccess === 1 && <PaymentSuccessful text="Payment successful" />}
             </div>
 
 
