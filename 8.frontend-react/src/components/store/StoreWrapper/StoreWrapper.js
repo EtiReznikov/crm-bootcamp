@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './StoreWrapper.scss'
 import '../../../Views/Form.scss'
 import PackageSell from '../PackageSell/PackageSell';
-// import Signup from '../Signup/Signup';
 import AddPersonalTraining from '../PersonalTrainings/AddPersonalTraining/AddPersonalTraining';
 import Loader from "react-loader-spinner";
 import PaymentSuccessful from '../../PayPal/paymentSuccessful/PaymentSuccessful'

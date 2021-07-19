@@ -13,7 +13,7 @@ import FileUploadModal from '../../FileUploadModal/FileUploadModal';
 import Avatar from 'react-avatar';
 import StoreWrapper from '../../store/StoreWrapper/StoreWrapper';
 import img from '../../../Views/logo.png'
-
+import PaymentHistory from '../../store/PaymentHistory/PaymentHostory';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 function Clients(props) {
 
@@ -21,6 +21,7 @@ function Clients(props) {
     const [modalIsOpenRemoveClient, setIsOpenRemoveClientModal] = useState(false);
     const [modalIsOpenAddImg, setIsOpenAddImgModal] = useState(false);
     const [modalIsOpenStore, setIsOpenStoreModal] = useState(false);
+    const [modalIsOpenPaymentHistory,  setIsOpenPaymentHistoryModal] =useState (false)
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -84,7 +85,7 @@ function Clients(props) {
                 <div id="row-button-wrapper">
                     <button className="row-button" onClick={() => {
                         setRow(row.original);
-                        openModalStore ();
+                        openModalPaymentHistory ();
                     }}>
                         {<i className="fa fa-clipboard"></i>}
                     </button>
@@ -127,6 +128,15 @@ function Clients(props) {
 
     const closeModalStore = () => {
         setIsOpenStoreModal(false);
+    }
+
+
+    const openModalPaymentHistory= () => {
+        setIsOpenPaymentHistoryModal(true);
+    }
+
+    const closeModalPaymentHistory= () => {
+        setIsOpenPaymentHistoryModal(false);
     }
 
     useEffect(() => {
@@ -241,12 +251,20 @@ function Clients(props) {
                     <Modal
                         isOpen={modalIsOpenStore}
                         onRequestClose={closeModalStore}
-                        contentLabel="Add Personal Training Modal"
+                        contentLabel="Add Sell Modal"
                         className="modal"
                         ariaHideApp={false}
                     >
                         <StoreWrapper closeModal={closeModalStore} clientData={row} changeDataState={changeDataState}/>
-                        {/* <AddPersonalTraining closeModal={closeModalPersonalTraining} clientData={row} changeDataState={changeDataState} /> */}
+                    </Modal>
+                    <Modal
+                        isOpen={modalIsOpenPaymentHistory}
+                        onRequestClose={closeModalPaymentHistory}
+                        contentLabel="Payment history Modal"
+                        className="modal"
+                        ariaHideApp={false}
+                    >
+                        <PaymentHistory  closeModal={closeModalStore} clientData={row} />
                     </Modal>
                 </>
             }

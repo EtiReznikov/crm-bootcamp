@@ -45,28 +45,6 @@ function AddClient(props) {
 
                 });
 
-            // if (props.isEdit) {
-            //     await axios.post('http://localhost:991/packageClient/getPackageByClient/', {
-            //         client_id: props.clientData.client_id,
-            //     })
-            //         .then((response) => {
-            //             let packages = []
-            //             for (const packageValue of response.data) {
-            //                 packages.push({
-            //                     value: packageValue.package_id,
-            //                     label: packageValue.package_name,
-            //                 })
-            //             }
-            //             setState({
-            //                 ...formState,
-            //                 selectedPackage: packages
-            //             })
-
-            //         })
-            //         .catch(function (error) {
-
-            //         });
-            // }
         })();
     }, []);
 
@@ -133,13 +111,8 @@ function AddClient(props) {
         e.preventDefault();
     }
 
-    // const onPackagesSelect = (selectedOptions) => {
-    //     setState({
-    //         ...formState,
-    //         selectedPackage: selectedOptions
-    //     })
-    // }
 
+    
     return (
         <div className="form_wrapper">
 
@@ -199,15 +172,7 @@ function AddClient(props) {
                         (formState.phoneValid === 1 && <ErrorMsg text="Phone number can only contain digits" />) ||
                         (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />)
                     }
-                    {/* <div className="input_field" >
-                        <label className="classes-picker">
-                            Pick Package:
-                        </label>
-
-                        <Select name="packages" isSearchable={true} value={formState.selectedPackage[0]} onChange={onPackagesSelect} options={data} className="package-selector"
-                            classNamePrefix="select" />
-                    </div> */}
-                   
+                 
                     {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
                         onClick={(e) => {
                             setBtnActive(false);
