@@ -27,7 +27,8 @@ class classes extends controller
         $classDescription = $this->data->classDescription;
         $color = $this->data->color;
         $dayAndTime = $this->data->dayAndTime;
-        $addClass = $this->model->addNewClass($gymId, $className, $classDescription, $color, $dayAndTime);
+        $location = $this->data->location;
+        $addClass = $this->model->addNewClass($gymId, $className, $classDescription, $color, $dayAndTime, $location);
         return $addClass;
     }
 
@@ -39,8 +40,8 @@ class classes extends controller
         $description = $this->data->classDescription;
         $color = $this->data->color;
         $dayAndTime = $this->data->dayAndTime;
-
-        $editClass = $this->model->editClass($classId, $className, $description, $color, $dayAndTime);
+        $location = $this->data->location;
+        $editClass = $this->model->editClass($classId, $className, $description, $color, $dayAndTime, $location);
         return $editClass;
     }
 
@@ -50,5 +51,13 @@ class classes extends controller
         $classId = $this->data->classId;
         $removeClass = $this->model->removeClassById($classId);
         return $removeClass;
+    }
+
+    public function getRegisterToClass(){
+        $gymId = $this->data->business_id;
+        $classId= $this->data->classId;
+        $registers = $this->model->getAllRegisters($gymId, $classId);
+        $this->response["registers"] = $registers;
+        return $registers;
     }
 }

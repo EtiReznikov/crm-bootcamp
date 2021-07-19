@@ -11,7 +11,7 @@ import Loader from "react-loader-spinner";
 function AddPackage(props) {
     const [formState, setState] = useState({
         name: props.isEdit ? props.packageData.package_name : "",
-        price: props.isEdit ? props.packageData.price : "",
+        price: props.isEdit ? props.packageData.price : 200,
         nameValid: 0,
         priceValid: true,
         selectedClasses: []
@@ -20,7 +20,7 @@ function AddPackage(props) {
     const [errorMsg, setErrorMsg] = useState(false);
     const [data, setData] = useState([]);
     const [btnActive, setBtnActive] = useState(true);
-
+    const [errorClass, setErrorClass] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -76,24 +76,53 @@ function AddPackage(props) {
 
     /* when add user button is submitted*/
     const onSubmit = (e) => {
+        if (formState.selectedClasses.length === 0) {
+            setErrorClass(true);
+            setBtnActive(true);
+        }
+        else {
+            const nameValid = nameLengthValidation(formState.name);
+            // const phoneValid = phoneLengthValidation(formState.phone);
+            const valid = (nameValid != 2) && (formState.priceValid);
+            setState({
+                ...formState,
+                nameValid: nameValid,
+            })
 
-        const nameValid = nameLengthValidation(formState.name);
-        // const phoneValid = phoneLengthValidation(formState.phone);
-        const valid = (nameValid === 0) && (formState.priceValid);
-        setState({
-            ...formState,
-            nameValid: nameValid,
-        })
-        setErrorMsg(false);
-        if (valid) {
-            if (props.isEdit) {
-                axios.post('http://localhost:991/packages/editPackageData/', {
-                    packageId: props.packageData.package_id,
-                    name: formState.name,
-                    price: formState.price,
-                    selectedClasses: formState.selectedClasses,
-                })
-                    .then(function (response) {
+            setErrorMsg(false);
+            if (valid) {
+                if (props.isEdit) {
+                    axios.post('http://localhost:991/packages/editPackageData/', {
+                        packageId: props.packageData.package_id,
+                        name: formState.name,
+                        price: formState.price,
+                        selectedClasses: formState.selectedClasses,
+                    })
+                        .then(function (response) {
+                            if (response.data === true) {
+                                props.closeModal();
+                                props.changeDataState();
+                            }
+                            else {
+                                setErrorMsg(true);
+                                setBtnActive(true);
+                            }
+                        })
+                        .catch(function (error) {
+                            setErrorMsg(true);
+                            setBtnActive(true);
+                            console.log(error)
+                        });
+
+                }
+                else {
+
+                    axios.post('http://localhost:991/packages/addPackage/', {
+                        name: formState.name,
+                        price: formState.price,
+                        selectedClasses: formState.selectedClasses,
+                        business_id: localStorage.getItem('business_id'),
+                    }).then(function (response) {
                         if (response.data === true) {
                             props.closeModal();
                             props.changeDataState();
@@ -101,38 +130,19 @@ function AddPackage(props) {
                         else {
                             setErrorMsg(true);
                             setBtnActive(true);
+                            //             setErrorMsg(true);
                         }
                     })
-                    .catch(function (error) {
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                        console.log(error)
-                    });
-
+                        .catch(function (error) {
+                            setErrorMsg(true);
+                            setBtnActive(true);
+                            console.log(error)
+                        });
+                }
             }
             else {
-
-                axios.post('http://localhost:991/packages/addPackage/', {
-                    name: formState.name,
-                    price: formState.price,
-                    selectedClasses: formState.selectedClasses,
-                    business_id: localStorage.getItem('business_id'),
-                }).then(function (response) {
-                    if (response.data === true) {
-                        props.closeModal();
-                        props.changeDataState();
-                    }
-                    else {
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                        //             setErrorMsg(true);
-                    }
-                })
-                    .catch(function (error) {
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                        console.log(error)
-                    });
+                setErrorMsg(true);
+                setBtnActive(true);
             }
         }
         e.preventDefault();
@@ -183,6 +193,8 @@ function AddPackage(props) {
                         <Select isMulti name="classes" isSearchable={true} value={formState.selectedClasses} onChange={onClassesSelect} options={data} className="class-selector"
                             classNamePrefix="select" />
                     </div>
+                    {errorClass && <ErrorMsg text="You must choose package" />}
+                    {!errorClass && <ErrorMsg />}
                     <div className="input_field" id="price-picker" >
                         <span>
                             <i aria-hidden="true" className="fa fa-dollar"></i>
@@ -217,7 +229,7 @@ function AddPackage(props) {
                         }
                         } />}
                     {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
-                    
+
                     {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
                     {!errorMsg && <ErrorMsg />}
                 </form>

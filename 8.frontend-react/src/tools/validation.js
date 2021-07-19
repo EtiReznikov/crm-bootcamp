@@ -23,7 +23,6 @@
 export function nameLengthValidation(name) {
     if (name.length < 2) {
         return 2;
-        // document.getElementById("name-error").innerHTML = "Oops,Your name must contain at least 2 letters";
     }
     else return nameValidation(name);
 }

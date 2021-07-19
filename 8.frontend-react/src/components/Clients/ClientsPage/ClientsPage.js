@@ -264,7 +264,7 @@ function Clients(props) {
                         className="modal"
                         ariaHideApp={false}
                     >
-                        <PaymentHistory  closeModal={closeModalStore} clientData={row} />
+                        <PaymentHistory  closeModal={closeModalPaymentHistory} clientData={row} />
                     </Modal>
                 </>
             }

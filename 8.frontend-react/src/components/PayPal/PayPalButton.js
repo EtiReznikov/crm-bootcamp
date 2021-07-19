@@ -6,9 +6,9 @@ import { PayPalButton } from "react-paypal-button-v2";
 // import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 function PayPal(props) {
-    const [paymentSuccess, setPaymentSuccess] = useState(false);
+
     return (
-        <div style={{ position: "relative", "z-index": 0 }}>
+        <div style={{ position: "relative", "zIndex": 0 }}>
              <PayPalButton
                 amount={props.totalPrice}
                 currency="ILS"

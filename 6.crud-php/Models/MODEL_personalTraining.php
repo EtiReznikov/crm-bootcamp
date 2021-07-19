@@ -17,7 +17,7 @@ class Model_personalTraining extends Model
         $client_id = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $client_id);
 
         $addPersonalTraining  =  $this->getDB()
-            ->query("INSERT INTO personal_trainings (user_id, client_id, date, gym_id) VALUES ('$user_id', '$client_id', '$date', '$business_id')");
+            ->query("INSERT INTO personal_trainings (user_id, client_id, date, price, gym_id) VALUES ('$user_id', '$client_id', '$date', $price, '$business_id')");
         if ($addPersonalTraining) {
             $PersonalTraining_id = $this->getDB()->insert_id;
             $transactionInsert = $this->getDB()

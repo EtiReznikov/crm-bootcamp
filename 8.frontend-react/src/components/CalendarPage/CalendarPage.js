@@ -7,6 +7,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { getNextDay } from '../../tools/dateCalculate';
 import Modal from 'react-modal';
 import AddPersonalTraining from '../store/PersonalTrainings/AddPersonalTraining/AddPersonalTraining';
+import  RegisterClients from '../RegisterClients/RegisterClients'
 import './CalendarPage.scss';
 const localizer = momentLocalizer(moment);
 function CalendarPage(props) {
@@ -28,8 +29,10 @@ function CalendarPage(props) {
   const [groupTrainingsList, setGroupTrainingsList] = useState([]);
   const [personalTrainingsList, setPersonalTrainingsList] = useState([]);
   const [modalIsOpenPersonalTraining, setIsOpenPersonalTrainingModal] = useState(false);
+  const [modalIsOpenRegisterClients, setIsOpenRegisterClientsModal] = useState(false);
   const [view, setView] = useState("all");
   const [dataHasChanged, setDataHasChanged] = useState(false);
+  const [event, setEvent] = useState("");
 
   useEffect(async () => {
 
@@ -53,6 +56,7 @@ function CalendarPage(props) {
                   'color': classValue.color,
                   'start': getNextDay(day, parseInt(obj.hours), parseInt(obj.min), week),
                   'end': getNextDay(day, parseInt(obj.hours) + 1, parseInt(obj.min), week),
+                  id : classValue.class_id
                 }
                 data.push(temp)
               }
@@ -83,7 +87,7 @@ function CalendarPage(props) {
             let temp = {
               'title': classValue.client_name + " & " + classValue.user_name,
               'start': start,
-              'end': end
+              'end': end,
             }
             data.push(temp)
           }
@@ -110,18 +114,25 @@ function CalendarPage(props) {
     setIsOpenPersonalTrainingModal(false);
   }
 
+  const openModalRegisterClients = () => {
+    setIsOpenRegisterClientsModal(true);
+  }
+
+  const closeModalRegisterClients  = () => {
+    setIsOpenRegisterClientsModal(false);
+  }
 
 
   return <div id="calendar-page" className="page-wrapper">
     <div id="calendar-wrapper">
       <Headline id="calendar-page-header" text="Calendar" />
       <div className="input_field" >
-        <label for="views">View:</label>
+        <label htmlFor="views">View:</label>
         <select id="views" name="views" onChange={(e) => {
           setView(e.target.value)
         }
         }>
-          <option selected="selected" value="all">All</option>
+          <option defaultValue="selected" value="all">All</option>
           <option value="groupTrainings">Group Trainings</option>
           <option value="personalTrainings">Personal Trainings</option>
         </select>
@@ -141,11 +152,15 @@ function CalendarPage(props) {
           openModalAddPersonalTraining();
         }
       }
+      onSelectEvent={(e)=>{
+        setEvent(e);
+        openModalRegisterClients();
+      }}
       style={{ width: "100%", height: "85%" }}
       eventPropGetter={(eventStyleGetter)}
     />
 
-    <Modal
+    {/* <Modal
       isOpen={modalIsOpenPersonalTraining}
       onRequestClose={closeModalPersonalTraining}
       contentLabel="Add Personal Training Modal"
@@ -153,6 +168,16 @@ function CalendarPage(props) {
       ariaHideApp={false}
     >
       <AddPersonalTraining closeModal={closeModalPersonalTraining} changeDataState={changeDataState} />
+    </Modal> */}
+
+    <Modal
+      isOpen={modalIsOpenRegisterClients}
+      onRequestClose={closeModalRegisterClients}
+      contentLabel="Register Clients Modal"
+      className="modal"
+      ariaHideApp={false}
+    >
+      <RegisterClients closeModal={closeModalRegisterClients} changeDataState={changeDataState} event={event} />
     </Modal>
   </div>
 }

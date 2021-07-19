@@ -8,6 +8,8 @@ import Modal from 'react-modal';
 import AddClass from '../AddClass/AddClass';
 import ConfirmModal from '../../SubComponents/ConfirmModal/ConfirmModal';
 import ErrorComponent from '../../SubComponents/ErrorComponenet/ErrorComponent';
+import Geocode from "react-geocode";
+Geocode.setApiKey(process.env.REACT_APP__MAP_KEY);
 
 function Classes(props) {
     const [data, setData] = useState([]);
@@ -127,7 +129,8 @@ function Classes(props) {
                                 gym_id: classValue.gym_id,
                                 color: classValue.color,
                                 days: days,
-                                time: obj.hours + ":" + obj.min
+                                time: obj.hours + ":" + obj.min,
+                                location: classValue.location
                             }
                             data.push(temp)
                         }

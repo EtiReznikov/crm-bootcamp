@@ -25,7 +25,7 @@ class Model_classes extends Model
         }
     }
 
-    public function addNewClass($gymId, $className, $classDescription, $color, $dayAndTime)
+    public function addNewClass($gymId, $className, $classDescription, $color, $dayAndTime, $location)
     {
         //prevent mysql injection
         $gymId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $gymId);
@@ -33,9 +33,8 @@ class Model_classes extends Model
         $classDescription = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $classDescription);
         $color = preg_replace('/[\x00-\x1F\x80-\xFF]/', '',  $color);
         $dayAndTime = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $dayAndTime);
-
         $addClass  =  $this->getDB()
-            ->query("INSERT INTO classes (class_name, description, color, gym_id, days_and_time) VALUES ('$className', '$classDescription', '$color', '$gymId', '$dayAndTime')");
+            ->query("INSERT INTO classes (class_name, description, color, gym_id, days_and_time,  location) VALUES ('$className', '$classDescription', '$color', '$gymId', '$dayAndTime', '$location' )");
         if ($addClass) {
             return $addClass;
         } else {
@@ -56,7 +55,7 @@ class Model_classes extends Model
             return  $this->getDB()->error;
     }
 
-    public function editClass($classId, $className, $description, $color, $dayAndTime)
+    public function editClass($classId, $className, $description, $color, $dayAndTime, $location)
     {
         //prevent mysql injection
         $classId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $classId);
@@ -66,11 +65,30 @@ class Model_classes extends Model
         $dayAndTime = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $dayAndTime);
 
         $editClass = $this->getDB()
-            ->query("UPDATE classes set class_name='$className', description='$description' , color='$color' ,days_and_time='$dayAndTime' WHERE class_id=$classId");
+            ->query("UPDATE classes set class_name='$className', description='$description' , color='$color' ,days_and_time='$dayAndTime', location='$location'  WHERE class_id=$classId");
         if ($editClass) {
             return $editClass;
         } else {
             return $this->getDB()->error;
+        }
+    }
+
+    public function getAllRegisters($gymId, $classId)
+    {
+        //prevent mysql injection
+        $gymId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $gymId);
+        $classId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $classId);
+        $registers = $this->getDB()
+            ->query("SELECT clients.client_name, clients.file FROM classes 
+                    LEFT JOIN package_classes ON classes.class_id=package_classes.class_id 
+                    LEFT JOIN package_client ON package_classes.package_id= package_client.package_id
+                    LEFT JOIN clients on package_client.client_id = clients.client_id 
+                    WHERE classes.class_id='$classId' AND classes.gym_id='$gymId'")
+            ->fetch_all(MYSQLI_ASSOC);
+        if ($registers) {
+            return $registers ;
+        } else {
+            return  $this->getDB()->error;
         }
     }
 }

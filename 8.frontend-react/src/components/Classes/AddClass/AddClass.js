@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import React, { useState, PropTypes } from 'react';
+import React, { useState, useEffect } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import './AddClass.scss'
@@ -8,11 +8,13 @@ import { CirclePicker } from 'react-color';
 import 'material-design-inspired-color-picker'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import LocationSearchInput from '../../Map/LocationSearchInput/LocationSearchInput';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 
 import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';
 function AddClass(props) {
+
     const daysObjTemp = {};
     if (props.isEdit) {
         const daysTemp = props.classData.days.split(', ');
@@ -36,9 +38,8 @@ function AddClass(props) {
             saturday: props.isEdit && daysObjTemp.saturday ? daysObjTemp.saturday : false,
             sunday: props.isEdit && daysObjTemp.sunday ? daysObjTemp.sunday : false,
         },
-    }
-    );
-
+    })
+    const [location, setLocation] = useState(props.isEdit ? JSON.parse(props.classData.location) : { address: "" });
     const [hhValid, setHHValid] = useState(true);
     const [mmValid, setMMValid] = useState(true);
     const [errorMsg, setErrorMsg] = useState(false);
@@ -63,7 +64,8 @@ function AddClass(props) {
                         hours: formState.hours,
                         min: formState.minutes,
                         days: chosenDays()
-                    })
+                    }),
+                    location: JSON.stringify(location)
                 }).then(function (response) {
                     if (response.data === true) {
                         props.closeModal();
@@ -85,12 +87,12 @@ function AddClass(props) {
                     classDescription: formState.classDescription,
                     color: formState.classColor,
                     business_id: localStorage.getItem('business_id'),
-
                     dayAndTime: JSON.stringify({
                         hours: formState.hours,
                         min: formState.minutes,
                         days: chosenDays()
-                    })
+                    }),
+                    location: JSON.stringify(location)
                 }).then(function (response) {
                     if (response.data === true) {
                         props.closeModal();
@@ -113,7 +115,9 @@ function AddClass(props) {
         }
         e.preventDefault();
     }
-
+    const onLocationChange = (location) => {
+        setLocation(location)
+    }
     const changeHH = (e) => {
         setHHValid(timeValidation(e.target.value) && hourValidation(e.target.value));
         setState({
@@ -197,6 +201,18 @@ function AddClass(props) {
         //return only keys
         return Object.keys(daysObj);
     }
+
+    const createDayList = () => {
+        let days = [];
+        days[0] = "monday";
+        days[1] = "tuesday";
+        days[2] = "wednesday";
+        days[3] = "thursday";
+        days[4] = "friday";
+        days[5] = "saturday";
+        days[6] = "sunday";
+        return days;
+    }
     return (
         <div className="form_wrapper">
             <button className="exit" onClick={props.closeModal} >
@@ -250,7 +266,7 @@ function AddClass(props) {
                         />
                     </div>
                     <div className="input_field" id="color-wrapper">
-                        <label for="color-picker" className="color-picker">
+                        <label htmlFor="color-picker" className="color-picker">
                             Pick A Color:
                         </label>
                         <CirclePicker id="color-picker" color={formState.classColor} circleSize={25}
@@ -262,20 +278,16 @@ function AddClass(props) {
                                 })
                             }} />
                     </div>
-                    {/* <div>
-                        <GooglePlacesAutocomplete
-                            apiKey='AIzaSyC0LnvgDzKrHvGI1WcBdKmQX1peUH1ODq4'
-                        />
-                    </div> */}
-                    <label for="color-picker" className="color-picker">
+                    <LocationSearchInput onLocationChange={onLocationChange} address={location.address} />
+                    <label htmlFor="color-picker" className="color-picker">
                         Pick Date and Time:
                     </label>
                     <div className="weekDays-time-selector">
 
                         <div id="weekday-wrapper">
                             {
-                                ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map(
-                                    day =>
+                                    createDayList().map(
+                                    (day, key) => 
                                         <>
                                             <input type="checkbox" id={`weekday-'${day}'`} className="weekday" value={day} checked={formState.days[day]}
                                                 onChange={(e) => {
@@ -283,12 +295,14 @@ function AddClass(props) {
                                                     handleCheckClick(e, { day })
                                                 }}
                                             />
-                                            <label for={`weekday-'${day}'`}>
+                                            <label htmlFor={`weekday-'${day}'`}>
                                                 {day.charAt(0).toUpperCase()}
                                             </label>
                                         </>
+                                    
                                 )
                             }
+
                         </div>
                         <div id="time-wrapper">
                             <div id="hour-wrapper">

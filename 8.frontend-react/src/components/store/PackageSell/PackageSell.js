@@ -75,49 +75,9 @@ function PackageSell(props) {
 
     }
 
-    // /* when add user button is submitted*/
-    // const onSubmit = (e) => {
-    //     setErrorMsg(false);
-    //     if (!formState.selectedPackage.price) {
-    //         setErrorPackage(true);
-    //         setBtnActive(true);
-    //     }
-    //     else if (dateDiff <= 0) {
-    //         setErrorDate(true)
-    //         setBtnActive(true);
-    //     }
-    //     else {
-    //         axios.post('http://localhost:991/packageClient/addPackageSell/', {
-    //             packageId: formState.selectedPackage.value,
-    //             clientId: props.clientData.client_id,
-    //             startDate: startDate,
-    //             endDate: endDate,
-    //             // totalPrice: Math.round(formState.selectedPackage.price / (365.2425 / 12) * dateDiff)
-    //             totalPrice: totalPrice
-    //         })
-    //             .then(function (response) {
-    //                 if (response.data === true) {
-    //                     props.closeModal();
-    //                     props.changeDataState();
-    //                 }
-    //                 else {
-    //                     setErrorMsg(true);
-    //                     setBtnActive(true);
-    //                 }
-    //             })
-    //             .catch(function (error) {
-    //                 setErrorMsg(true);
-    //                 setBtnActive(true);
-    //                 console.log(error)
-    //             });
-
-    //     }
-
-    //     // e.preventDefault();
-    // }
 
     const onSubmit = (details) => {
-        console.log(details)
+      
 
         axios.post('http://localhost:991/packageClient/addPackageSell/', {
             packageId: formState.selectedPackage.value,

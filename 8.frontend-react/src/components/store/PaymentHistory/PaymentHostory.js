@@ -1,43 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import '../../../Views/Form.scss'
-import PackageSell from '../PackageSell/PackageSell';
-import AddPersonalTraining from '../PersonalTrainings/AddPersonalTraining/AddPersonalTraining';
-import Loader from "react-loader-spinner";
-import PaymentSuccessful from '../../PayPal/paymentSuccessful/PaymentSuccessful'
-import {
-    Redirect
-} from "react-router-dom";
+import Table from '../../SubComponents/Table/Table';
+import axios from 'axios';
+import './PaymentHistory.scss'
 function PaymentHistory(props) {
-  
+    const [data, setData] = useState([]);
+    const [errorMsg, setError] = useState(false);
 
+    const columns = useMemo(() => [
+        {
+            Header: "Type",
+            accessor: "type",
+        },
+        {
+            Header: 'Price',
+            accessor: "price"
+        },
+        {
+            Header: 'Payment Date',
+            accessor: "payment_date"
+        },
+    ]
+    );
     useEffect(() => {
         let data = [];
         (async () => {
-            await axios.post('http://localhost:991/clients/getClients/', {
-                business_id: localStorage.getItem('business_id'),
+            await axios.post('http://localhost:991/payments/getPaymentsByClient/', {
+                clientId: props.clientData.client_id
             })
                 .then((response) => {
+                    console.log(response)
+
                     if (response.data === "")
                         setData([]);
                     else if (Array.isArray(response.data)) {
 
-                        for (const clientValue of response.data) {
+                        for (const paymentValue of response.data) {
                             let temp = {
-                                client_id: clientValue.client_id,
-                                client_name:clientValue.client_name,
-                                client_name_avatar: <div id="avatar-wrapper">
-                                    <Avatar className="avatar" name={clientValue.client_name} src={'http://localhost:8005/uploads/' + clientValue.file} size="60" round={true} />
-                                    <div id="name-row">{clientValue.client_name}</div>
-
-                                </div>,
-                                gym_id: clientValue.gym_id,
-                                client_phone: clientValue.client_phone,
+                                type: paymentValue.type === 'package' ? 'Package' : 'Personal Training',
+                                price: paymentValue.price,
+                                payment_date: paymentValue.date
                             }
                             data.push(temp)
                         }
                         setError(false);
                         setData(data);
-
                     }
                     else {
                         setError(true);
@@ -50,9 +57,7 @@ function PaymentHistory(props) {
     }, []);
 
     return (
-
-
-        <div className="form_wrapper">
+        <div className="form_wrapper" id="payment-history">
 
             <button className="exit" onClick={props.closeModal} >
                 <i id="exit-wind" className="fa fa-times"></i>
@@ -60,7 +65,8 @@ function PaymentHistory(props) {
 
             <div className="form_container">
                 <div className="title_container">
-                     <h2>{props.clientData.client_name} Payment History</h2>
+                    <h2 id="payment-history-headline">{props.clientData.client_name} Payment History</h2>
+                    <Table columns={columns} data={data} />
                 </div>
             </div>
         </div>
