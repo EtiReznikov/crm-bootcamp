@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import Avatar from 'react-avatar';
 import Table from '../SubComponents/Table/Table';
@@ -6,14 +6,14 @@ import './RegisterClients.scss'
 function RegisterClients(props) {
     const [data, setData] = useState([]);
     const [errorMsg, setError] = useState(false);
-    const columns = useMemo(() => [
+    const columns =  [
         {
             Header: "Clients",
             accessor: "client_name_avatar",
         },
         
     ]
-    );
+    
 
     useEffect(() => {
         let data = [];

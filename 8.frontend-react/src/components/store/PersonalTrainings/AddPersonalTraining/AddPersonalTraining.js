@@ -8,10 +8,9 @@ import Select from 'react-select';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Loader from "react-loader-spinner";
 import PayPal from '../../../PayPal/PayPalButton';
 import { priceValidation } from '../../../../tools/validation';
-import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../../tools/validation';
+import { timeValidation, hourValidation, minValidation } from '../../../../tools/validation';
 function AddPersonalTraining(props) {
 
 

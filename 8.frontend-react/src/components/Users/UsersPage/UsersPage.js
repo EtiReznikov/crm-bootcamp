@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Table from '../../SubComponents/Table/Table';
 import axios from 'axios';
 import Headline from '../../SubComponents/Headline/Headline';
-import Button from '../../SubComponents/Button/Button';
 import Modal from 'react-modal';
 import './UsersPage.scss';
 import AddUser from '../AddUser/AddUser';

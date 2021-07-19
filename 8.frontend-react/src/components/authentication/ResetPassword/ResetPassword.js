@@ -4,7 +4,6 @@ import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import axios from 'axios';
 import {
     useParams,
-    Redirect
 } from "react-router-dom";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Text from '../../SubComponents/Text/Text';

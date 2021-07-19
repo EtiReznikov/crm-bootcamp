@@ -8,7 +8,6 @@ import Select from 'react-select';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Loader from "react-loader-spinner";
 import { diffDate } from '../../../tools/dateCalculate'
 import Text from '../../SubComponents/Text/Text';
 import PayPal from '../../PayPal/PayPalButton'
@@ -21,7 +20,6 @@ function PackageSell(props) {
     const [endDate, setEndDate] = useState(new Date((new Date()).setDate(new Date().getDate() + 1)));
     const [errorMsg, setErrorMsg] = useState(false);
     const [data, setData] = useState([]);
-    const [btnActive, setBtnActive] = useState(true);
     const [errorPackage, setErrorPackage] = useState(false);
     const [dateDiff, setDateDiff] = useState(diffDate(startDate, endDate))
     const [errorDate, setErrorDate] = useState(false);
@@ -48,7 +46,7 @@ function PackageSell(props) {
 
                 });
         })();
-    }, []);
+    },[]);
 
 
 
@@ -58,7 +56,7 @@ function PackageSell(props) {
         setErrorDate(dateDiff <= 0)
 
 
-    }, [startDate, endDate]);
+    }, [startDate, endDate, dateDiff]);
 
     useEffect(() => {
 
@@ -96,12 +94,10 @@ function PackageSell(props) {
                 }
                 else {
                     setErrorMsg(true);
-                    setBtnActive(true);
                 }
             })
             .catch(function (error) {
                 setErrorMsg(true);
-                setBtnActive(true);
                 console.log(error)
             });
 

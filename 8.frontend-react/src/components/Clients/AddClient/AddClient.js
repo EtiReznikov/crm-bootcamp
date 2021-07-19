@@ -4,11 +4,9 @@ import React, { useState, useEffect } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import './AddClient.scss';
-import Select from 'react-select';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import { phoneValidation, nameValidation, phoneLengthValidation, nameLengthValidation } from '../../../tools/validation';
-import FileUpload from '../../FileUpload/FileUpload';
 function AddClient(props) {
     const [formState, setState] = useState({
         name: props.isEdit ? props.clientData.client_name : "",

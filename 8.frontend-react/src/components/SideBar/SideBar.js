@@ -14,7 +14,6 @@ import {
 
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle, FiPackage } from "react-icons/fi";
 import { BiCalendar, BiRun } from "react-icons/bi";
-import { FaUserCog } from "react-icons/fa";
 import {GrMapLocation} from "react-icons/gr"
 import {RiUserSettingsLine} from "react-icons/ri"
 import { AiOutlineClockCircle } from "react-icons/ai";

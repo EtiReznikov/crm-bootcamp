@@ -1,5 +1,4 @@
 import React from 'react';
-import Text from '../../SubComponents/Text/Text';
 import './paymentSuccessful.scss'
 function PaymentSuccessful(props) {
    

@@ -20,9 +20,6 @@ import {
 import LoginWrapper from './components/authentication/LoginWrapper/LoginWrapper'
 import { useState, useEffect } from 'react';
 import CalendarPage from './components/CalendarPage/CalendarPage';
-import FileUpload from './components/FileUpload/FileUpload';
-
-
 
 
 function App(props) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../Views/Form.scss'
 import Table from '../../SubComponents/Table/Table';
 import axios from 'axios';
@@ -7,7 +7,7 @@ function PaymentHistory(props) {
     const [data, setData] = useState([]);
     const [errorMsg, setError] = useState(false);
 
-    const columns = useMemo(() => [
+    const columns = [
         {
             Header: "Type",
             accessor: "type",
@@ -21,7 +21,7 @@ function PaymentHistory(props) {
             accessor: "payment_date"
         },
     ]
-    );
+    
     useEffect(() => {
         let data = [];
         (async () => {
@@ -54,7 +54,7 @@ function PaymentHistory(props) {
                     setError(true);
                 });
         })();
-    }, []);
+    });
 
     return (
         <div className="form_wrapper" id="payment-history">

@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import axios from 'axios';
 import Text from '../../SubComponents/Text/Text';
-// import './InviteUser.scss'
 import '../../../Views/Form.scss'
 import './InviteUser.scss'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from "react-loader-spinner";
 
 import {
     Redirect,

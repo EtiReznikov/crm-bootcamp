@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import './AddClass.scss'
@@ -9,7 +9,6 @@ import 'material-design-inspired-color-picker'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import LocationSearchInput from '../../Map/LocationSearchInput/LocationSearchInput';
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 
 import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';

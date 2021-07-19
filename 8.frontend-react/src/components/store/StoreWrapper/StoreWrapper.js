@@ -3,11 +3,8 @@ import './StoreWrapper.scss'
 import '../../../Views/Form.scss'
 import PackageSell from '../PackageSell/PackageSell';
 import AddPersonalTraining from '../PersonalTrainings/AddPersonalTraining/AddPersonalTraining';
-import Loader from "react-loader-spinner";
 import PaymentSuccessful from '../../PayPal/paymentSuccessful/PaymentSuccessful'
-import {
-    Redirect
-} from "react-router-dom";
+
 function StoreWrapper(props) {
     const [isPackage, setIsPackage] = useState(true);
     const [isPersonalTraining, setIsPersonalTraining] = useState(false);
