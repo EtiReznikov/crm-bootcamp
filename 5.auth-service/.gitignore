@@ -119,6 +119,5 @@ dist
 #.env
 .env
 
-.public/uploads
+.public/uploads.*
 
-./public/uploads/1626331860241-mysql-workbench-community-8.0.25-macos-x86_64.dmg

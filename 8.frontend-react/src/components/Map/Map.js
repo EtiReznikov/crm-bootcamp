@@ -4,8 +4,8 @@ import GoogleMapReact from 'google-map-react';
 import './Map.scss'
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
-
-const MapPin = ({text}) => <div>{text} <i id="pin" className="fa fa-map-marker"></i></div>
+import MapPin from './MapPin';
+const Pin = ({ text }) => <div>{text}</div>;
 function Map(props) {
 
   const [places, setPlaces] = useState([]);
@@ -18,9 +18,9 @@ function Map(props) {
   // Return map bounds based on list of places
   const getMapBounds = (map, maps, places) => {
     const bounds = new maps.LatLngBounds();
-
+    console.log(maps)
     places.forEach((place, key) => {
-      console.log(place.location)
+      console.log(place.location.latLng)
       bounds.extend(new maps.LatLng(
         place.location.latLng.lat,
         place.location.latLng.lng,
@@ -46,7 +46,10 @@ function Map(props) {
     map.fitBounds(bounds);
     // Bind the resize listener
     bindResizeListener(map, maps, bounds);
+
   };
+
+
 
   useEffect(() => {
     axios.post('http://localhost:991/classes/getClasses/', {
@@ -67,9 +70,10 @@ function Map(props) {
               color: classValue.color,
               location: JSON.parse(classValue.location)
             }
-            data[classValue.class_id] = temp
+            data.push(temp)
           }
           setPlaces(data);
+          console.log(data)
         }
         else {
           setError(true);
@@ -79,15 +83,15 @@ function Map(props) {
         setError(true);
       });
   }, []);
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition(function(position) {
-  //   SetUserCurrentLocation({
-  //     ...userCurrentLocation,
-  //     lat: position.coords.latitude,
-  //     lng: position.coords.longitude
-  //   })
-  // });
-  // },[]);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function(position) {
+    SetUserCurrentLocation({
+      ...userCurrentLocation,
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    })
+  });
+  },[]);
   return (
     // Important! Always set the container height explicitly
     <div style={{ height: '100vh', width: '100%' }}>
@@ -99,18 +103,22 @@ function Map(props) {
         onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
       >
 
-        <>
+        {/* <>
           {places.map((place, key) => 
+          // console.log(place)
             <MapPin
+              color={place.color}
               text= {key}
               lat={place.location.latLng.lat}
               lng={place.location.latLng.lng}
             />
           
           )}
-        </>
-        <MapPin lat={32.100744} lng={34.807026}/>
-        <MapPin lat={32.0709839} lng={34.7872963}/>
+        </> */}
+        <Pin lat={32.100744} lng={34.807026} text="My Marker"
+        />
+        <Pin lat={32.0709839} lng={34.7872963} text="My Marker"
+        />
 
       </GoogleMapReact>
     </div>
