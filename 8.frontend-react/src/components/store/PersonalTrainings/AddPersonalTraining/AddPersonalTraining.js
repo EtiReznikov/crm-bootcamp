@@ -12,8 +12,6 @@ import PayPal from '../../../PayPal/PayPalButton';
 import { priceValidation } from '../../../../tools/validation';
 import { timeValidation, hourValidation, minValidation } from '../../../../tools/validation';
 function AddPersonalTraining(props) {
-
-
     const [hhValid, setHHValid] = useState(true);
     const [mmValid, setMMValid] = useState(true);
     const [formState, setState] = useState({
