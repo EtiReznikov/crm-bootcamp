@@ -11,7 +11,7 @@ import Clients from './components/Clients/ClientsPage/ClientsPage';
 import Classes from './components/Classes/ClassesPage/ClassesPage';
 import PackagesPage from './components/Packages/PackagesPage/PackagesPage';
 import Map from './components/Map/Map';
-import MyFancyComponent from './components/Map/Map';
+import GoogleApiWrapper from './components/Map/Map';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
   BrowserRouter as Router,
@@ -30,7 +30,7 @@ function App(props) {
     localStorage.removeItem('user_token');
     localStorage.removeItem('business_id');
     handleUserChange(false)
-    window.location='/loginSignup'
+    window.location = '/loginSignup'
   };
   //update the user when child is updating the local  storage
   const handleUserChange = (flag) => {
@@ -38,10 +38,10 @@ function App(props) {
   }
 
   useEffect((props) => {
-    const pathArray= window.location.pathname.split('/');
-    const path= pathArray[1];
-    if (!userState && (path !== 'forgotPassword' && path !== 'resetPassword' && path !== 'loginSignup' && path !== 'inviteUser')){
-      window.location='/loginSignup';
+    const pathArray = window.location.pathname.split('/');
+    const path = pathArray[1];
+    if (!userState && (path !== 'forgotPassword' && path !== 'resetPassword' && path !== 'loginSignup' && path !== 'inviteUser')) {
+      window.location = '/loginSignup';
     }
   });
 
@@ -87,7 +87,7 @@ function App(props) {
             <PackagesPage />
           </Route>
           <Route path="/map">
-            <Map />
+            <Map/>
           </Route>
         </Switch>
       </div>

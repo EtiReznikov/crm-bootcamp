@@ -54,7 +54,7 @@ function PaymentHistory(props) {
                     setError(true);
                 });
         })();
-    });
+    },[]);
 
     return (
         <div className="form_wrapper" id="payment-history">
