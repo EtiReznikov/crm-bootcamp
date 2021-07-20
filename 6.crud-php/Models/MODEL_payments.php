@@ -20,13 +20,13 @@ class Model_payments extends Model
                     transactions.type, package_client.start_date, package_client.end_date, packages.package_name  AS name
                     FROM transactions LEFT JOIN package_client ON package_client.id= transactions.sell_id 
                     LEFT join packages ON package_client.package_id=packages.package_id
-                    WHERE type='package' AND package_client.client_id='2' 
+                    WHERE type='package' AND package_client.client_id='$clientId' 
                     UNION
                     SELECT personal_trainings.client_id, transactions.date, personal_trainings.price, 
                     transactions.type , personal_trainings.date,  personal_trainings.date, users.user_name 
                     FROM transactions LEFT JOIN personal_trainings ON personal_trainings.personal_training_id= transactions.sell_id 
                     lEFT JOIN users ON personal_trainings.user_id=users.user_id
-                    WHERE type='personalTraining' AND personal_trainings.client_id='2'
+                    WHERE type='personalTraining' AND personal_trainings.client_id='$clientId'
                     ORDER BY date;
             ")
             ->fetch_all(MYSQLI_ASSOC);

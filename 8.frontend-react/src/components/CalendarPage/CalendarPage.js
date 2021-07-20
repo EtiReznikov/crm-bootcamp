@@ -6,8 +6,8 @@ import Headline from '../SubComponents/Headline/Headline';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { getNextDay } from '../../tools/dateCalculate';
 import Modal from 'react-modal';
-import AddPersonalTraining from '../store/PersonalTrainings/AddPersonalTraining/AddPersonalTraining';
-import  RegisterClients from '../RegisterClients/RegisterClients'
+import AddPersonalTrainerFromCalendar from '../store/PersonalTrainings/AddPersonalTrainerFromCalendar';
+import RegisterClients from '../RegisterClients/RegisterClients'
 import './CalendarPage.scss';
 const localizer = momentLocalizer(moment);
 function CalendarPage(props) {
@@ -33,6 +33,7 @@ function CalendarPage(props) {
   const [view, setView] = useState("all");
   const [dataHasChanged, setDataHasChanged] = useState(false);
   const [event, setEvent] = useState("");
+  const [slot, setSlot] = useState("");
 
   useEffect(async () => {
 
@@ -56,7 +57,7 @@ function CalendarPage(props) {
                   'color': classValue.color,
                   'start': getNextDay(day, parseInt(obj.hours), parseInt(obj.min), week),
                   'end': getNextDay(day, parseInt(obj.hours) + 1, parseInt(obj.min), week),
-                  id : classValue.class_id,
+                  id: classValue.class_id,
                   trainer: classValue.user_name
                 }
                 data.push(temp)
@@ -119,7 +120,7 @@ function CalendarPage(props) {
     setIsOpenRegisterClientsModal(true);
   }
 
-  const closeModalRegisterClients  = () => {
+  const closeModalRegisterClients = () => {
     setIsOpenRegisterClientsModal(false);
   }
 
@@ -149,11 +150,11 @@ function CalendarPage(props) {
       selectable={true}
       onSelectSlot={
         (slot) => {
-          console.log(slot)
+          setSlot(slot)
           openModalAddPersonalTraining();
         }
       }
-      onSelectEvent={(e)=>{
+      onSelectEvent={(e) => {
         setEvent(e);
         openModalRegisterClients();
       }}
@@ -161,15 +162,15 @@ function CalendarPage(props) {
       eventPropGetter={(eventStyleGetter)}
     />
 
-    {/* <Modal
+    <Modal
       isOpen={modalIsOpenPersonalTraining}
       onRequestClose={closeModalPersonalTraining}
       contentLabel="Add Personal Training Modal"
       className="modal"
       ariaHideApp={false}
     >
-      <AddPersonalTraining closeModal={closeModalPersonalTraining} changeDataState={changeDataState} />
-    </Modal> */}
+          <AddPersonalTrainerFromCalendar closeModal={closeModalPersonalTraining} changeDataState={changeDataState} slot={slot} />
+    </Modal>
 
     <Modal
       isOpen={modalIsOpenRegisterClients}

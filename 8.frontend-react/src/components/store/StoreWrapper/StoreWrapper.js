@@ -46,7 +46,7 @@ function StoreWrapper(props) {
 
                         {
                             (isPackage && <PackageSell closeModal={props.closeModal} clientData={props.clientData} changeDataState={props.changeDataState} setPaymentSuccess={setPaymentSuccess} />) ||
-                            (isPersonalTraining && <AddPersonalTraining closeModal={props.closeModal} clientData={props.clientData} changeDataState={props.changeDataState} setPaymentSuccess={setPaymentSuccess} />)
+                            (isPersonalTraining && <AddPersonalTraining closeModal={props.closeModal} clientData={props.clientData} changeDataState={props.changeDataState} setPaymentSuccess={setPaymentSuccess} fromCalendar={false} />)
                         }
                     </>
                 }

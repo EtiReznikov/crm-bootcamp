@@ -18,17 +18,18 @@ function AddPersonalTraining(props) {
     const [mmValid, setMMValid] = useState(true);
     const [formState, setState] = useState({
         selectedTrainers: [],
-        hours: props.isEdit ? props.classData.time.substring(0, 2) : "10",
-        minutes: props.isEdit ? props.classData.time.substring(3) : "00",
+        selectClient: props.fromCalendar ? [] : props.clientData.client_id,
+        hours: props.fromCalendar ?  (props.slot.start.getHours() < 10 ? "0"+props.slot.start.getHours() : props.slot.start.getHours() ): "10",
+        minutes: props.fromCalendar ? (props.slot.start.getMinutes() <10 ? "0" + props.slot.start.getMinutes() : props.slot.start.getMinutes()) : "00",
         price: 150
     }
     );
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(props.fromCalendar ? props.slot.start : new Date());
     const [errorMsg, setErrorMsg] = useState(false);
     const [data, setData] = useState([]);
     const [btnActive, setBtnActive] = useState(true);
     const [errorTrainer, setErrorTrainer] = useState(false);
-
+    const [errorClient, setErrorClient] = useState(false);
     useEffect(() => {
         (async () => {
             await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
@@ -60,18 +61,26 @@ function AddPersonalTraining(props) {
         })
     }
 
+    const onClientSelect = (selectedOptions) => {
+        setErrorClient(false);
+        setState({
+            ...formState,
+            selectedClient: selectedOptions
+        })
+    }
+
     /* when add user button is submitted*/
     const onSubmit = (details) => {
         setErrorMsg(false);
         axios.post('http://localhost:991/personalTraining/addPersonalTraining/', {
             userId: formState.selectedTrainers.value,
-            clientId: props.clientData.client_id,
+            clientId: props.fromCalendar ? formState.selectedClient.value : props.clientData.client_id,
             date: new Date(startDate.setHours(formState.hours, formState.minutes, 0)),
             business_id: localStorage.getItem('business_id'),
             totalPrice: formState.price,
             transaction: details.id,
             createTime: details.create_time
-            
+
 
         })
             .then(function (response) {
@@ -158,6 +167,16 @@ function AddPersonalTraining(props) {
     return (
         <div className="form_container" id="personal-training-form">
             <form>
+                {props.fromCalendar &&
+                    <div className="input_field" id="trainer-select">
+                        <label className="classes-picker">
+                            Pick Client:
+                        </label>
+                        <Select name="client" isSearchable={true} value={formState.selectedClient} onChange={onClientSelect} options={props.clients} className="client-selector"
+                            classNamePrefix="select" />
+                        {errorClient && <ErrorMsg text="You must choose a client" />}
+                        {!errorClient && <ErrorMsg />}
+                    </div>}
                 <div className="input_field" id="trainer-select">
                     <label className="classes-picker">
                         Pick Trainer:
@@ -197,7 +216,6 @@ function AddPersonalTraining(props) {
                         Pick Date and Time:
                     </label>
                     <div id="date-time-wrapper">
-
                         <DatePicker dateFormat="dd-MM-yyyy" selected={startDate} onChange={(date) => setStartDate(date)} />
                         <div id="time-wrapper">
                             <div id="hour-wrapper">
@@ -206,19 +224,20 @@ function AddPersonalTraining(props) {
                                     hourUp()
                                 }}></i>
                                 {
-                                    hhValid && <input className="weekday" id="hh-select" placeholder="hh" value={formState.hours} maxLength="2"
+                                    (hhValid && <input className="weekday" id="hh-select" placeholder="hh" value={formState.hours} maxLength="2"
                                         onChange={e => {
                                             setErrorMsg(false);
                                             changeHH(e);
                                         }
-                                        }></input>}
+                                        }></input>)
 
-                                {!hhValid && <input className="weekday" id="hh-select-error" placeholder="hh" value={formState.hours} maxLength="2"
-                                    onChange={e => {
-                                        setErrorMsg(false);
-                                        changeHH(e);
-                                    }
-                                    }></input>
+                                    ||
+                                    (!hhValid && <input className="weekday" id="hh-select-error" placeholder="hh" value={formState.hours} maxLength="2"
+                                        onChange={e => {
+                                            setErrorMsg(false);
+                                            changeHH(e);
+                                        }
+                                        }></input>)
                                 }
                                 <i id="downHH" className="fa fa-chevron-down" onClick={() => {
                                     setErrorMsg(false);
