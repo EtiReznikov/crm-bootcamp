@@ -1,129 +1,53 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import GoogleMapReact from 'google-map-react';
-// import MapPin from './MapPin';
-import './Map.scss'
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import axios from 'axios';
-import MapPin from './MapPin';
-const Pin = ({ text }) => <div>{text}</div>;
-function Map(props) {
+// import React from "react"
+// import { compose, withProps } from "recompose"
+// import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
-  const [places, setPlaces] = useState([]);
-  const [errorMsg, setError] = useState(false);
+// const MyMapComponent = compose(
+//   withProps({
+//     googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyC0LnvgDzKrHvGI1WcBdKmQX1peUH1ODq4&&libraries=geometry,drawing,places",
+//     loadingElement: <div style={{ height: `100%` }} />,
+//     containerElement: <div style={{ height: `400px` }} />,
+//     mapElement: <div style={{ height: `100%` }} />,
+//   }),
+//   withScriptjs,
+//   withGoogleMap
+// )((props) =>
+//   <GoogleMap
+//     defaultZoom={8}
+//     defaultCenter={{ lat: -34.397, lng: 150.644 }}
+//   >
+//     {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} onClick={props.onMarkerClick} />}
+//   </GoogleMap>
+// )
 
-  const [userCurrentLocation, SetUserCurrentLocation] = useState({ lat: 0, lng: 0 });
-  // const currentLocation= { lat: 0, lng: 0 }
-  const zoom = 14
+// class MyFancyComponent extends React.PureComponent {
+//   state = {
+//     isMarkerShown: false,
+//   }
 
-  // Return map bounds based on list of places
-  const getMapBounds = (map, maps, places) => {
-    const bounds = new maps.LatLngBounds();
-    console.log(maps)
-    places.forEach((place, key) => {
-      console.log(place.location.latLng)
-      bounds.extend(new maps.LatLng(
-        place.location.latLng.lat,
-        place.location.latLng.lng,
-      ));
-    });
-    return bounds;
-  };
+//   componentDidMount() {
+//     this.delayedShowMarker()
+//   }
 
-  // Re-center map when resizing the window
-  const bindResizeListener = (map, maps, bounds) => {
-    maps.event.addDomListenerOnce(map, 'idle', () => {
-      maps.event.addDomListener(window, 'resize', () => {
-        map.fitBounds(bounds);
-      });
-    });
-  };
+//   delayedShowMarker = () => {
+//     setTimeout(() => {
+//       this.setState({ isMarkerShown: true })
+//     }, 3000)
+//   }
 
-  // Fit map to its bounds after the api is loaded
-  const apiIsLoaded = (map, maps, places) => {
-    // Get bounds by our places
-    const bounds = getMapBounds(map, maps, places);
-    // Fit map to bounds
-    map.fitBounds(bounds);
-    // Bind the resize listener
-    bindResizeListener(map, maps, bounds);
+//   handleMarkerClick = () => {
+//     this.setState({ isMarkerShown: false })
+//     this.delayedShowMarker()
+//   }
 
-  };
+//   render() {
+//     return (
+//       <MyMapComponent
+//         isMarkerShown={this.state.isMarkerShown}
+//         onMarkerClick={this.handleMarkerClick}
+//       />
+//     )
+//   }
+// }
 
-
-
-  useEffect(() => {
-    axios.post('http://localhost:991/classes/getClasses/', {
-      business_id: localStorage.getItem('business_id'),
-    })
-      .then((response) => {
-        if (response.data === "")
-          setPlaces([]);
-
-        else if (Array.isArray(response.data)) {
-          setError(false)
-          let data = []
-          for (const classValue of response.data) {
-
-            let temp = {
-              class_id: classValue.class_id,
-              class_name: classValue.class_name,
-              color: classValue.color,
-              location: JSON.parse(classValue.location)
-            }
-            data.push(temp)
-          }
-          setPlaces(data);
-          console.log(data)
-        }
-        else {
-          setError(true);
-        }
-      })
-      .catch(function (error) {
-        setError(true);
-      });
-  }, []);
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(function(position) {
-    SetUserCurrentLocation({
-      ...userCurrentLocation,
-      lat: position.coords.latitude,
-      lng: position.coords.longitude
-    })
-  });
-  },[]);
-  return (
-    // Important! Always set the container height explicitly
-    <div style={{ height: '100vh', width: '100%' }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: process.env.REACT_APP__MAP_KEY }}
-        defaultCenter={userCurrentLocation}
-        defaultZoom={zoom}
-        yesIWantToUseGoogleMapApiInternals
-        onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
-      >
-
-        {/* <>
-          {places.map((place, key) => 
-          // console.log(place)
-            <MapPin
-              color={place.color}
-              text= {key}
-              lat={place.location.latLng.lat}
-              lng={place.location.latLng.lng}
-            />
-          
-          )}
-        </> */}
-        <Pin lat={32.100744} lng={34.807026} text="My Marker"
-        />
-        <Pin lat={32.0709839} lng={34.7872963} text="My Marker"
-        />
-
-      </GoogleMapReact>
-    </div>
-  );
-}
-
-
-export default Map;
+// export default MyFancyComponent;

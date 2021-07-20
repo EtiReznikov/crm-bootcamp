@@ -11,6 +11,7 @@ import Clients from './components/Clients/ClientsPage/ClientsPage';
 import Classes from './components/Classes/ClassesPage/ClassesPage';
 import PackagesPage from './components/Packages/PackagesPage/PackagesPage';
 import Map from './components/Map/Map';
+import MyFancyComponent from './components/Map/Map';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
   BrowserRouter as Router,
