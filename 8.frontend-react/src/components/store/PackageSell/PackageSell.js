@@ -114,7 +114,7 @@ function PackageSell(props) {
     return (
         <div className="form_container" id="personal-training-form">
             <form>
-                <div className="input_field" >
+                <div className="input_field" id="package-select" >
                     <label className="classes-picker">
                         Pick Package:
                     </label>

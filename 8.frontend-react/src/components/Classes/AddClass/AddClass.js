@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import './AddClass.scss'
@@ -9,7 +9,7 @@ import 'material-design-inspired-color-picker'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import LocationSearchInput from '../../Map/LocationSearchInput/LocationSearchInput';
-
+import Select from 'react-select';
 
 import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';
 function AddClass(props) {
@@ -37,13 +37,46 @@ function AddClass(props) {
             saturday: props.isEdit && daysObjTemp.saturday ? daysObjTemp.saturday : false,
             sunday: props.isEdit && daysObjTemp.sunday ? daysObjTemp.sunday : false,
         },
+        selectedTrainer: []
     })
     const [location, setLocation] = useState(props.isEdit ? JSON.parse(props.classData.location) : { address: "" });
     const [hhValid, setHHValid] = useState(true);
     const [mmValid, setMMValid] = useState(true);
     const [errorMsg, setErrorMsg] = useState(false);
     const [btnActive, setBtnActive] = useState(true);
+    const [trainers, setTrainers] = useState([]);
+    const [errorTrainer, setErrorTrainer] = useState(false);
 
+    useEffect(() => {
+        (async () => {
+            await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
+                businessId: localStorage.getItem('business_id'),
+            })
+                .then((response) => {
+                    let data = []
+                    for (const userValue of response.data) {
+                        if (userValue.permission_id === 1)
+                            data.push({
+                                value: userValue.user_id,
+                                label: userValue.user_name,
+                            })
+                    }
+                    setTrainers(data);
+                })
+                .catch(function (error) {
+
+                });
+        })();
+    }, []);
+
+
+    const onTrainerSelect = (selectedOptions) => {
+        setErrorTrainer(false);
+        setState({
+            ...formState,
+            selectedTrainer: selectedOptions
+        })
+    }
 
     const onSubmit = (e) => {
         const nameValid = nameLengthValidation(formState.className);
@@ -64,7 +97,8 @@ function AddClass(props) {
                         min: formState.minutes,
                         days: chosenDays()
                     }),
-                    location: JSON.stringify(location)
+                    location: JSON.stringify(location),
+                    trainer: formState.selectedTrainer.value
                 }).then(function (response) {
                     if (response.data === true) {
                         props.closeModal();
@@ -91,7 +125,8 @@ function AddClass(props) {
                         min: formState.minutes,
                         days: chosenDays()
                     }),
-                    location: JSON.stringify(location)
+                    location: JSON.stringify(location),
+                    trainer: formState.selectedTrainer.value
                 }).then(function (response) {
                     if (response.data === true) {
                         props.closeModal();
@@ -264,6 +299,15 @@ function AddClass(props) {
                             }
                         />
                     </div>
+                    <div className="input_field" >
+                        <label className="classes-picker">
+                            Pick Trainer:
+                        </label>
+                        <Select name="trainer" isSearchable={true} value={formState.selectedTrainers} onChange={onTrainerSelect} options={trainers} className="trainer-selector"
+                            classNamePrefix="select" />
+                        {errorTrainer && <ErrorMsg text="You must choose a trainer" />}
+                        {!errorTrainer && <ErrorMsg />}
+                    </div>
                     <div className="input_field" id="color-wrapper">
                         <label htmlFor="color-picker" className="color-picker">
                             Pick A Color:
@@ -285,8 +329,8 @@ function AddClass(props) {
 
                         <div id="weekday-wrapper">
                             {
-                                    createDayList().map(
-                                    (day, key) => 
+                                createDayList().map(
+                                    (day, key) =>
                                         <>
                                             <input type="checkbox" id={`weekday-'${day}'`} className="weekday" value={day} checked={formState.days[day]}
                                                 onChange={(e) => {
@@ -298,7 +342,7 @@ function AddClass(props) {
                                                 {day.charAt(0).toUpperCase()}
                                             </label>
                                         </>
-                                    
+
                                 )
                             }
 

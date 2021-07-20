@@ -26,6 +26,10 @@ function Classes(props) {
             accessor: "class_name",
         },
         {
+            Header: 'Trainer',
+            accessor: "trainer"
+        },
+        {
             Header: 'Description',
             accessor: "description"
         },
@@ -37,6 +41,7 @@ function Classes(props) {
             Header: 'Time',
             accessor: "time"
         },
+       
         {
             Header: 'Update & Delete',
             width: '1em',
@@ -107,10 +112,11 @@ function Classes(props) {
 
     useEffect(() => {
         (async () => {
-            await axios.post('http://localhost:991/classes/getClasses/', {
+            await axios.post('http://localhost:991/classes/getClassesWithTrainer/', {
                 business_id: localStorage.getItem('business_id'),
             })
                 .then((response) => {
+                    console.log(response)
                     if (response.data === "")
                         setData([]);
 
@@ -129,7 +135,8 @@ function Classes(props) {
                                 color: classValue.color,
                                 days: days,
                                 time: obj.hours + ":" + obj.min,
-                                location: classValue.location
+                                location: classValue.location,
+                                trainer: classValue.user_name
                             }
                             data.push(temp)
                         }

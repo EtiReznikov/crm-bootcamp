@@ -25,7 +25,20 @@ class Model_classes extends Model
         }
     }
 
-    public function addNewClass($gymId, $className, $classDescription, $color, $dayAndTime, $location)
+    public function getAllClassesWithTrainer($gymId){
+        //prevent mysql injection
+        $gymId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $gymId);
+        $classes = $this->getDB()
+            ->query("SELECT classes.*, users.user_name FROM  classes LEFT JOIN users on users.user_id = classes.trainer_id WHERE classes.gym_id=$gymId")
+            ->fetch_all(MYSQLI_ASSOC);
+        if ($classes) {
+            return $classes;
+        } else {
+            return  $this->getDB()->error;
+        }
+    }
+
+    public function addNewClass($gymId, $className, $classDescription, $color, $dayAndTime, $location,  $trainer)
     {
         //prevent mysql injection
         $gymId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $gymId);
@@ -34,7 +47,7 @@ class Model_classes extends Model
         $color = preg_replace('/[\x00-\x1F\x80-\xFF]/', '',  $color);
         $dayAndTime = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $dayAndTime);
         $addClass  =  $this->getDB()
-            ->query("INSERT INTO classes (class_name, description, color, gym_id, days_and_time,  location) VALUES ('$className', '$classDescription', '$color', '$gymId', '$dayAndTime', '$location' )");
+            ->query("INSERT INTO classes (class_name, description, color, gym_id, days_and_time,  location, trainer_id) VALUES ('$className', '$classDescription', '$color', '$gymId', '$dayAndTime', '$location', '$trainer' )");
         if ($addClass) {
             return $addClass;
         } else {
@@ -55,7 +68,7 @@ class Model_classes extends Model
             return  $this->getDB()->error;
     }
 
-    public function editClass($classId, $className, $description, $color, $dayAndTime, $location)
+    public function editClass($classId, $className, $description, $color, $dayAndTime, $location, $trainer)
     {
         //prevent mysql injection
         $classId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $classId);
@@ -65,7 +78,7 @@ class Model_classes extends Model
         $dayAndTime = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $dayAndTime);
 
         $editClass = $this->getDB()
-            ->query("UPDATE classes set class_name='$className', description='$description' , color='$color' ,days_and_time='$dayAndTime', location='$location'  WHERE class_id=$classId");
+            ->query("UPDATE classes set class_name='$className', description='$description' , color='$color' ,days_and_time='$dayAndTime', location='$location' , trainer_id='$trainer' WHERE class_id=$classId");
         if ($editClass) {
             return $editClass;
         } else {

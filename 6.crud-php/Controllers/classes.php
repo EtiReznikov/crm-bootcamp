@@ -19,6 +19,15 @@ class classes extends controller
         return $classes;
     }
 
+    //get all classes post request
+    public function getClassesWithTrainer()
+    {
+        $gymId = $this->data->business_id;
+        $classes = $this->model->getAllClassesWithTrainer($gymId);
+        $this->response["classes"] = $classes;
+        return $classes;
+    }
+
     //add class post request
     public function addClass()
     {
@@ -28,7 +37,8 @@ class classes extends controller
         $color = $this->data->color;
         $dayAndTime = $this->data->dayAndTime;
         $location = $this->data->location;
-        $addClass = $this->model->addNewClass($gymId, $className, $classDescription, $color, $dayAndTime, $location);
+        $trainer = $this->data->trainer;
+        $addClass = $this->model->addNewClass($gymId, $className, $classDescription, $color, $dayAndTime, $location,  $trainer);
         return $addClass;
     }
 
@@ -41,7 +51,8 @@ class classes extends controller
         $color = $this->data->color;
         $dayAndTime = $this->data->dayAndTime;
         $location = $this->data->location;
-        $editClass = $this->model->editClass($classId, $className, $description, $color, $dayAndTime, $location);
+        $trainer = $this->data->trainer;
+        $editClass = $this->model->editClass($classId, $className, $description, $color, $dayAndTime, $location,  $trainer);
         return $editClass;
     }
 

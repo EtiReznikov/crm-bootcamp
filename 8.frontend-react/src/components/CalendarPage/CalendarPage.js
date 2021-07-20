@@ -42,7 +42,7 @@ function CalendarPage(props) {
 
   const getClasses = () => {
     return new Promise(resolve => {
-      axios.post('http://localhost:991/classes/getClasses/', {
+      axios.post('http://localhost:991/classes/getClassesWithTrainer/', {
         business_id: localStorage.getItem('business_id'),
       })
         .then((response) => {
@@ -56,7 +56,8 @@ function CalendarPage(props) {
                   'color': classValue.color,
                   'start': getNextDay(day, parseInt(obj.hours), parseInt(obj.min), week),
                   'end': getNextDay(day, parseInt(obj.hours) + 1, parseInt(obj.min), week),
-                  id : classValue.class_id
+                  id : classValue.class_id,
+                  trainer: classValue.user_name
                 }
                 data.push(temp)
               }

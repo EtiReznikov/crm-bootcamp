@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Avatar from 'react-avatar';
 import Table from '../SubComponents/Table/Table';
@@ -6,28 +6,28 @@ import './RegisterClients.scss'
 function RegisterClients(props) {
     const [data, setData] = useState([]);
     const [errorMsg, setError] = useState(false);
-    const columns =  [
+    const columns = [
         {
             Header: "Clients",
             accessor: "client_name_avatar",
         },
-        
+
     ]
-    
+
 
     useEffect(() => {
         let data = [];
         (async () => {
             await axios.post('http://localhost:991/classes/getRegisterToClass/', {
-                classId : props.event.id,
+                classId: props.event.id,
                 business_id: localStorage.getItem('business_id'),
             })
                 .then((response) => {
-                    if (response.data.length === 1 && response.data[0].client_name === null && response.data[0].file === null){
+                    if (response.data.length === 1 && response.data[0].client_name === null && response.data[0].file === null) {
                         setData([]);
                     }
-                   
-                        
+
+
                     else if (Array.isArray(response.data)) {
                         for (const clientValue of response.data) {
                             let temp = {
@@ -55,18 +55,19 @@ function RegisterClients(props) {
     return (
         <div className="form_wrapper" id="register-clients">
 
-        <button className="exit" onClick={props.closeModal} >
-            <i id="exit-wind" className="fa fa-times"></i>
-        </button>
+            <button className="exit" onClick={props.closeModal} >
+                <i id="exit-wind" className="fa fa-times"></i>
+            </button>
 
-        <div className="form_container">
-            <div className="title_container">
-                <h2 id="register-clients-headline"> {props.event.title} </h2>
-                {data.length>0 && <Table columns={columns} data={data} />}
-                {data.length===0 && <div>There are no register clients to this class.</div>}
+            <div className="form_container" id="register-clients-container">
+                <div className="title_container">
+                    <h2 id="register-clients-headline"> {props.event.title} </h2>
+                    <div id="trainer-div">The trainer is: {props.event.trainer}</div>
+                    {data.length > 0 && <Table columns={columns} data={data} />}
+                    {data.length === 0 && <div>There are no register clients to this class.</div>}
+                </div>
             </div>
         </div>
-    </div>
     )
 }
 

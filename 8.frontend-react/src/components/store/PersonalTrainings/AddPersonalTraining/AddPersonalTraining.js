@@ -38,7 +38,6 @@ function AddPersonalTraining(props) {
                     let data = []
                     for (const userValue of response.data) {
                         if (userValue.permission_id === 1)
-
                             data.push({
                                 value: userValue.user_id,
                                 label: userValue.user_name,
@@ -159,7 +158,7 @@ function AddPersonalTraining(props) {
     return (
         <div className="form_container" id="personal-training-form">
             <form>
-                <div className="input_field" >
+                <div className="input_field" id="trainer-select">
                     <label className="classes-picker">
                         Pick Trainer:
                     </label>
@@ -257,13 +256,6 @@ function AddPersonalTraining(props) {
                 </div>
                 {formState.selectedTrainers.length !== 0 && <PayPal btnActive={btnActive} totalPrice={formState.price} onSubmit={onSubmit} />}
                 {formState.selectedTrainers.length === 0 && <ErrorMsg className="above-payPal" text="please fill all fields" />}
-                {/* {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
-                    onClick={(e) => {
-                        setBtnActive(false);
-                        onSubmit(e);
-                    }
-                    } />}
-                {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />} */}
 
                 {errorMsg && <ErrorMsg text="Something went wrong, please try again" />}
                 {!errorMsg && <ErrorMsg />}

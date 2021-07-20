@@ -3,6 +3,7 @@ import '../../../Views/Form.scss'
 import Table from '../../SubComponents/Table/Table';
 import axios from 'axios';
 import './PaymentHistory.scss'
+import moment from 'moment';
 function PaymentHistory(props) {
     const [data, setData] = useState([]);
     const [errorMsg, setError] = useState(false);
@@ -29,15 +30,16 @@ function PaymentHistory(props) {
                 clientId: props.clientData.client_id
             })
                 .then((response) => {
-                    console.log(response)
-
+                   
                     if (response.data === "")
                         setData([]);
                     else if (Array.isArray(response.data)) {
-
+                        console.log(response)
                         for (const paymentValue of response.data) {
+                            let startDate = moment(paymentValue.start_date).format("DD/MM/YY");
+                            let endDate = moment(paymentValue.end_date).format("DD/MM/YY");
                             let temp = {
-                                type: paymentValue.type === 'package' ? 'Package' : 'Personal Training',
+                                type: paymentValue.type === 'package' ? `Package | ${paymentValue.name} | ${startDate}-${endDate} `  : `Personal Training | ${paymentValue.name} |  ${startDate}`,
                                 price: paymentValue.price,
                                 payment_date: paymentValue.date
                             }
