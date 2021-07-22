@@ -60,7 +60,6 @@ function PersonalTrainingPerTrainer(props) {
     }
     useEffect(async () => {
         const countResult = await getCountResult();
-        console.log(countResult)
         setState({
             ...state,
             labels: countResult.labels,

@@ -25,7 +25,6 @@ function PackageSell(props) {
     const [errorDate, setErrorDate] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
    
-    console.log(data)
     useEffect(() => {
         (async () => {
             await axios.post('http://localhost:991/packages/getPackages/', {

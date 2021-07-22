@@ -67,7 +67,6 @@ function AddPackage(props) {
 
 
     const onClassesSelect = (selectedOptions) => {
-        console.log(selectedOptions);
         setState({
             ...formState,
             selectedClasses: selectedOptions

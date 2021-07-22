@@ -9,11 +9,11 @@ function PaymentChart(props) {
     const [labels, setLabels] = useState([]);
     const [datasets, setDataset] = useState([]);
     const [errorState, setError] = useState(false);
-
+    const [numOfDays, setNumOfDays] = useState(7);
 
     const lastSevenDays = () => {
         var result = [];
-        for (var i = 7; i >= 0; i--) {
+        for (var i = numOfDays; i >= 0; i--) {
             var day = new Date();
             day.setDate(day.getDate() - i);
             result.push(dateFormattingDayByMonth(moment(day).format('l')))
@@ -125,7 +125,6 @@ function PaymentChart(props) {
                     data.push(0)
                     i++
                 }
-                console.log(data)
                 resolve(
                     {
                         label: 'Personal Trainings Payments',
@@ -143,26 +142,32 @@ function PaymentChart(props) {
     }
 
     useEffect(async () => {
+        
         let days = lastSevenDays();
         setLabels(days);
         let startDate = days[0]
-        let endDate = days[7];
+        let endDate = days[days.length - 1];
         const totalPayment = await getTotalPayments(days, startDate, endDate);
         const packagesPayment = await getTotalPaymentsForPackages(days, startDate, endDate);
         const personalTrainingsPayments = await getTotalPaymentsForPersonalTrainings(days, startDate, endDate);
         setDataset([totalPayment, packagesPayment, personalTrainingsPayments])
-        // setDataset ([personalTrainingsPayments, packagesPayment])
 
-
-
-    }, [])
+    }, [numOfDays])
 
 
     return (
         <div className="card">
+            <select value={numOfDays} name="days" id="days" onChange={(e)=>{
+                setNumOfDays(e.target.value)
+            }}>
+                <option value="7">7 days</option>
+                <option value="14">14 days</option>
+                <option value="30">21 days</option>
+            </select>
             <div className="chart-title">
-                Revenue from last 7 days
+                Revenue from last {numOfDays} days
             </div>
+            
             {errorState && <ErrorDashboard></ErrorDashboard>}
             <div className="chart-wrapper">
                 {!errorState &&

@@ -36,7 +36,6 @@ function AddClient(props) {
                             label: packageValue.package_name,
                         })
                     }
-                    // console.log(data)
                     setData(data);
                 })
                 .catch(function (error) {
