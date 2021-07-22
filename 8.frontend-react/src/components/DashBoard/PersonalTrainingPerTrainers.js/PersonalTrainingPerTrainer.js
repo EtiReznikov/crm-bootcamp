@@ -13,7 +13,7 @@ function PersonalTrainingPerTrainer(props) {
         ]
     });
     const [errorState, setError] = useState(false);
-    
+
     const getCountResult = () => {
         return new Promise(resolve => {
 
@@ -42,7 +42,7 @@ function PersonalTrainingPerTrainer(props) {
                                 'rgb(106, 210, 233, 0.4)',
                                 'rgba(153, 102, 255, 0.4)',
                                 'rgba(255, 159, 64, 0.4)',
-                                'rgba(255, 206, 86, 0.4)',   
+                                'rgba(255, 206, 86, 0.4)',
                             ],
                             borderColor: 'rgba(0,0,0,1)',
                             borderWidth: 2,
@@ -69,7 +69,7 @@ function PersonalTrainingPerTrainer(props) {
     return (
         <div className="card">
             <div className="chart-title">
-            {new Date().toLocaleString('default', { month: 'long' })} Personal Trainings For Trainer 
+                {new Date().toLocaleString('default', { month: 'long' })} Personal Trainings For Trainer
             </div>
             {errorState && <ErrorDashboard></ErrorDashboard>}
             <div className="chart-wrapper">

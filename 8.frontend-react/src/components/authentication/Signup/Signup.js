@@ -89,9 +89,7 @@ function Signup(props) {
 
     <div className="form_container">
       <div className="title_container">
-        {/* <h2>SignUp</h2> */}
       </div>
-
       <form>
         <div className="input_field" >
           <span>

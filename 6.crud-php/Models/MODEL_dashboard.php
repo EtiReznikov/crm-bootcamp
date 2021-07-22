@@ -16,7 +16,7 @@ class Model_dashboard extends Model
         $businessId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $businessId);
         $payments = $this->getDB()
             ->query("SELECT dateFormat, sum(TotalPayments.price) AS totalPayment FROM (
-                SELECT DATE_FORMAT(transactions.date,'%d/%m/%Y')  AS dateFormat, package_client.total_price  AS price FROM transactions 
+                SELECT DATE_FORMAT(transactions.date,'%d/%m/%Y')  AS dateFormat, sum(package_client.total_price)  AS price FROM transactions 
                                     INNER JOIN package_client
                                     ON package_client.id = transactions.sell_id
                                     LEFT JOIN packages

@@ -41,6 +41,7 @@ function CalendarPage(props) {
     const personalTrainings = await getPersonalTrainings();
   }, [dataHasChanged]);
 
+  //get classes dates
   const getClasses = () => {
     return new Promise(resolve => {
       axios.post('http://localhost:991/classes/getClassesWithTrainer/', {
@@ -50,7 +51,7 @@ function CalendarPage(props) {
           let data = []
           for (const classValue of response.data) {
             let obj = JSON.parse(classValue.days_and_time)
-            for (let week = -10; week < 10; week++) {
+            for (let week = -10; week < 10; week++) { //10 week back and 10 weeks future
               for (const day of obj.days) {
                 let temp = {
                   'title': classValue.class_name,
@@ -74,6 +75,8 @@ function CalendarPage(props) {
 
     })
   }
+
+  //get personal trainings dates
 
   const getPersonalTrainings = () => {
     return new Promise(resolve => {
@@ -144,7 +147,6 @@ function CalendarPage(props) {
       views={['month', 'week', 'day']}
       localizer={localizer}
       events={view === 'all' ? personalTrainingsList.concat(groupTrainingsList) : view === 'groupTrainings' ? groupTrainingsList : personalTrainingsList}
-      // events={groupTrainingsList.concat(personalTrainingsList)}
       startAccessor="start"
       endAccessor="end"
       selectable={true}
@@ -169,9 +171,8 @@ function CalendarPage(props) {
       className="modal"
       ariaHideApp={false}
     >
-          <AddPersonalTrainerFromCalendar closeModal={closeModalPersonalTraining} changeDataState={changeDataState} slot={slot} />
+      <AddPersonalTrainerFromCalendar closeModal={closeModalPersonalTraining} changeDataState={changeDataState} slot={slot} />
     </Modal>
-
     <Modal
       isOpen={modalIsOpenRegisterClients}
       onRequestClose={closeModalRegisterClients}

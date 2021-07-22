@@ -124,7 +124,7 @@ function ResetPassword(props) {
                         }
                         } />}
                     {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
-                    {formState.successStatus === 0 && <> <Text  text="Your password has been reset." />
+                    {formState.successStatus === 0 && <> <Text text="Your password has been reset." />
                         <a id="link-signIn" href="/loginSignup" > click here to login </a>
                     </>}
                 </form>
