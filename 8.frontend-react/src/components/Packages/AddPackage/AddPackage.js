@@ -197,7 +197,7 @@ function AddPackage(props) {
                     {!errorClass && <ErrorMsg />}
                     <div className="input_field" id="price-picker" >
                         <span>
-                            <i aria-hidden="true" className="fa fa-dollar"></i>
+                            <i aria-hidden="true" className="fa fa-shekel"></i>
                         </span>
                         <input
                             name="price"

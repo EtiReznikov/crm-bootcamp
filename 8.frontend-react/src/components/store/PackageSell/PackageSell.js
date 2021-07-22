@@ -25,7 +25,7 @@ function PackageSell(props) {
     const [errorDate, setErrorDate] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
    
-
+    console.log(data)
     useEffect(() => {
         (async () => {
             await axios.post('http://localhost:991/packages/getPackages/', {
@@ -75,8 +75,6 @@ function PackageSell(props) {
 
 
     const onSubmit = (details) => {
-      
-
         axios.post('http://localhost:991/packageClient/addPackageSell/', {
             packageId: formState.selectedPackage.value,
             clientId: props.clientData.client_id,

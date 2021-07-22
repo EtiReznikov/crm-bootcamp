@@ -17,8 +17,8 @@ function AddPersonalTraining(props) {
     const [formState, setState] = useState({
         selectedTrainers: [],
         selectClient: props.fromCalendar ? [] : props.clientData.client_id,
-        hours: props.fromCalendar ?  (props.slot.start.getHours() < 10 ? "0"+props.slot.start.getHours() : props.slot.start.getHours() ): "10",
-        minutes: props.fromCalendar ? (props.slot.start.getMinutes() <10 ? "0" + props.slot.start.getMinutes() : props.slot.start.getMinutes()) : "00",
+        hours: props.fromCalendar ? (props.slot.start.getHours() < 10 ? "0" + props.slot.start.getHours() : props.slot.start.getHours()) : "10",
+        minutes: props.fromCalendar ? (props.slot.start.getMinutes() < 10 ? "0" + props.slot.start.getMinutes() : props.slot.start.getMinutes()) : "00",
         price: 150
     }
     );
@@ -186,7 +186,7 @@ function AddPersonalTraining(props) {
                 </div>
                 <div className="input_field" id="price-picker" >
                     <span>
-                        <i aria-hidden="true" className="fa fa-dollar"></i>
+                        <i aria-hidden="true" className="fa fa-shekel"></i>
                     </span>
                     <input
                         name="price"

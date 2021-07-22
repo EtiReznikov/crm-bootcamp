@@ -25,7 +25,7 @@ function PackagesPage(props) {
         },
 
         {
-            Header: 'UUpdate & Delete',
+            Header: 'Update & Delete',
             width: '1em',
             Cell: ({ row }) => (
                 <div id="row-button-wrapper">
@@ -126,7 +126,7 @@ function PackagesPage(props) {
                         text={<i className="fa fa-calendar-plus-o"></i>}
                     />
                 </div> */}
-                <Table columns={columns} data={data} />
+                <Table columns={columns} data={data}  isPagination={true} isSort={true}/>
             </div>
             <Modal
                 isOpen={modalIsOpenAddPackage}

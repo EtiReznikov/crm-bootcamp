@@ -24,9 +24,7 @@ class clients extends controller
     {      
         $gymId = $this->data->business_id;
         $name = $this->data->name;
-        $phone= $this->data->phone;
-        // $selectedPackage= $this->data->selectedPackage;
-        
+        $phone= $this->data->phone;        
         $addClient = $this->model->addNewClient($gymId, $name, $phone);
         if ($addClient){
             return true;
@@ -40,9 +38,6 @@ class clients extends controller
         $clientId = $this->data->clientId;
         $clientName = $this->data->clientName;
         $clientPhone= $this->data->clientPhone;
-        // $selectedPackage= $this->data->selectedPackage;
-    
-
         $editClient = $this->model->editClient($clientId, $clientName, $clientPhone);
         if ($editClient){
             return true;
@@ -50,14 +45,12 @@ class clients extends controller
         else{
             throw new Exception('DB error');
         }
-         //*TODO add validation
     }
 
     public function removeClient(){
         $clientId=$this->data->clientId;
         $removeClient = $this->model->removeClientById($clientId);
         return $removeClient;
-        //*TODO add validation
         if ($removeClient){
             return true;
         }

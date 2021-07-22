@@ -13,7 +13,6 @@ import Select from 'react-select';
 
 import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';
 function AddClass(props) {
-
     const daysObjTemp = {};
     if (props.isEdit) {
         const daysTemp = props.classData.days.split(', ');
@@ -39,6 +38,7 @@ function AddClass(props) {
         },
         selectedTrainer: []
     })
+
     const [location, setLocation] = useState(props.isEdit ? JSON.parse(props.classData.location) : { address: "" });
     const [hhValid, setHHValid] = useState(true);
     const [mmValid, setMMValid] = useState(true);
@@ -66,6 +66,27 @@ function AddClass(props) {
                 .catch(function (error) {
 
                 });
+            if (props.isEdit) {
+                await axios.post('http://localhost:991/classes/getTrainerOfClass/', {
+                    classId: props.classData.class_id,
+                })
+                    .then((response) => {
+                        let trainer = []
+                        for (const trainerValue of response.data) {
+                            trainer.push({
+                                value: trainerValue.user_id,
+                                label: trainerValue.user_name,
+                            })
+                        }
+                        setState({
+                            ...formState,
+                            selectedTrainer: trainer
+                        })
+                    })
+                    .catch(function (error) {
+
+                    });
+            }
         })();
     }, []);
 
@@ -79,73 +100,79 @@ function AddClass(props) {
     }
 
     const onSubmit = (e) => {
-        const nameValid = nameLengthValidation(formState.className);
-        setState({
-            ...formState,
-            classValid: nameValid,
-        })
-        setErrorMsg(false);
-        if (nameValid === 0) {
-            if (props.isEdit) {
-                axios.post('http://localhost:991/classes/editClassData/', {
-                    className: formState.className,
-                    classDescription: formState.classDescription,
-                    color: formState.classColor,
-                    classId: props.classData.class_id,
-                    dayAndTime: JSON.stringify({
-                        hours: formState.hours,
-                        min: formState.minutes,
-                        days: chosenDays()
-                    }),
-                    location: JSON.stringify(location),
-                    trainer: formState.selectedTrainer.value
-                }).then(function (response) {
-                    if (response.data === true) {
-                        props.closeModal();
-                        props.changeDataState();
-                    }
-                    else {
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                    }
-                })
-                    .catch(function (error) {
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                    });
-            }
-            else {
-                axios.post('http://localhost:991/classes/addClass/', {
-                    className: formState.className,
-                    classDescription: formState.classDescription,
-                    color: formState.classColor,
-                    business_id: localStorage.getItem('business_id'),
-                    dayAndTime: JSON.stringify({
-                        hours: formState.hours,
-                        min: formState.minutes,
-                        days: chosenDays()
-                    }),
-                    location: JSON.stringify(location),
-                    trainer: formState.selectedTrainer.value
-                }).then(function (response) {
-                    if (response.data === true) {
-                        props.closeModal();
-                        props.changeDataState();
-                    }
-                    else {
-                        console.log("error")
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                    }
-                })
-                    .catch(function (error) {
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                    });
-            }
+        if (formState.selectedTrainer.length === 0) {
+            setErrorTrainer(true);
+            setBtnActive(true);
         }
         else {
-            setBtnActive(true);
+            const nameValid = nameLengthValidation(formState.className);
+            setState({
+                ...formState,
+                classValid: nameValid,
+            })
+            setErrorMsg(false);
+            if (nameValid === 0) {
+                if (props.isEdit) {
+                    axios.post('http://localhost:991/classes/editClassData/', {
+                        className: formState.className,
+                        classDescription: formState.classDescription,
+                        color: formState.classColor,
+                        classId: props.classData.class_id,
+                        trainer: formState.selectedTrainer[0].value,
+                        dayAndTime: JSON.stringify({
+                            hours: formState.hours,
+                            min: formState.minutes,
+                            days: chosenDays()
+                        }),
+                        location: JSON.stringify(location),
+
+                    }).then(function (response) {
+                        if (response.data === true) {
+                            props.closeModal();
+                            props.changeDataState();
+                        }
+                        else {
+                            setErrorMsg(true);
+                            setBtnActive(true);
+                        }
+                    })
+                        .catch(function (error) {
+                            setErrorMsg(true);
+                            setBtnActive(true);
+                        });
+                }
+                else {
+                    axios.post('http://localhost:991/classes/addClass/', {
+                        className: formState.className,
+                        classDescription: formState.classDescription,
+                        color: formState.classColor,
+                        business_id: localStorage.getItem('business_id'),
+                        dayAndTime: JSON.stringify({
+                            hours: formState.hours,
+                            min: formState.minutes,
+                            days: chosenDays()
+                        }),
+                        location: JSON.stringify(location),
+                        trainer: formState.selectedTrainer.value
+                    }).then(function (response) {
+                        if (response.data === true) {
+                            props.closeModal();
+                            props.changeDataState();
+                        }
+                        else {
+                            setErrorMsg(true);
+                            setBtnActive(true);
+                        }
+                    })
+                        .catch(function (error) {
+                            setErrorMsg(true);
+                            setBtnActive(true);
+                        });
+                }
+            }
+            else {
+                setBtnActive(true);
+            }
         }
         e.preventDefault();
     }
@@ -268,10 +295,12 @@ function AddClass(props) {
                             placeholder="Class Name"
                             value={formState.className}
                             onChange={e => {
+
                                 setErrorMsg(false);
                                 setState({
                                     ...formState,
                                     className: e.target.value,
+                                    classValid: 0
                                 })
                             }
                             }
@@ -303,7 +332,7 @@ function AddClass(props) {
                         <label className="classes-picker">
                             Pick Trainer:
                         </label>
-                        <Select name="trainer" isSearchable={true} value={formState.selectedTrainers} onChange={onTrainerSelect} options={trainers} className="trainer-selector"
+                        <Select name="trainer" isSearchable={true} value={formState.selectedTrainer} onChange={onTrainerSelect} options={trainers} className="trainer-selector"
                             classNamePrefix="select" />
                         {errorTrainer && <ErrorMsg text="You must choose a trainer" />}
                         {!errorTrainer && <ErrorMsg />}

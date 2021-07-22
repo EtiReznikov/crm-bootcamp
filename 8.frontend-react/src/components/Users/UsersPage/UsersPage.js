@@ -142,7 +142,7 @@ function Users(props) {
 
             <div id="table-wrapper">
 
-                <Table columns={columns} data={data} />
+                <Table columns={columns} data={data}  isPagination={true} isSort={true}/>
                 {/* {addUser && <Redirect to="/addUser" />} */}
                 {successStatus === 10 && <Redirect to={{
                     pathname: "/msgPage",

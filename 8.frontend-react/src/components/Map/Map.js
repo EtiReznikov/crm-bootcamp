@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import './Map.scss'
+import './Map.scss';
+import ErrorComponents from '../SubComponents/ErrorComponenet/ErrorComponent'
 class Map extends Component {
     constructor(props) {
         super(props);
-        this.locations = [
-            ['Title A', 32.0853, 34.7818, 1],
-            ['Title A', 32.0854, 34.7818, 2],
-            ['Title A', 32.0855, 34.7818, 3],
-            ['Title A', 32.0900, 34.7818, 4],
-        ]
+        this.locations = [];
         this.map = null;
+        this.errorState = false;
         this.getLocations = () => {
             axios.post('http://localhost:991/classes/getClasses/', {
                 business_id: localStorage.getItem('business_id'),
@@ -25,8 +22,6 @@ class Map extends Component {
                             id: classValue.class_id
                         }
                         data.push(temp)
-
-
                     }
                     this.locations = data;
 
@@ -40,18 +35,18 @@ class Map extends Component {
                     var infowindow = new window.google.maps.InfoWindow;
                     for (i = 0; i < this.locations.length; i++) {
                         marker = new window.google.maps.Marker({
-                           icon:{ 
-                            path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
-                            fillColor: this.locations[i].color,
-                            fillOpacity: 0.9,
-                            strokeWeight: 0,
-                            rotation: 0,
-                            scale: 1
-                        },
+                            icon: {
+                                path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+                                fillColor: this.locations[i].color,
+                                fillOpacity: 0.99,
+                                strokeWeight: 1,
+                                rotation: 0,
+                                scale: 1
+                            },
                             position: new window.google.maps.LatLng(this.locations[i].location.latLng.lat, this.locations[i].location.latLng.lng),
                             map: this.map,
                             title: this.locations[i].title
-                          
+
                         });
 
                         window.google.maps.event.addListener(marker, 'click', (function (marker, i) {
@@ -65,6 +60,7 @@ class Map extends Component {
 
                 })
                 .catch(function (error) {
+                    this.errorState = true
                 })
         }
     }
@@ -76,9 +72,12 @@ class Map extends Component {
     render() {
         return (
             <div data-role="page" id="map_result">
-                <div data-role="content" >
-                    <div id="map"></div>
-                </div>
+                {this.errorState && <ErrorComponents />}
+                {!this.errorState &&
+                    <div data-role="content" >
+                        <div id="map"></div>
+                    </div>
+                }
             </div>
         );
     }

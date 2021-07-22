@@ -22,7 +22,7 @@ function PaymentHistory(props) {
             accessor: "payment_date"
         },
     ]
-    
+
     useEffect(() => {
         let data = [];
         (async () => {
@@ -30,16 +30,15 @@ function PaymentHistory(props) {
                 clientId: props.clientData.client_id
             })
                 .then((response) => {
-                   
+
                     if (response.data === "")
                         setData([]);
                     else if (Array.isArray(response.data)) {
-                        console.log(response)
                         for (const paymentValue of response.data) {
                             let startDate = moment(paymentValue.start_date).format("DD/MM/YY");
                             let endDate = moment(paymentValue.end_date).format("DD/MM/YY");
                             let temp = {
-                                type: paymentValue.type === 'package' ? `Package | ${paymentValue.name} | ${startDate}-${endDate} `  : `Personal Training | ${paymentValue.name} |  ${startDate}`,
+                                type: paymentValue.type === 'package' ? `Package | ${paymentValue.name} | ${startDate}-${endDate} ` : `Personal Training | ${paymentValue.name} |  ${startDate}`,
                                 price: paymentValue.price,
                                 payment_date: paymentValue.date
                             }
@@ -56,7 +55,7 @@ function PaymentHistory(props) {
                     setError(true);
                 });
         })();
-    },[]);
+    }, []);
 
     return (
         <div className="form_wrapper" id="payment-history">
@@ -65,15 +64,18 @@ function PaymentHistory(props) {
                 <i id="exit-wind" className="fa fa-times"></i>
             </button>
 
+
             <div className="form_container">
                 <div className="title_container">
                     <h2 id="payment-history-headline">{props.clientData.client_name} Payment History</h2>
-                    <Table columns={columns} data={data} />
+                    {
+                        data.length === 0 ? <div> The client doesn't have payment history</div> :
+                            <Table columns={columns} data={data} isSort={true} isPagination={true} />
+                    }
                 </div>
             </div>
+
         </div>
-
-
 
     );
 }

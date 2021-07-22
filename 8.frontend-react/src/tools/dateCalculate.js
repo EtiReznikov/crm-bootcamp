@@ -32,3 +32,20 @@ export function diffDate(startDate, endDate){
 	const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 	return diffDays
 }
+//from DD/MM/YYYY to MM/DD/YYYY or MM/DD/YYYY to DD/MM/YYYY
+export function dateFormattingDayByMonth(date_string) {
+	var date_components = date_string.split("/");
+	var day = date_components[0];
+	if (day.length === 1) {
+		day="0"+day;
+	}
+	var month = date_components[1];
+	if (month.length === 1){
+		month="0"+month;
+	}
+	var year = date_components[2];
+	return month+"/"+day+"/"+year;
+  }
+
+
+

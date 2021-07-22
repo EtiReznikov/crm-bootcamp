@@ -30,6 +30,10 @@ function Classes(props) {
             accessor: "trainer"
         },
         {
+            Header: 'Location',
+            accessor: "address"
+        },
+        {
             Header: 'Description',
             accessor: "description"
         },
@@ -116,7 +120,6 @@ function Classes(props) {
                 business_id: localStorage.getItem('business_id'),
             })
                 .then((response) => {
-                    console.log(response)
                     if (response.data === "")
                         setData([]);
 
@@ -127,6 +130,7 @@ function Classes(props) {
                         for (const classValue of response.data) {
                             let obj = JSON.parse(classValue.days_and_time)
                             let days = obj.days.join(', ')
+                            let address = JSON.parse(classValue.location).address
                             let temp = {
                                 class_id: classValue.class_id,
                                 class_name: classValue.class_name,
@@ -136,6 +140,7 @@ function Classes(props) {
                                 days: days,
                                 time: obj.hours + ":" + obj.min,
                                 location: classValue.location,
+                                address: address,
                                 trainer: classValue.user_name
                             }
                             data.push(temp)
@@ -168,7 +173,7 @@ function Classes(props) {
                         </button>
                     </div>
                     <div id="table-wrapper">
-                        <Table columns={columns} data={data} />
+                        <Table columns={columns} data={data} isPagination={true} isSort={true}/>
                     </div>
                     <Modal
                         isOpen={modalIsOpenAddClass}

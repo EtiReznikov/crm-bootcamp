@@ -157,7 +157,6 @@ function Clients(props) {
                                 client_name_avatar: <div id="avatar-wrapper">
                                     <Avatar className="avatar" name={clientValue.client_name} src={'http://localhost:8005/uploads/' + clientValue.file} size="60" round={true} />
                                     <div id="name-row">{clientValue.client_name}</div>
-
                                 </div>,
                                 gym_id: clientValue.gym_id,
                                 client_phone: clientValue.client_phone,
@@ -219,7 +218,7 @@ function Clients(props) {
               
                     <div id="table-wrapper">
 
-                        <Table columns={columns} data={data} />
+                        <Table columns={columns} data={data}  isPagination={true} isSort={true}/>
                     </div>
                     <Modal
                         isOpen={modalIsOpenAddClient}

@@ -25,7 +25,8 @@ class Model_classes extends Model
         }
     }
 
-    public function getAllClassesWithTrainer($gymId){
+    public function getAllClassesWithTrainer($gymId)
+    {
         //prevent mysql injection
         $gymId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $gymId);
         $classes = $this->getDB()
@@ -99,7 +100,25 @@ class Model_classes extends Model
                     WHERE classes.class_id='$classId' AND classes.gym_id='$gymId'")
             ->fetch_all(MYSQLI_ASSOC);
         if ($registers) {
-            return $registers ;
+            return $registers;
+        } else {
+            return  $this->getDB()->error;
+        }
+    }
+
+    public function getTrainer($classId)
+    {
+        $classId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $classId);
+        $trainer = $this->getDB()
+            ->query(
+                "SELECT classes.class_id, users.user_id , users.user_name 
+                FROM  classes 
+                LEFT JOIN users ON classes.trainer_id = users.user_id  
+                WHERE classes.class_id='$classId'"
+            )
+            ->fetch_all(MYSQLI_ASSOC);
+        if ($trainer) {
+            return  $trainer;
         } else {
             return  $this->getDB()->error;
         }
