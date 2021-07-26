@@ -13,9 +13,9 @@ import {
 } from "react-router-dom";
 
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle, FiPackage } from "react-icons/fi";
-import { BiCalendar, BiRun } from "react-icons/bi";
-import {GrMapLocation} from "react-icons/gr"
-import {RiUserSettingsLine} from "react-icons/ri"
+import { BiCalendar, BiRun, BiChat } from "react-icons/bi";
+import { GrMapLocation } from "react-icons/gr"
+import { RiUserSettingsLine } from "react-icons/ri"
 import { AiOutlineClockCircle } from "react-icons/ai";
 import './SideBar.scss';
 
@@ -69,7 +69,7 @@ function SideBar(props) {
                 Calendar
                 <Link to="/calendar" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/map'} icon={<GrMapLocation/>}>
+              <MenuItem active={location.pathname === '/map'} icon={<GrMapLocation />}>
                 Map
                 <Link to="/map" />
               </MenuItem>
@@ -78,12 +78,16 @@ function SideBar(props) {
                 <Link to="/classes" />
               </MenuItem>
               <MenuItem active={location.pathname === '/packages'} icon={<FiPackage />}>
-              Packages
+                Packages
                 <Link to="/packages" />
               </MenuItem>
               <MenuItem active={location.pathname === '/users'} icon={<RiUserSettingsLine />}>
                 Users
                 <Link to="/users" />
+              </MenuItem>
+              <MenuItem active={location.pathname === '/chats'} icon={<BiChat />}>
+                Chats
+                <Link to="/chats" />
               </MenuItem>
             </Menu>
           </SidebarContent>

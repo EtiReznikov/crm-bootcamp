@@ -1,0 +1,11 @@
+#chats-page {
+  .chat-link {
+    font-size: 20px;
+    color: #adadad;
+  }
+
+  /*a link when the user mouses over it*/
+  .chat-link:hover {
+    color: #000000;
+  }
+}

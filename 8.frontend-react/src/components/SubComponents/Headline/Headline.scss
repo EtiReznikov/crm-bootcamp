@@ -1,10 +1,12 @@
 @import "../../../Views/colors.scss";
-#user-page-menu-header, #calendar-page-header, #user-page-header, #users-page-head{
-    font-size: 2em;
-    margin-bottom: 0.5em;
-    margin-top: 8px;
-    color: #000408;
-    font-weight: bold;
+#user-page-menu-header,
+#calendar-page-header,
+#user-page-header,
+#users-page-head,
+#chat-page-head {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  margin-top: 8px;
+  color: #000408;
+  font-weight: bold;
 }
-
-

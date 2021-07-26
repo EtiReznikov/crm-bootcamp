@@ -11,6 +11,7 @@ import Clients from './components/Clients/ClientsPage/ClientsPage';
 import Classes from './components/Classes/ClassesPage/ClassesPage';
 import PackagesPage from './components/Packages/PackagesPage/PackagesPage';
 import Map from './components/Map/Map';
+import ChatPage from './components/ChatPage/ChatPage';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
   BrowserRouter as Router,
@@ -86,7 +87,10 @@ function App(props) {
             <PackagesPage />
           </Route>
           <Route path="/map">
-            <Map/>
+            <Map />
+          </Route>
+          <Route path="/chats">
+            <ChatPage />
           </Route>
         </Switch>
       </div>

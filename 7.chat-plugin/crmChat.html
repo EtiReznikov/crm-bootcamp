@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <title>Socket.IO chat</title>
+  </head>
+  <body>
+    <h1>Server</h1>
+    <ul id="messages"></ul>
+    <div id="fallback"></div>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const url_string = window.location.href; 
+      const url = new URL(url_string);
+      let room = url.searchParams.get("room");
+      let id = url.searchParams.get("id");
+      console.log(room, id);
+      let socket = io();
+      if (room) socket.emit("create", room);
+      else socket.emit("create", "crm");
+
+      // socket.emit("create", "crm", id);
+      // socket.emit("create", room, id);
+      let allRooms = ["crm"];
+      let messages = document.getElementById("messages");
+      let form = document.getElementById("form");
+      let input = document.getElementById("input");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit("server message", {
+            room: room,
+            from: "crm",
+            msgValue: input.value,
+          });
+          input.value = "";
+        }
+      });
+
+      socket.on("new room", function (room) {
+        if (!allRooms.includes(room)) {
+          room = room;
+          allRooms.push(room);
+          socket.emit("create", room);
+          socket.emit("server message", {
+            room: room,
+            from: "crm",
+            msgValue: "Hi! what is your name?",
+          });
+        }
+      });
+
+      // socket.on("get socket", function (socket) {
+      //   socket = socket;
+      // });
+
+      socket.on("server message", function (msg) {
+        var item = document.createElement("li");
+        item.textContent = msg.msgValue;
+        room = msg.room;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      socket.on("chat message", function (msg) {
+        var item = document.createElement("li");
+        item.textContent = msg.msgValue;
+        room = msg.room;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      input.addEventListener("keyup", (e) => {
+        e.preventDefault();
+        socket.emit("typing", {
+          isServer: true,
+          isTyping: input.value.length > 0,
+          nick: "userName",
+        });
+      });
+
+      socket.on("typing", function (data) {
+        const { isTyping, nick, isServer } = data;
+
+        if (!isTyping || isServer) {
+          fallback.innerHTML = "";
+          return;
+        }
+
+        fallback.innerHTML = `<p>client is typing...</p>`;
+      });
+    </script>
+  </body>
+</html>

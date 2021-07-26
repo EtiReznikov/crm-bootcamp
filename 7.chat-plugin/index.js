@@ -1,5 +1,7 @@
 const express = require('express');
+var cors = require('cors')
 const app = express();
+app.use(cors());
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -7,29 +9,56 @@ const io = new Server(server);
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+app.get('/leadChat', (req, res) => {
+    res.sendFile(__dirname + '/leadChat.html');
 });
-app.get('/serverSide', (req, res) => {
-    res.sendFile(__dirname + '/serverSide.html');
+app.get('/crmChat', (req, res) => {
+    res.sendFile(__dirname + '/crmChat.html');
 });
-io.on('connection', (socket) => {
 
+app.get('/allConnections', (req, res) => {
+    let result = [];
+    io.sockets.adapter.rooms.forEach((value, key) => {
+        if (JSON.stringify(key).substring(1, 5) === 'room')
+            result.push({
+                key: key, value: Array.from(value)
+            });
+    })
+    res.send(result)
+})
+
+app.get('/crmSocketId', (req, res) => {
+    io.sockets.adapter.rooms.forEach((value, key) => {
+        if (JSON.stringify(key) === '"crm"') {
+            res.send(Array.from(value))
+        }
+    })
+})
+
+io.on('connection', (socket) => {
     socket.on('create', function (room) {
+        // if (socketId) {
+        //     socket.id = socketId;
+        // }
         socket.join(room);
+        // console.log(socketId)
+        // if (socketId) {
+        //     // io.sockets.to('crm').emit('get socket', io.sockets.sockets.get(socketId))
+        //     console.log(io.sockets.sockets.get(socketId))
+        // }
         io.sockets.to('crm').emit('new room', room);
-        console.log(io.sockets.adapter.rooms.get(room))
     });
 
     socket.on('chat message', msg => {
-
-        console.log(msg.room)
         io.sockets.in(msg.room).emit('chat message', msg);
     });
 
     socket.on('server message', msg => {
-        console.log(msg.room)
         io.sockets.in(msg.room).emit('server message', msg);
+    });
+
+    socket.on('welcome msg', msg => {
+        io.sockets.in(msg.room).emit('server message', 'Hi');
     });
 
     socket.on('typing', msg => {
