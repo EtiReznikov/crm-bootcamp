@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+  </head>
+  <body>
+    <h1>Client</h1>
+    <ul id="messages"></ul>
+    <div id="fallback"></div>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const room = "room" + Date.now() + Math.random();
+      socket.emit("create", room);
+      let messages = document.getElementById("messages");
+      let form = document.getElementById("form");
+      let input = document.getElementById("input");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit("chat message", {
+            room: room,
+            from: "lead",
+            msgValue: input.value,
+          });
+          input.value = "";
+        }
+      });
+
+      input.addEventListener("keyup", (e) => {
+        e.preventDefault();
+        socket.emit("typing", {
+          room: room,
+          isClient: true,
+          isTyping: input.value.length > 0,
+          nick: "userName",
+        });
+      });
+
+      socket.on("chat message", function (msg) {
+        var item = document.createElement("li");
+        item.textContent = msg.msgValue;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      socket.on("server message", function (msg) {
+        var item = document.createElement("li");
+        item.textContent = msg.msgValue;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      socket.on("typing", function (data) {
+        const { isTyping, nick, isClient } = data;
+
+        if (!isTyping || isClient) {
+          fallback.innerHTML = "";
+          return;
+        }
+
+        fallback.innerHTML = `<p>server is typing...</p>`;
+      });
+    </script>
+  </body>
+</html>

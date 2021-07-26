@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
     database: 'landingpage'
 });
 
-connection.connect(function(err) {
+connection.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");
 });
@@ -28,7 +28,7 @@ app.use(express.urlencoded());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
-app.post('/leads', function(req, res) {
+app.post('/leads', function (req, res) {
     console.log(req.body);
 
     let flag;
@@ -39,7 +39,7 @@ app.post('/leads', function(req, res) {
     console.log("order by", orderBy);
     const sql = `SELECT * FROM leads ${orderBy}`;
     console.log(sql);
-    connection.query(sql, function(err, result, fields) {
+    connection.query(sql, function (err, result, fields) {
         res.send(result);
 
     });
@@ -47,10 +47,10 @@ app.post('/leads', function(req, res) {
 });
 
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.send('hello there');
 });
-app.post('/', function(req, res) {
+app.post('/', function (req, res) {
     const name = req.body.name;
     const phone = req.body.phone;
     const email = req.body.email;
@@ -58,6 +58,7 @@ app.post('/', function(req, res) {
     let moreInfo = req.body.moreInfo;
     const updatesConfirm = req.body.updatesConfirm
     let flag;
+    console.log(name)
     nameValidation(name)
     phoneValidation(phone);
     emailValidation(email);
@@ -74,8 +75,8 @@ app.post('/', function(req, res) {
     }
     if (data.flag) {
         const genderBin = gender == '' ? '' : gender == 'male' ? 'm' : 'f';
-        const sql = `INSERT INTO leads (name, phone_number,email, gender, more_info, update_confirm) VALUES ('${name}', '${phone}', '${email}', '${gender}', '${moreInfo}', '${updatesConfirm }')`;
-        connection.query(sql, function(err, result) {
+        const sql = `INSERT INTO leads (name, phone_number,email, gender, more_info, update_confirm) VALUES ('${name}', '${phone}', '${email}', '${gender}', '${moreInfo}', '${updatesConfirm}')`;
+        connection.query(sql, function (err, result) {
             if (err) throw err;
             console.log("1 record inserted");
         });

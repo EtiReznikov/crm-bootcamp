@@ -36,7 +36,7 @@ app.get('/', function(req, res) {
             { "gender": "female" }
         ],
 
-        "slogan1": "Don't wish for results -",
+        "slogan1": "Don't wish for results",
         "slogan2": "work for it!",
         "updates-slogan": "Get updates and special offers - promise not to spam you!",
         "Name": "Name",

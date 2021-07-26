@@ -75,7 +75,7 @@ function PersonalTrainingPerTrainer(props) {
             <div className="chart-wrapper">
                 {!errorState &&
                     <Bar
-                        data={state}
+                        data={state}  
                     />
                 }
             </div>

@@ -1,0 +1,11 @@
+{
+    "name": "socket-chat",
+    "version": "0.0.1",
+    "description": "socket.io app",
+    "scripts": {
+        "start": "export PORT=9034 && nodemon index.js"
+    },
+    "dependencies": {
+        "socket.io": "^4.1.3"
+    }
+}

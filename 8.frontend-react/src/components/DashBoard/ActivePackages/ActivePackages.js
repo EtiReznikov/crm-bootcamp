@@ -5,6 +5,7 @@ import { Doughnut } from 'react-chartjs-2';
 import ErrorDashboard from '../ErrorDashboard/ErrorDashBoard';
 import './ActivePackages.scss'
 
+
 function PersonalTrainingPerTrainer(props) {
     const [state, setState] = useState({
         labels: [],
@@ -25,6 +26,10 @@ function PersonalTrainingPerTrainer(props) {
                 for (const countValue of response.data) {
                     labels.push(countValue.package_name);
                     dataset.push(countValue.count)
+                    // dataset.push({
+                    //     x: countValue.package_name,
+                    //     y: countValue.count
+                    // })
                 }
 
                 setError(false);
