@@ -19,6 +19,7 @@ app.get('/crmChat', (req, res) => {
 app.get('/allConnections', (req, res) => {
     let result = [];
     io.sockets.adapter.rooms.forEach((value, key) => {
+        console.log(value, key)
         if (JSON.stringify(key).substring(1, 5) === 'room')
             result.push({
                 key: key, value: Array.from(value)
@@ -37,15 +38,12 @@ app.get('/crmSocketId', (req, res) => {
 
 io.on('connection', (socket) => {
     socket.on('create', function (room) {
-        // if (socketId) {
-        //     socket.id = socketId;
-        // }
+        socket.emit("server message", {
+            room: room,
+            from: "crm",
+            msgValue: "Hi! what is your name?",
+        });
         socket.join(room);
-        // console.log(socketId)
-        // if (socketId) {
-        //     // io.sockets.to('crm').emit('get socket', io.sockets.sockets.get(socketId))
-        //     console.log(io.sockets.sockets.get(socketId))
-        // }
         io.sockets.to('crm').emit('new room', room);
     });
 

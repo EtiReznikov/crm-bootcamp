@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/stylesCrm.css" />
     <title>Socket.IO chat</title>
   </head>
   <body>
@@ -13,17 +13,12 @@
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const url_string = window.location.href; 
+      const url_string = window.location.href;
       const url = new URL(url_string);
       let room = url.searchParams.get("room");
-      let id = url.searchParams.get("id");
-      console.log(room, id);
       let socket = io();
       if (room) socket.emit("create", room);
       else socket.emit("create", "crm");
-
-      // socket.emit("create", "crm", id);
-      // socket.emit("create", room, id);
       let allRooms = ["crm"];
       let messages = document.getElementById("messages");
       let form = document.getElementById("form");
@@ -46,11 +41,6 @@
           room = room;
           allRooms.push(room);
           socket.emit("create", room);
-          socket.emit("server message", {
-            room: room,
-            from: "crm",
-            msgValue: "Hi! what is your name?",
-          });
         }
       });
 
@@ -60,7 +50,7 @@
 
       socket.on("server message", function (msg) {
         var item = document.createElement("li");
-        item.textContent = msg.msgValue;
+        item.textContent = "You: " + msg.msgValue;
         room = msg.room;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
@@ -68,7 +58,7 @@
 
       socket.on("chat message", function (msg) {
         var item = document.createElement("li");
-        item.textContent = msg.msgValue;
+        item.textContent = "Lead: " + msg.msgValue;
         room = msg.room;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);

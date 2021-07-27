@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/stylesLead.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
   </head>
   <body>
-    <ul id="messages"></ul>
-    <div id="fallback"></div>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+    <div id="chat-wrapper">
+      <button id="exit-button" onclick="closeChat()">
+        <i class="fa fa-times"></i>
+      </button>
+      <ul id="messages"></ul>
+      <div id="fallback"></div>
+      <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+      </form>
+    </div>
+    <button id="chat-button" onclick="openChat()">
+      <i class="fa fa-comment"></i>
+    </button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
@@ -63,8 +74,26 @@
           return;
         }
 
-        fallback.innerHTML = `<p>server is typing...</p>`;
+        fallback.innerHTML = `<p>Crossfit REL is typing...</p>`;
       });
+    </script>
+    <script>
+      document
+        .querySelector("#chat-button")
+        .addEventListener("click", openChat);
+      document
+        .querySelector("#exit-button")
+        .addEventListener("click", closeChat);
+      function openChat() {
+        console.log("open form");
+        document.querySelector("#chat-button").style.display = "none";
+        document.querySelector("#chat-wrapper").style.display = "block";
+      }
+      function closeChat() {
+        console.log("open form");
+        document.querySelector("#chat-button").style.display = "block";
+        document.querySelector("#chat-wrapper").style.display = "none";
+      }
     </script>
   </body>
 </html>

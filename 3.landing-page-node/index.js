@@ -8,18 +8,18 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 app.use(express.static('views'));
 
-app.get('/admin', function(req, res) {
+app.get('/admin', function (req, res) {
     const data = {
-        "title": "Lea Edri - Personal Trainer",
+        "title": "Crossfit REL",
         "name": req.query.name,
     };
     res.render('leads', data);
 });
 
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     const data = {
-        "title": "Lea Edri - Personal Trainer",
+        "title": "Crossfit REL",
         "area-codes": [
             { "area-code": "050" },
             { "area-code": "052" },
@@ -31,9 +31,9 @@ app.get('/', function(req, res) {
             { "area-code": "059" }
         ],
         "genders": [{
-                "gender": "male"
-            },
-            { "gender": "female" }
+            "gender": "male"
+        },
+        { "gender": "female" }
         ],
 
         "slogan1": "Don't wish for results",
@@ -49,9 +49,9 @@ app.get('/', function(req, res) {
     res.render('index_.html', data);
 });
 
-app.get('/submitted', function(req, res) {
+app.get('/submitted', function (req, res) {
     const data = {
-        "title": "Lea Edri - Personal Trainer",
+        "title": "Crossfit REL",
         "name": req.query.name,
     };
 

@@ -119,7 +119,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: 30px;
+  font-size: 25px;
   width: fit-content;
   color: #861f1c;
   border-radius: 5px;
@@ -216,8 +216,9 @@ img {
   object-fit: cover;
 }
 #chat {
-  border: 1px solid;
-  border-radius: 3px;
   height: 350px;
-  z-index: 100;
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  border: none;
 }
