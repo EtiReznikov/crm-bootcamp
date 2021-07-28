@@ -25,19 +25,23 @@
     <script>
       const socket = io();
       const room = "room" + Date.now() + Math.random();
-      socket.emit("create", room);
+      socket.emit("create", room, true);
       let messages = document.getElementById("messages");
       let form = document.getElementById("form");
       let input = document.getElementById("input");
-
+      let allMsgsHistory = [];
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         if (input.value) {
-          socket.emit("chat message", {
-            room: room,
-            from: "lead",
-            msgValue: input.value,
-          });
+          socket.emit(
+            "chat message",
+            {
+              room: room,
+              from: "lead",
+              msgValue: input.value,
+            },
+            allMsgsHistory
+          );
           input.value = "";
         }
       });
@@ -52,17 +56,27 @@
         });
       });
 
-      socket.on("chat message", function (msg) {
-        var item = document.createElement("li");
-        item.textContent = "You: " + msg.msgValue;
-        messages.appendChild(item);
+      socket.on("chat message", function (msg, allMsgs) {
+        messages.innerHTML = "";
+        allMsgsHistory = allMsgs;
+        allMsgs.forEach((element) => {
+          var item = document.createElement("li");
+          item.textContent =
+            (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
+          messages.appendChild(item);
+        });
         window.scrollTo(0, document.body.scrollHeight);
       });
 
-      socket.on("server message", function (msg) {
-        var item = document.createElement("li");
-        item.textContent = "Crossfit REL: " + msg.msgValue;
-        messages.appendChild(item);
+      socket.on("server message", function (msg, allMsgs) {
+        messages.innerHTML = "";
+        allMsgsHistory = allMsgs;
+        allMsgs.forEach((element) => {
+          var item = document.createElement("li");
+          item.textContent =
+            (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
+          messages.appendChild(item);
+        });
         window.scrollTo(0, document.body.scrollHeight);
       });
 
@@ -75,6 +89,21 @@
         }
 
         fallback.innerHTML = `<p>Crossfit REL is typing...</p>`;
+      });
+
+      socket.on("typing", function (data) {
+        const { isTyping, nick, isClient } = data;
+
+        if (!isTyping || isClient) {
+          fallback.innerHTML = "";
+          return;
+        }
+
+        fallback.innerHTML = `<p>Crossfit REL is typing...</p>`;
+      });
+
+      socket.on("getLeadData", function (room) {
+        window.parent.postMessage({ type: "leadDataReq", room: room }, "*");
       });
     </script>
     <script>
@@ -93,6 +122,19 @@
         console.log("open form");
         document.querySelector("#chat-button").style.display = "block";
         document.querySelector("#chat-wrapper").style.display = "none";
+      }
+    </script>
+    <script>
+      window.addEventListener("message", receiveMessage, false);
+      function receiveMessage(evt) {
+        switch (evt.data.type) {
+          case "leadData":
+            socket.emit("addLead", {
+              room: room,
+              data: evt.data.leadData,
+            });
+            break;
+        }
       }
     </script>
   </body>

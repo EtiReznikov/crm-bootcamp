@@ -29,19 +29,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.post('/leads', function (req, res) {
-    console.log(req.body);
 
     let flag;
     let data = {
         leads: {}
     };
     const orderBy = req.body.orderBy ? req.body.orderBy : ''
-    console.log("order by", orderBy);
     const sql = `SELECT * FROM leads ${orderBy}`;
-    console.log(sql);
     connection.query(sql, function (err, result, fields) {
         res.send(result);
-
     });
 
 });
@@ -58,7 +54,6 @@ app.post('/', function (req, res) {
     let moreInfo = req.body.moreInfo;
     const updatesConfirm = req.body.updatesConfirm
     let flag;
-    console.log(name)
     nameValidation(name)
     phoneValidation(phone);
     emailValidation(email);

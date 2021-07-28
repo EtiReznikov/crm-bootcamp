@@ -4,48 +4,73 @@ import Table from '../SubComponents/Table/Table';
 import Headline from '../SubComponents/Headline/Headline';
 import './ChatPage.scss'
 function ChatPage(props) {
-    const [allConnections, setAllConnections] = useState([]);
+    const [allConnections, setAllConnections] = useState(() => new Set());
     const [data, setData] = useState([])
-    const [crmSocketId, setCrmSocketId] = useState("");
+    const [isIframe, setIsIframe] = useState(false);
+    const [iframe, setIframe] = useState(null);
+
 
     const chatURL = 'http://localhost:9034/crmChat'
     const columns = useMemo(() => [
         {
-            Header: "Link",
+            Header: "Chat",
             accessor: "link",
         },
-
     ], []
     );
 
     const getAllConnections = () => {
         axios.get('http://localhost:9034/allConnections')
             .then((response) => {
-                console.log(response.data);
                 setAllConnections(response.data)
             }).catch((error) => {
                 console.log(error)
             });
     }
 
-    // const getCRMSocketId = () => {
-    //     axios.get('http://localhost:9034/crmSocketId')
-    //         .then((response) => {
-    //             console.log(response)
-    //             console.log("id" + response.data)
-    //             setCrmSocketId(response.data)
-    //         }).catch((error) => {
-    //             console.log(error)
-    //         });
-    // }
+    const openIframe = (link) => {
+        setIframe(link);
+    }
+
+
+    function receiveMessage(evt) {
+        switch (evt.data.type) {
+            case 'newRoom':
+                setAllConnections(allConnections =>
+                    new Set(allConnections).add(evt.data.room));
+                break;
+            case 'disconnected':
+
+                setAllConnections(allConnections => {
+                    const temp = new Set(allConnections);
+                    temp.delete(evt.data.room)
+                    return temp;
+                });
+                break;
+            case 'leadData':
+                console.log(evt.leadData)
+                break;
+        }
+    }
+
 
     useEffect(() => {
+        window.addEventListener("message", receiveMessage, false);
+        getAllConnections();
+    }, []);
+
+    useEffect(() => {
+        console.log(allConnections)
         let data = []
         for (const connection of allConnections) {
             data.push({
-                link: <a className="chat-link" href={chatURL + "?room=" + connection.key} >
-                    <i id="chat-icon" className="fa fa-comments"></i>
-                </a>
+                link:
+                    <button className="chat-link" onClick={() => { openIframe(chatURL + "?room=" + connection) }}>
+                        <i id="chat-icon" className="fa fa-comments"></i>
+                    </button>
+                // <a className="chat-link" href={chatURL + "?room=" + connection.key} >
+
+                // </a>
             }
             )
         }
@@ -54,22 +79,19 @@ function ChatPage(props) {
     }, [allConnections]);
 
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            // getCRMSocketId();
-            getAllConnections()
-        }, 5000);
-        return () => clearInterval(interval);
-    }, []);
+
     return (
         <div id="chats-page" className="page-wrapper">
             <div id="btn-head-wrapper">
                 <Headline id="chat-page-head" text="Active Chats" />
             </div>
-            <div id="table-wrapper">
-                <Table columns={columns} data={data} />
+            <div id="chat-table-wrapper">
+                <div id="table-wrapper">
+                    <Table columns={columns} data={data} />
+                </div>
+                <iframe id="chat-iframe" src={iframe}></iframe>
             </div>
-            {/* <iframe src='http://localhost:9034/crmChat'></iframe> */}
+            <iframe id="chat-iframe-loader" src='http://localhost:9034/crmChat'></iframe>
             <script src='http://localhost:9034/crmChat'></script>
         </div>
     );

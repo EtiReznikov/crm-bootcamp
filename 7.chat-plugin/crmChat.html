@@ -2,41 +2,60 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="css/stylesCrm.css" />
-    <title>Socket.IO chat</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
   </head>
   <body>
-    <h1>Server</h1>
-    <ul id="messages"></ul>
-    <div id="fallback"></div>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+    <div id="chat-wrapper">
+      <button id="addLead" onclick="addLead()">
+        <i class="fa fa-user-plus"></i>
+        <!-- <span>add lead </span> -->
+      </button>
+      <ul id="messages"></ul>
+      <div id="fallback"></div>
+      <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+      </form>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const url_string = window.location.href;
       const url = new URL(url_string);
       let room = url.searchParams.get("room");
       let socket = io();
-      if (room) socket.emit("create", room);
-      else socket.emit("create", "crm");
+      socket.emit("create", "crm", false);
+      if (room) socket.emit("create", room, false);
+      else socket.emit("create", "crm", false);
       let allRooms = ["crm"];
       let messages = document.getElementById("messages");
       let form = document.getElementById("form");
       let input = document.getElementById("input");
+      let allMsgsHistory = [];
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         if (input.value) {
-          socket.emit("server message", {
-            room: room,
-            from: "crm",
-            msgValue: input.value,
-          });
+          socket.emit(
+            "server message",
+            {
+              room: room,
+              from: "crm",
+              msgValue: input.value,
+            },
+            allMsgsHistory
+          );
           input.value = "";
         }
       });
 
       socket.on("new room", function (room) {
+        if (room !== "crm" && room.substring(0, 4) === "room") {
+          window.parent.postMessage({ type: "newRoom", room: room }, "*");
+        }
+
         if (!allRooms.includes(room)) {
           room = room;
           allRooms.push(room);
@@ -44,23 +63,27 @@
         }
       });
 
-      // socket.on("get socket", function (socket) {
-      //   socket = socket;
-      // });
-
-      socket.on("server message", function (msg) {
-        var item = document.createElement("li");
-        item.textContent = "You: " + msg.msgValue;
-        room = msg.room;
-        messages.appendChild(item);
+      socket.on("server message", function (msg, allMsgs) {
+        messages.innerHTML = "";
+        allMsgsHistory = allMsgs;
+        allMsgs.forEach((element) => {
+          var item = document.createElement("li");
+          item.textContent =
+            (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
+          messages.appendChild(item);
+        });
         window.scrollTo(0, document.body.scrollHeight);
       });
 
-      socket.on("chat message", function (msg) {
-        var item = document.createElement("li");
-        item.textContent = "Lead: " + msg.msgValue;
-        room = msg.room;
-        messages.appendChild(item);
+      socket.on("chat message", function (msg, allMsgs) {
+        messages.innerHTML = "";
+        allMsgsHistory = allMsgs;
+        allMsgs.forEach((element) => {
+          var item = document.createElement("li");
+          item.textContent =
+            (!element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
+          messages.appendChild(item);
+        });
         window.scrollTo(0, document.body.scrollHeight);
       });
 
@@ -83,6 +106,21 @@
 
         fallback.innerHTML = `<p>client is typing...</p>`;
       });
+
+      socket.on("leadData", function (leadData) {
+        window.parent.postMessage({ type: "newLead", leadData: leadData }, "*");
+      });
+
+      socket.on("disconnected", function (room) {
+        if (room !== "crm" && room.substring(0, 4) === "room") {
+          window.parent.postMessage({ type: "disconnected", room: room }, "*");
+        }
+      });
+    </script>
+    <script>
+      function addLead() {
+        socket.emit("addLeadReq", room);
+      }
     </script>
   </body>
 </html>

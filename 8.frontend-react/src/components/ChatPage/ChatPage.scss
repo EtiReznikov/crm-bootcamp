@@ -1,11 +1,33 @@
 #chats-page {
-  .chat-link {
+  align-items: center;
+  .chat-link, .add-lead-button {
+    padding: 2px;
+    margin: 0;
+    background: none;
     font-size: 20px;
     color: #adadad;
   }
 
   /*a link when the user mouses over it*/
-  .chat-link:hover {
+  .chat-link:hover, .add-lead-button:hover {
     color: #000000;
+  }
+
+  #chat-iframe {
+    margin-top: 20px;
+    border: none;
+    height: 350px;
+  }
+
+  #chat-table-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  #table-wrapper {
+    width: 70%;
+  }
+  #chat-iframe-loader{
+    display: none;
   }
 }

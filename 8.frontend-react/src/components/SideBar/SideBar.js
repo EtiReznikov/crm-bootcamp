@@ -17,6 +17,7 @@ import { BiCalendar, BiRun, BiChat } from "react-icons/bi";
 import { GrMapLocation } from "react-icons/gr"
 import { RiUserSettingsLine } from "react-icons/ri"
 import { AiOutlineClockCircle } from "react-icons/ai";
+import { HiUserGroup } from "react-icons/hi"
 import './SideBar.scss';
 
 import logo from '../../Views/logo.png'
@@ -88,6 +89,10 @@ function SideBar(props) {
               <MenuItem active={location.pathname === '/chats'} icon={<BiChat />}>
                 Chats
                 <Link to="/chats" />
+              </MenuItem>
+              <MenuItem active={location.pathname === '/leads'} icon={<HiUserGroup />}>
+                Leads
+                <Link to="/leads" />
               </MenuItem>
             </Menu>
           </SidebarContent>

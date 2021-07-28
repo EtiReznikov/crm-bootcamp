@@ -9,6 +9,7 @@
         "@fortawesome/fontawesome-svg-core": "^1.2.35",
         "@fortawesome/free-regular-svg-icons": "^5.15.3",
         "@fortawesome/free-solid-svg-icons": "^5.15.3",
+        "mongoose": "^5.13.3",
         "socket.io": "^4.1.3"
     }
 }
