@@ -1,11 +1,41 @@
-@import '../../../Views/colors.scss';
-.exit{
-    background: none;
-    // background-color: black;
-    position: absolute;
-    right: 0;
-    top: 0;
+@import "../../../Views/colors.scss";
+.exit {
+  background: none;
+  // background-color: black;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
-#exit-wind{
+#exit-wind {
+  color: #000000;
+}
+#add-lead {
+  #gender {
+    margin-bottom: 30px;
+    color: #787878;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+  }
+  #male,
+  #female {
+    display: block;
+    margin: 0;
+    margin: 0 10px 0 10px;
+  }
+  .gender-pick {
     color: #000000;
+  }
+  #updates {
+    display: flex;
+  }
+
+  #more-info {
+    height: 120px;
+  }
+
+  #gender-wrapper {
+    display: flex;
+    align-items: center;
+  }
 }

@@ -1,13 +1,13 @@
 const express = require('express');
-var Mailgun = require('mailgun-js');
-var md5 = require('md5');
+let Mailgun = require('mailgun-js');
+let md5 = require('md5');
 const validators = require('../tools/validation');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-var mysql = require('mysql');
+let mysql = require('mysql');
 // DB connection
-var connection = mysql.createConnection({
+let connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
@@ -35,7 +35,7 @@ router.post('/ResetPasswordReq', function (req, res) {
         }
         //User exist
         else {
-            var mailGun = new Mailgun({
+            let mailGun = new Mailgun({
                 apiKey: process.env.MAILGUN_KEY,
                 domain: process.env.MAILGUN_ADMIN
             });
@@ -74,17 +74,17 @@ router.post('/NewPassword', function (req, res) {
 
     //password validation
     if (!validators.passwordValidation(data.password, data.confirm)) {
-        return res.status(403).json({ successStatus: 1,  message: 'Invalid password' })
+        return res.status(403).json({ successStatus: 1, message: 'Invalid password' })
     }
     else {
         //check the token
         jwt.verify(data.token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
             if (err) {
-                return res.json({ successStatus: 2,  message: 'Failed to authenticate token.' });
+                return res.json({ successStatus: 2, message: 'Failed to authenticate token.' });
             } else {
                 const sql = `UPDATE users SET user_password='${data.password}' WHERE user_id='${decoded.userId}'`;
                 connection.query(sql, function (err, result) {
-                    if (err) res.status(505).json({ successStatus: 1,  message: 'Failed to update DB' })
+                    if (err) res.status(505).json({ successStatus: 1, message: 'Failed to update DB' })
                     else {
                         //* TODO: remove token form jwt/
                         return res.status(200).json({ successStatus: 0 })

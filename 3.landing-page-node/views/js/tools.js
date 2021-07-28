@@ -91,15 +91,15 @@ function emailValidation() {
 function formValidation(e) {
     const form = document.forms.form;
     e.preventDefault();
-    // nameLengthValidation();
-    // phoneLengthValidation()
-    // emailValidation();
-    // if (Object.keys(fieldStatus).some(key => !fieldStatus[key])) {
-    //     e.preventDefault();
-    // }
+    nameLengthValidation();
+    phoneLengthValidation()
+    emailValidation();
+    if (Object.keys(fieldStatus).some(key => !fieldStatus[key])) {
+        e.preventDefault();
+    }
     axios.post('http://crossfit.com:8004', {
             name: document.getElementById("name").value,
-            phone: document.getElementById("phone").value,
+            phone: document.getElementById("area-code").value + document.getElementById("phone").value,
             email: document.getElementById("email").value,
             gender: form.querySelector('input[name=gender]:checked') != null ? form.querySelector('input[name=gender]:checked').value : '',
             moreInfo: document.getElementById("more-info") != null ? document.getElementById("more-info").value : '',

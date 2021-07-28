@@ -133,7 +133,9 @@
         case "leadDataReq":
           const data = {
             name: document.getElementById("name").value,
-            phone: document.getElementById("phone").value,
+            phone:
+              document.getElementById("area-code").value +
+              document.getElementById("phone").value,
             email: document.getElementById("email").value,
             gender:
               form.querySelector("input[name=gender]:checked") != null
@@ -147,10 +149,12 @@
           };
           document
             .getElementById("chat")
-            .contentWindow.postMessage({ type: "leadData", leadData: data }, "*");
+            .contentWindow.postMessage(
+              { type: "leadData", leadData: data },
+              "*"
+            );
           break;
       }
-      console.log(evt.data.type);
     }
   </script>
   <script src="./js/tools.js"></script>

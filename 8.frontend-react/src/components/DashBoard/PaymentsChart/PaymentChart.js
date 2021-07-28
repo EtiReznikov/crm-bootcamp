@@ -12,9 +12,9 @@ function PaymentChart(props) {
     const [numOfDays, setNumOfDays] = useState(7);
 
     const lastSevenDays = () => {
-        var result = [];
-        for (var i = numOfDays; i >= 0; i--) {
-            var day = new Date();
+        let result = [];
+        for (let i = numOfDays; i >= 0; i--) {
+            let day = new Date();
             day.setDate(day.getDate() - i);
             result.push(dateFormattingDayByMonth(moment(day).format('l')))
         }
@@ -142,7 +142,7 @@ function PaymentChart(props) {
     }
 
     useEffect(async () => {
-        
+
         let days = lastSevenDays();
         setLabels(days);
         let startDate = days[0]
@@ -157,7 +157,7 @@ function PaymentChart(props) {
 
     return (
         <div className="card">
-            <select value={numOfDays} name="days" id="days" onChange={(e)=>{
+            <select value={numOfDays} name="days" id="days" onChange={(e) => {
                 setNumOfDays(e.target.value)
             }}>
                 <option value="7">7 days</option>
@@ -167,7 +167,7 @@ function PaymentChart(props) {
             <div className="chart-title">
                 Revenue from last {numOfDays} days
             </div>
-            
+
             {errorState && <ErrorDashboard></ErrorDashboard>}
             <div className="chart-wrapper">
                 {!errorState &&

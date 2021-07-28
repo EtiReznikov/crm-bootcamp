@@ -1,15 +1,15 @@
 
 const express = require('express');
-var mysql = require('mysql');
-var md5 = require('md5');
+let mysql = require('mysql');
+let md5 = require('md5');
 require('dotenv').config();
-var cors = require('cors');
-var Mailgun = require('mailgun-js');
+let cors = require('cors');
+let Mailgun = require('mailgun-js');
 const validators = require('./tools/validation');
 const jwt = require('jsonwebtoken');
 const app = express();
-app.use(express.static('public'));  
-app.use('/uploads', express.static('uploads')); 
+app.use(express.static('public'));
+app.use('/uploads', express.static('uploads'));
 
 app.use(express.json());
 app.use(cors());
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // DB connection
-var connection = mysql.createConnection({
+let connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
@@ -27,7 +27,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function (err) {
   //* TODO ask Yonatan
-  if (err) throw(err);
+  if (err) throw (err);
 });
 
 
@@ -41,12 +41,12 @@ app.use(function (req, res, next) {
   const authentication = req.body.headers ? req.body.headers.authentication : undefined;
 
   //Paths where JWT not required 
-  if ( req.path === '/Auth/CreateUser' || req.path === 'Password/ResetPasswordReq' || req.path === '/Password/NewPassword'  || req.path === '/Accounts/CreateUserByInvite' || req.path === '/Auth/Login' || req.path === '/Files/addImgToClient' || req.path === '/Accounts/getUsersList' ) {
-    next(); 
+  if (req.path === '/Auth/CreateUser' || req.path === 'Password/ResetPasswordReq' || req.path === '/Password/NewPassword' || req.path === '/Accounts/CreateUserByInvite' || req.path === '/Auth/Login' || req.path === '/Files/addImgToClient' || req.path === '/Accounts/getUsersList') {
+    next();
   }
 
   //If JWT token was sent
-  else if (authentication!== undefined) {
+  else if (authentication !== undefined) {
     jwt.verify(authentication, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
       if (err) {
         // The token doesn't exist in JWT
@@ -56,7 +56,8 @@ app.use(function (req, res, next) {
         const sql = `SELECT user_id FROM users WHERE user_id='${decoded.userId}' AND user_email='${decoded.userEmail}'`
         connection.query(sql, function (err, result) {
           //mysql serer error
-          if (err) res.status(500).json({ status: 10, success: false,
+          if (err) res.status(500).json({
+            status: 10, success: false,
             message: 'server error'
           });
           else if (result.length === 0) {

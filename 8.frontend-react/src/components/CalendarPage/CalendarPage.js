@@ -13,7 +13,7 @@ const localizer = momentLocalizer(moment);
 function CalendarPage(props) {
 
   const eventStyleGetter = function (event, start, end, isSelected) {
-    var style = {
+    let style = {
       backgroundColor: event.color,
       borderRadius: '4px',
       opacity: 0.8,

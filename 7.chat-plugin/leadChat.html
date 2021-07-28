@@ -60,7 +60,7 @@
         messages.innerHTML = "";
         allMsgsHistory = allMsgs;
         allMsgs.forEach((element) => {
-          var item = document.createElement("li");
+          let item = document.createElement("li");
           item.textContent =
             (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
           messages.appendChild(item);
@@ -72,7 +72,7 @@
         messages.innerHTML = "";
         allMsgsHistory = allMsgs;
         allMsgs.forEach((element) => {
-          var item = document.createElement("li");
+          let item = document.createElement("li");
           item.textContent =
             (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
           messages.appendChild(item);
@@ -103,6 +103,7 @@
       });
 
       socket.on("getLeadData", function (room) {
+        console.log("addlead");
         window.parent.postMessage({ type: "leadDataReq", room: room }, "*");
       });
     </script>

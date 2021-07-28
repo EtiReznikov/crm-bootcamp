@@ -2,19 +2,15 @@ import React, { useEffect, useState, useMemo } from 'react';
 import Table from '../../SubComponents/Table/Table';
 import axios from 'axios';
 import Headline from '../../SubComponents/Headline/Headline';
-import Button from '../../SubComponents/Button/Button';
 import './ClientsPage.scss';
 import Modal from 'react-modal';
 import AddClient from '../AddClient/AddClient';
 import ConfirmModal from '../../SubComponents/ConfirmModal/ConfirmModal';
 import ErrorComponent from '../../SubComponents/ErrorComponenet/ErrorComponent';
 import FileUploadModal from '../../FileUploadModal/FileUploadModal';
-// import AddPersonalTraining from '../../PersonalTrainings/AddPersonalTraining/AddPersonalTraining';
 import Avatar from 'react-avatar';
 import StoreWrapper from '../../store/StoreWrapper/StoreWrapper';
-import img from '../../../Views/logo.png'
 import PaymentHistory from '../../store/PaymentHistory/PaymentHostory';
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 function Clients(props) {
 
     const [modalIsOpenAddClient, setIsOpenAddClientModal] = useState(false);

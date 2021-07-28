@@ -31,8 +31,8 @@ class Map extends Component {
                         mapTypeId: window.google.maps.MapTypeId.ROADMAP
                     });
 
-                    var marker, i;
-                    var infowindow = new window.google.maps.InfoWindow;
+                    let marker, i;
+                    let infowindow = new window.google.maps.InfoWindow;
                     for (i = 0; i < this.locations.length; i++) {
                         marker = new window.google.maps.Marker({
                             icon: {

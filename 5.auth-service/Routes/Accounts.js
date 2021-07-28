@@ -1,13 +1,13 @@
 const express = require('express');
-var Mailgun = require('mailgun-js');
-var md5 = require('md5');
+let Mailgun = require('mailgun-js');
+let md5 = require('md5');
 const validators = require('../tools/validation');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-var mysql = require('mysql');
+let mysql = require('mysql');
 
 // DB connection
-var connection = mysql.createConnection({
+let connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
@@ -36,7 +36,7 @@ router.post('/addUser', function (req, res) {
                 if (err) {
                     return res.status(500).json({ status: 2, message: 'Failed to authenticate token.' });
                 } else {
-                    var mailGun = new Mailgun({
+                    let mailGun = new Mailgun({
                         apiKey: process.env.MAILGUN_KEY,
                         domain: process.env.MAILGUN_ADMIN
                     });
@@ -87,7 +87,7 @@ router.post('/CreateUserByInvite', function (req, res) {
                     const userId = result.insertId;
                     const token = jwt.sign({ userId: userId, userEmail: decoded.userEmail, businessId: decoded.businessId, name: name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 86400 });
 
-                    var mailGun = new Mailgun({
+                    let mailGun = new Mailgun({
                         apiKey: process.env.MAILGUN_KEY,
                         domain: process.env.MAILGUN_ADMIN
                     });
@@ -115,7 +115,7 @@ router.post('/removeUser', function (req, res) {
     const sql = `DELETE FROM users WHERE user_id='${userId}'`
     connection.query(sql, function (err, result) {
         if (err) res.status(500).json({
-            status : 2,
+            status: 2,
             message: 'server error'
         });
         else {
@@ -130,7 +130,7 @@ router.post('/getUsersList', function (req, res) {
     const sql = `SELECT user_name, user_phone,  permission_id, user_email, user_id FROM users WHERE gym_id= '${businessId}'`
     connection.query(sql, function (err, result) {
         if (err) res.status(500).json({
-            status : 2,
+            status: 2,
             message: 'server error'
         });
         else {

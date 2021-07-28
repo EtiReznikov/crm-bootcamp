@@ -3,8 +3,8 @@ const fieldStatus = {
     phone: true,
     email: true
 }
-var mysql = require('mysql');
-var connection = mysql.createConnection({
+let mysql = require('mysql');
+let connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
@@ -18,7 +18,7 @@ connection.connect(function (err) {
 
 const express = require('express');
 const app = express();
-var cors = require('cors')
+let cors = require('cors')
 
 const bodyParser = require('body-parser')
 app.use(express.json());
@@ -54,6 +54,7 @@ app.post('/', function (req, res) {
     let moreInfo = req.body.moreInfo;
     const updatesConfirm = req.body.updatesConfirm
     let flag;
+    console.log(phone)
     nameValidation(name)
     phoneValidation(phone);
     emailValidation(email);
@@ -111,7 +112,7 @@ function nameValidation(name) {
  */
 function phoneValidation(phoneNumber) {
     const isOnlyDigit = /^\d+$/.test(phoneNumber);
-    if (phoneNumber.length != 7) {
+    if (phoneNumber.length != 10) {
         fieldStatus.phone = false;
     } else if (isOnlyDigit) {
         fieldStatus.phone = true;

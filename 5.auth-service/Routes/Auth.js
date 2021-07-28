@@ -1,15 +1,15 @@
 
 const express = require('express');
-var Mailgun = require('mailgun-js');
-var md5 = require('md5');
+let Mailgun = require('mailgun-js');
+let md5 = require('md5');
 require('dotenv').config();
 const validators = require('../tools/validation');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-var mysql = require('mysql');
+let mysql = require('mysql');
 // DB connection
-var connection = mysql.createConnection({
+let connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,

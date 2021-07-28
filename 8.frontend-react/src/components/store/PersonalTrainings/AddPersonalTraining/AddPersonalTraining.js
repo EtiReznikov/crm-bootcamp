@@ -114,7 +114,7 @@ function AddPersonalTraining(props) {
     }
 
     const hourUp = () => {
-        var hh = parseInt(formState.hours);
+        let hh = parseInt(formState.hours);
         if (hh === 23) hh = 0;
         else hh++;
         if (0 <= hh && hh <= 9)
@@ -126,7 +126,7 @@ function AddPersonalTraining(props) {
     }
 
     const hourDown = () => {
-        var hh = parseInt(formState.hours);
+        let hh = parseInt(formState.hours);
         if (hh === 0) hh = 23;
         else hh--;
         if (0 <= hh && hh <= 9)
@@ -138,7 +138,7 @@ function AddPersonalTraining(props) {
     }
 
     const minutesUp = () => {
-        var mm = parseInt(formState.minutes);
+        let mm = parseInt(formState.minutes);
         if (mm === 59) mm = 0;
         else mm++;
         if (0 <= mm && mm <= 9)
@@ -150,7 +150,7 @@ function AddPersonalTraining(props) {
     }
 
     const minutesDown = () => {
-        var mm = parseInt(formState.minutes);
+        let mm = parseInt(formState.minutes);
         if (mm === 0) mm = 59;
         else mm--;
         if (0 <= mm && mm <= 9)

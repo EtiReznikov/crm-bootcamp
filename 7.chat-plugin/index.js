@@ -1,5 +1,5 @@
 const express = require('express');
-var cors = require('cors')
+let cors = require('cors')
 const app = express();
 app.use(cors());
 const http = require('http');
@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
         if (isFromLead) {
             io.sockets.to('crm').emit('disconnected', _room);
         }
-       
+
 
         // let crmRooms = io.sockets.adapter.rooms.get('crm')
         // console.log(crmRooms)

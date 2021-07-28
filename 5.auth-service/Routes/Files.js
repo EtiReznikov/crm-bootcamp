@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-var multer = require('multer');
-var mysql = require('mysql');
+let multer = require('multer');
+let mysql = require('mysql');
 const path = require('path');
 
 // DB connection
-var connection = mysql.createConnection({
+let connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
@@ -19,7 +19,7 @@ connection.connect(function (err) {
 
 // const DIR = '/public/uploads/';
 
-var storage = multer.diskStorage({
+let storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/uploads')
     },
@@ -28,7 +28,7 @@ var storage = multer.diskStorage({
     }
 })
 
-var upload = multer({
+let upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
         if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
@@ -45,9 +45,9 @@ router.post('/addImgToClient', function (req, res) {
     upload(req, res, function (err) {
         console.log(err)
         if (err instanceof multer.MulterError) {
-            return res.status(500).json({status: 3 , err} )
+            return res.status(500).json({ status: 3, err })
         } else if (err) {
-            return res.status(500).json({status: 2 ,err})
+            return res.status(500).json({ status: 2, err })
         }
         // return res.status(200).send(req.file)
         else {
