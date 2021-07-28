@@ -126,10 +126,36 @@
       </div>
     </div>
   </body>
+  <script>
+    window.addEventListener("message", receiveMessage, false);
+    function receiveMessage(evt) {
+      switch (evt.data.type) {
+        case "leadDataReq":
+          const data = {
+            name: document.getElementById("name").value,
+            phone: document.getElementById("phone").value,
+            email: document.getElementById("email").value,
+            gender:
+              form.querySelector("input[name=gender]:checked") != null
+                ? form.querySelector("input[name=gender]:checked").value
+                : "",
+            moreInfo:
+              document.getElementById("more-info") != null
+                ? document.getElementById("more-info").value
+                : "",
+            updatesConfirm: document.getElementById("email-permission").checked,
+          };
+          document
+            .getElementById("chat")
+            .contentWindow.postMessage({ type: "leadData", leadData: data }, "*");
+          break;
+      }
+      console.log(evt.data.type);
+    }
+  </script>
   <script src="./js/tools.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-  </script>
+  <script></script>
 
   <script></script>
 </html>
