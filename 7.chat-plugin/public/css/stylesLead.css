@@ -13,6 +13,8 @@ body {
   display: flex;
   height: 3rem;
   box-sizing: border-box;
+  z-index: 100000;
+  position: relative;
 }
 #input {
   border: none;
@@ -38,11 +40,28 @@ body {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  height: 285px;
+  overflow-y: scroll;
+}
+
+#FromBot,
+#FromMe,
+#time {
+  font-size: 14px;
+}
+
+#msgFromBot,
+#msgFromMe {
+  font-size: 16px;
 }
 
 #messages > li {
   background: #ffffff;
   padding: 0.5rem 1rem;
+  border-radius: 20px;
+  width: 87%;
+  border: 1px solid;
+  border-color: #efefef;
 }
 
 #messages > li:nth-child(odd) {

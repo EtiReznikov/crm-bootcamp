@@ -11,7 +11,6 @@
     <div id="chat-wrapper">
       <button id="addLead" onclick="addLead()">
         <i class="fa fa-user-plus"></i>
-        <!-- <span>add lead </span> -->
       </button>
       <ul id="messages"></ul>
       <div id="fallback"></div>
@@ -26,9 +25,9 @@
       const url = new URL(url_string);
       let room = url.searchParams.get("room");
       let socket = io();
-      socket.emit("create", "crm", false);
-      if (room) socket.emit("create", room, false);
-      else socket.emit("create", "crm", false);
+      socket.emit("create", "crm", false, false);
+      if (room) socket.emit("create", room, false, false);
+      else socket.emit("create", "crm", false, false);
       let allRooms = ["crm"];
       let messages = document.getElementById("messages");
       let form = document.getElementById("form");
@@ -55,7 +54,6 @@
         messages.innerHTML = "";
         allMsgsHistory = allMsgs;
         allMsgs.forEach((element) => {
-          console.log(element);
           let item = document.createElement("li");
           let messageContact = document.createElement("div");
           let time = document.createElement("div");
@@ -115,6 +113,7 @@
 
       socket.on("disconnected", function (room) {
         if (room !== "crm" && room.substring(0, 4) === "room") {
+          console.log("disconnected");
           window.parent.postMessage({ type: "disconnected", room: room }, "*");
         }
       });

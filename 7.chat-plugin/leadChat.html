@@ -25,13 +25,13 @@
     <script>
       const socket = io();
       let room = localStorage.getItem("chatRoom");
+      const isFromLead = true;
       if (room) {
-        socket.emit("create", room, false);
+        socket.emit("create", room, isFromLead, false);
       } else {
-        console.log(room);
         room = "room" + Date.now() + Math.random();
         localStorage.setItem("chatRoom", room);
-        socket.emit("create", room, true);
+        socket.emit("create", room, isFromLead, true);
       }
 
       let messages = document.getElementById("messages");
@@ -60,11 +60,24 @@
         allMsgs.forEach((element) => {
           console.log(element);
           let item = document.createElement("li");
+          let messageSender = document.createElement("div");
           let messageContact = document.createElement("div");
           let time = document.createElement("div");
-          messageContact.textContent =
-            (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
+          messageContact.textContent = element.msg;
+          messageSender.textContent = element.isFromCrm
+            ? "Crossfit REL: "
+            : "You: ";
+          messageSender.setAttribute(
+            "id",
+            element.isFromCrm ? "FromBot" : "FromMe"
+          );
+          messageContact.setAttribute(
+            "id",
+            element.isFromCrm ? "msgFromBot" : "msgFromMe"
+          );
           time.textContent = element.time;
+          time.setAttribute("id", "time");
+          item.appendChild(messageSender);
           item.appendChild(messageContact);
           item.appendChild(time);
           messages.appendChild(item);
@@ -113,7 +126,6 @@
       });
 
       socket.on("getLeadData", function (room) {
-        console.log("addlead");
         window.parent.postMessage({ type: "leadDataReq", room: room }, "*");
       });
     </script>

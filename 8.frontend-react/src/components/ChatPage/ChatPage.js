@@ -44,15 +44,18 @@ function ChatPage(props) {
     function receiveMessage(evt) {
         switch (evt.data.type) {
             case 'newRoom':
+                //getAllConnections();
                 setAllConnections(allConnections =>
                     new Set(allConnections).add(evt.data.room));
                 break;
             case 'disconnected':
+                //  getAllConnections();
                 setAllConnections(allConnections => {
                     const temp = new Set(allConnections);
                     temp.delete(evt.data.room)
                     return temp;
-                });
+                }
+                );
                 break;
             case 'newLead':
                 setLeadData(evt.data.leadData.data)

@@ -37,20 +37,31 @@ app.get('/allConnections', (req, res) => {
     res.send(result)
 })
 
+const newMessage = (msg, allMsgs, crmMessage) => {
+    _room = msg.room;
+    const time = new Date().toLocaleString("he-IL")
+    allMsgs.push({ msg: msg.msgValue, isFromCrm: crmMessage, time: time })
+    io.sockets.in(msg.room).emit('chat message', msg, allMsgs);
+    DB.addToDB({
+        room: msg.room,
+        isFromCrm: crmMessage,
+        msgData: msg.msgValue
+    });
+}
 
 io.on('connection', (socket) => {
     let _room = socket.id;
-    let isFromLead;
-    socket.on('create', async function (room, flag) {
-        isFromLead = flag;
+    let FromLead;
+    socket.on('create', async function (room, isFromLead, isFirstConnect) {
         _room = room;
+        FromLead = isFromLead;
         let allMsgs = await DB.getMessageByRoom(room);
         let msg = {
             room: room,
             from: "crm",
             msgValue: "Hi! would you like to ",
         }
-        if (flag) {
+        if (isFromLead && isFirstConnect) {
             const time = new Date().toLocaleString("he-IL")
             allMsgs.push({ msg: msg.msgValue, isFromCrm: true, time: time })
             socket.emit("server message", msg, allMsgs);
@@ -67,8 +78,8 @@ io.on('connection', (socket) => {
         io.sockets.to('crm').emit('new room', room);
     });
 
-    socket.on('disconnect', function (reason) {
-        if (isFromLead) {
+    socket.on('disconnect', function () {
+        if (FromLead) {
             io.sockets.to('crm').emit('disconnected', _room);
         }
     });
@@ -78,27 +89,29 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat message', (msg, allMsgs) => {
-        _room = msg.room;
-        const time = new Date().toLocaleString("he-IL")
-        allMsgs.push({ msg: msg.msgValue, isFromCrm: false, time: time })
-        io.sockets.in(msg.room).emit('chat message', msg, allMsgs);
-        DB.addToDB({
-            room: msg.room,
-            isFromCrm: false,
-            msgData: msg.msgValue
-        });
+        newMessage(msg, allMsgs, false);
+        // _room = msg.room;
+        // const time = new Date().toLocaleString("he-IL")
+        // allMsgs.push({ msg: msg.msgValue, isFromCrm: false, time: time })
+        // io.sockets.in(msg.room).emit('chat message', msg, allMsgs);
+        // DB.addToDB({
+        //     room: msg.room,
+        //     isFromCrm: false,
+        //     msgData: msg.msgValue
+        // });
     });
 
     socket.on('server message', (msg, allMsgs) => {
-        _room = msg.room;
-        const time = new Date().toLocaleString("he-IL")
-        allMsgs.push({ msg: msg.msgValue, isFromCrm: false, time: time })
-        io.sockets.in(msg.room).emit('server message', msg, allMsgs);
-        DB.addToDB({
-            room: msg.room,
-            isFromCrm: true,
-            msgData: msg.msgValue
-        });
+        newMessage(msg, allMsgs, true);
+        // _room = msg.room;
+        // const time = new Date().toLocaleString("he-IL")
+        // allMsgs.push({ msg: msg.msgValue, isFromCrm: false, time: time })
+        // io.sockets.in(msg.room).emit('server message', msg, allMsgs);
+        // DB.addToDB({
+        //     room: msg.room,
+        //     isFromCrm: true,
+        //     msgData: msg.msgValue
+        // });
     });
 
     socket.on('addLead', leadData => {
