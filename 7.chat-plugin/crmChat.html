@@ -51,6 +51,24 @@
         }
       });
 
+      const newMessageArrived = (msg, allMsgs) => {
+        messages.innerHTML = "";
+        allMsgsHistory = allMsgs;
+        allMsgs.forEach((element) => {
+          console.log(element);
+          let item = document.createElement("li");
+          let messageContact = document.createElement("div");
+          let time = document.createElement("div");
+          messageContact.textContent =
+            (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
+          time.textContent = element.time;
+          item.appendChild(messageContact);
+          item.appendChild(time);
+          messages.appendChild(item);
+        });
+        window.scrollTo(0, document.body.scrollHeight);
+      };
+
       socket.on("new room", function (room) {
         if (room !== "crm" && room.substring(0, 4) === "room") {
           window.parent.postMessage({ type: "newRoom", room: room }, "*");
@@ -64,27 +82,11 @@
       });
 
       socket.on("server message", function (msg, allMsgs) {
-        messages.innerHTML = "";
-        allMsgsHistory = allMsgs;
-        allMsgs.forEach((element) => {
-          let item = document.createElement("li");
-          item.textContent =
-            (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
-          messages.appendChild(item);
-        });
-        window.scrollTo(0, document.body.scrollHeight);
+        newMessageArrived(msg, allMsgs);
       });
 
       socket.on("chat message", function (msg, allMsgs) {
-        messages.innerHTML = "";
-        allMsgsHistory = allMsgs;
-        allMsgs.forEach((element) => {
-          let item = document.createElement("li");
-          item.textContent =
-            (!element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
-          messages.appendChild(item);
-        });
-        window.scrollTo(0, document.body.scrollHeight);
+        newMessageArrived(msg, allMsgs);
       });
 
       input.addEventListener("keyup", (e) => {
@@ -108,7 +110,6 @@
       });
 
       socket.on("leadData", function (leadData) {
-        console.log("leadData");
         window.parent.postMessage({ type: "newLead", leadData: leadData }, "*");
       });
 

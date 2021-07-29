@@ -54,7 +54,6 @@ app.post('/', function (req, res) {
     let moreInfo = req.body.moreInfo;
     const updatesConfirm = req.body.updatesConfirm
     let flag;
-    console.log(phone)
     nameValidation(name)
     phoneValidation(phone);
     emailValidation(email);

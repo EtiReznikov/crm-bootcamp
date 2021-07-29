@@ -55,7 +55,6 @@ body {
   left: 0;
   right: 0;
   height: 100%;
-  display: block;
   border: 1px solid;
   border-radius: 5px;
 }

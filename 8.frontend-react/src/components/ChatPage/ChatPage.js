@@ -12,6 +12,7 @@ function ChatPage(props) {
     const [iframe, setIframe] = useState(null);
     const [leadData, setLeadData] = useState({});
     const [modalIsOpenAddLead, setIsOpenAddLeadModal] = useState(false);
+    const [oldChats, setOldChats] = useState(() => new Set());
 
     const chatURL = 'http://localhost:9034/crmChat'
     const columns = useMemo(() => [

@@ -37,14 +37,6 @@ app.get('/allConnections', (req, res) => {
     res.send(result)
 })
 
-// app.get('/crmSocketId', (req, res) => {
-//     io.sockets.adapter.rooms.forEach((value, key) => {
-//         if (JSON.stringify(key) === '"crm"') {
-//             res.send(Array.from(value))
-//         }
-//     })
-// })
-
 
 io.on('connection', (socket) => {
     let _room = socket.id;
@@ -59,7 +51,8 @@ io.on('connection', (socket) => {
             msgValue: "Hi! would you like to ",
         }
         if (flag) {
-            allMsgs.push({ msg: msg.msgValue, isFromCrm: true })
+            const time = new Date().toLocaleString("he-IL")
+            allMsgs.push({ msg: msg.msgValue, isFromCrm: true, time: time })
             socket.emit("server message", msg, allMsgs);
             DB.addToDB({
                 room: room,
@@ -78,15 +71,6 @@ io.on('connection', (socket) => {
         if (isFromLead) {
             io.sockets.to('crm').emit('disconnected', _room);
         }
-
-
-        // let crmRooms = io.sockets.adapter.rooms.get('crm')
-        // console.log(crmRooms)
-        // if (crmRooms){
-        //     console.log(socket.id)
-        //     console.log(crmRooms.has(socket.id))
-        // }
-        // io.sockets.to('crm').emit('disconnected', _room);
     });
 
     socket.on('addLeadReq', function (room) {
@@ -95,7 +79,8 @@ io.on('connection', (socket) => {
 
     socket.on('chat message', (msg, allMsgs) => {
         _room = msg.room;
-        allMsgs.push({ msg: msg.msgValue, isFromCrm: false })
+        const time = new Date().toLocaleString("he-IL")
+        allMsgs.push({ msg: msg.msgValue, isFromCrm: false, time: time })
         io.sockets.in(msg.room).emit('chat message', msg, allMsgs);
         DB.addToDB({
             room: msg.room,
@@ -106,7 +91,8 @@ io.on('connection', (socket) => {
 
     socket.on('server message', (msg, allMsgs) => {
         _room = msg.room;
-        allMsgs.push({ msg: msg.msgValue, isFromCrm: false })
+        const time = new Date().toLocaleString("he-IL")
+        allMsgs.push({ msg: msg.msgValue, isFromCrm: false, time: time })
         io.sockets.in(msg.room).emit('server message', msg, allMsgs);
         DB.addToDB({
             room: msg.room,

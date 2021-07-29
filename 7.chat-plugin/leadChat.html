@@ -24,8 +24,16 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
-      const room = "room" + Date.now() + Math.random();
-      socket.emit("create", room, true);
+      let room = localStorage.getItem("chatRoom");
+      if (room) {
+        socket.emit("create", room, false);
+      } else {
+        console.log(room);
+        room = "room" + Date.now() + Math.random();
+        localStorage.setItem("chatRoom", room);
+        socket.emit("create", room, true);
+      }
+
       let messages = document.getElementById("messages");
       let form = document.getElementById("form");
       let input = document.getElementById("input");
@@ -46,6 +54,24 @@
         }
       });
 
+      const newMessageArrived = (msg, allMsgs) => {
+        messages.innerHTML = "";
+        allMsgsHistory = allMsgs;
+        allMsgs.forEach((element) => {
+          console.log(element);
+          let item = document.createElement("li");
+          let messageContact = document.createElement("div");
+          let time = document.createElement("div");
+          messageContact.textContent =
+            (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
+          time.textContent = element.time;
+          item.appendChild(messageContact);
+          item.appendChild(time);
+          messages.appendChild(item);
+        });
+        window.scrollTo(0, document.body.scrollHeight);
+      };
+
       input.addEventListener("keyup", (e) => {
         e.preventDefault();
         socket.emit("typing", {
@@ -57,27 +83,11 @@
       });
 
       socket.on("chat message", function (msg, allMsgs) {
-        messages.innerHTML = "";
-        allMsgsHistory = allMsgs;
-        allMsgs.forEach((element) => {
-          let item = document.createElement("li");
-          item.textContent =
-            (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
-          messages.appendChild(item);
-        });
-        window.scrollTo(0, document.body.scrollHeight);
+        newMessageArrived(msg, allMsgs);
       });
 
       socket.on("server message", function (msg, allMsgs) {
-        messages.innerHTML = "";
-        allMsgsHistory = allMsgs;
-        allMsgs.forEach((element) => {
-          let item = document.createElement("li");
-          item.textContent =
-            (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
-          messages.appendChild(item);
-        });
-        window.scrollTo(0, document.body.scrollHeight);
+        newMessageArrived(msg, allMsgs);
       });
 
       socket.on("typing", function (data) {
@@ -115,12 +125,10 @@
         .querySelector("#exit-button")
         .addEventListener("click", closeChat);
       function openChat() {
-        console.log("open form");
         document.querySelector("#chat-button").style.display = "none";
         document.querySelector("#chat-wrapper").style.display = "block";
       }
       function closeChat() {
-        console.log("open form");
         document.querySelector("#chat-button").style.display = "block";
         document.querySelector("#chat-wrapper").style.display = "none";
       }
