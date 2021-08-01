@@ -80,8 +80,6 @@ function AddPersonalTraining(props) {
             totalPrice: formState.price,
             transaction: details.id,
             createTime: details.create_time
-
-
         })
             .then(function (response) {
                 if (response.data === true) {

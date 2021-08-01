@@ -34,20 +34,22 @@ class Map extends Component {
                     let marker, i;
                     let infowindow = new window.google.maps.InfoWindow;
                     for (i = 0; i < this.locations.length; i++) {
-                        marker = new window.google.maps.Marker({
-                            icon: {
-                                path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
-                                fillColor: this.locations[i].color,
-                                fillOpacity: 0.99,
-                                strokeWeight: 1,
-                                rotation: 0,
-                                scale: 1
-                            },
-                            position: new window.google.maps.LatLng(this.locations[i].location.latLng.lat, this.locations[i].location.latLng.lng),
-                            map: this.map,
-                            title: this.locations[i].title
+                        if (this.locations[i].location.latLng) {
+                            marker = new window.google.maps.Marker({
+                                icon: {
+                                    path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+                                    fillColor: this.locations[i].color,
+                                    fillOpacity: 0.99,
+                                    strokeWeight: 1,
+                                    rotation: 0,
+                                    scale: 1
+                                },
 
-                        });
+                                position: new window.google.maps.LatLng(this.locations[i].location.latLng.lat, this.locations[i].location.latLng.lng),
+                                map: this.map,
+                                title: this.locations[i].title
+                            });
+                        }
 
                         window.google.maps.event.addListener(marker, 'click', (function (marker, i) {
                             return function () {
@@ -60,7 +62,8 @@ class Map extends Component {
 
                 })
                 .catch(function (error) {
-                    this.errorState = true
+                    console.log(error)
+                    // this.errorState = true;
                 })
         }
     }

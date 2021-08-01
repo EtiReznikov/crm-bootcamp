@@ -85,7 +85,6 @@ function ChatPage(props) {
                     }
                     dataMsgs.push(temp)
                 }
-
                 setAllChatMessages(dataMsgs)
             })
             .catch(function (error) {
@@ -195,7 +194,7 @@ function ChatPage(props) {
                 <iframe id="chat-iframe" src={iframe}></iframe>
             </div>
 
-            {/* <div id="btn-head-wrapper">
+            <div id="btn-head-wrapper">
                 <Headline id="chat-page-head" text="Chats History" />
             </div>
             <div id="chat-table-wrapper">
@@ -203,35 +202,32 @@ function ChatPage(props) {
                     <Table columns={columnsOldChats} data={oldChatsData} isPagination={true} isSort={true} />
                 </div>
                 <div id="chat-history">
-                    <div>Chat History</div>
                     <div id="chat-wrapper-history">
-                        <ul id="messages-history">
+                        <ul id="messages">
                             {
-                                console.log(allChatMessages) &&
                                 allChatMessages.map(
-                                    (day, key) =>
-                                        <div>test</div>
-                                            // console.log(element, key) &&
-                                            // <li key={element.time}>
-                                            //     <div id={element.isFromCrm ? "FromCrm" : "FromLead"} >
-                                            //         {element.isFromCrm ? "You: " : "Lead: "}
-                                            //     </div>
-                                            //     <div id={element.isFromCrm ? "msgFromCrm" : "msgFromLead"}>
-                                            //         {element.msg}
-                                            //     </div>
-                                            //     <div id="time">
-                                            //         {element.time}
-                                            //     </div>
-                                            // </li>
-                                        
-                                    
-                            )
+                                    (element, key) => {
+                                        return (
+                                            <li key={element.time}>
+                                                <div id={element.isFromCrm ? "FromCrm" : "FromLead"} >
+                                                    {element.isFromCrm ? "You: " : "Lead: "}
+                                                </div>
+                                                <div id={element.isFromCrm ? "msgFromCrm" : "msgFromLead"}>
+                                                    {element.msg}
+                                                </div>
+                                                <div id="time">
+                                                    {element.time}
+                                                </div>
+                                            </li>
+                                        );
+                                    }
+                                )
                             }
                         </ul>
                         <div id="fallback"></div>
                     </div>
                 </div >
-            </div> */}
+            </div>
             <Modal
                 isOpen={modalIsOpenAddLead}
                 onRequestClose={closeModalAddLead}

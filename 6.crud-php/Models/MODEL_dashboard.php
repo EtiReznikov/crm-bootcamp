@@ -130,15 +130,6 @@ class Model_dashboard extends Model
     {
         $businessId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $businessId);
         $count = $this->getDB()
-            // ->query("SELECT  packages.package_id, packages.package_name,  
-            // COUNT(package_client.id)*100/total.total_count AS percent FROM package_client
-            // JOIN packages ON package_client.package_id = packages.package_id
-            // CROSS JOIN (SELECT 
-            // COUNT(package_client.id) AS total_count FROM package_client
-            // JOIN packages ON package_client.package_id = packages.package_id
-            // WHERE packages.gym_id = '1') as total
-            //             WHERE packages.gym_id = $businessId
-            // GROUP BY packages.package_id;")
             ->query("SELECT packages.package_id, packages.package_name, 
             COUNT(package_client.id) AS count FROM package_client
             JOIN packages ON package_client.package_id = packages.package_id

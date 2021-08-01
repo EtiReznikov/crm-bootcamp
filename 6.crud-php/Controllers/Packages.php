@@ -36,9 +36,6 @@ class packages extends controller
     }
 
     public function editPackageData(){
-        // $clientId = $this->data->clientId;
-        // $clientName = $this->data->clientName;
-        // $clientPhone= $this->data->clientPhone;
         $packageId = $this->data->packageId;
         $name = $this->data->name;
         $price = $this->data->price;
@@ -51,14 +48,12 @@ class packages extends controller
         else{
             throw new Exception('DB error');
         }
-         //*TODO add validation
     }
 
     public function removePackage(){
         $packageId=$this->data->packageId;
         $removePackage = $this->model->removePackageById($packageId);
         return $removePackage;
-        //*TODO add validation
         if ($removePackage){
             return true;
         }

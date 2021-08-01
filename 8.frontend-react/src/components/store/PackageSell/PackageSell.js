@@ -98,16 +98,8 @@ function PackageSell(props) {
                 setErrorMsg(true);
                 console.log(error)
             });
-
-        // }
-
-        // e.preventDefault();
     }
 
-
-    const onError = () => {
-
-    }
 
     return (
         <div className="form_container" id="personal-training-form">

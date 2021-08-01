@@ -134,7 +134,6 @@ function AddPackage(props) {
                         else {
                             setErrorMsg(true);
                             setBtnActive(true);
-                            //             setErrorMsg(true);
                         }
                     })
                         .catch(function (error) {

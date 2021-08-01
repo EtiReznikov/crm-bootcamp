@@ -3,9 +3,10 @@ body {
     Arial, sans-serif;
 }
 #fallback {
+  margin-top: -40px;
   position: fixed;
-  bottom: -70px;
 }
+
 #form {
   background: rgba(0, 0, 0, 0.15);
   padding: 0.25rem;

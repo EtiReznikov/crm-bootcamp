@@ -3,8 +3,8 @@ body {
     Arial, sans-serif;
 }
 #fallback {
+  margin-top: -40px;
   position: fixed;
-  bottom: -70px;
 }
 
 #form {
