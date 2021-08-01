@@ -1,6 +1,7 @@
 #chats-page {
   align-items: center;
-  .chat-link, .add-lead-button {
+  .chat-link,
+  .add-lead-button {
     padding: 2px;
     margin: 0;
     background: none;
@@ -9,7 +10,8 @@
   }
 
   /*a link when the user mouses over it*/
-  .chat-link:hover, .add-lead-button:hover {
+  .chat-link:hover,
+  .add-lead-button:hover {
     color: #000000;
   }
 
@@ -17,17 +19,22 @@
     margin-top: 20px;
     border: none;
     height: 350px;
+    z-index: 100000;
   }
 
   #chat-table-wrapper {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    height: 30%;
+    width: 800px;
   }
   #table-wrapper {
     width: 70%;
   }
-  #chat-iframe-loader{
+  #chat-iframe-loader {
     display: none;
   }
+}
+#chat-history {
 }

@@ -2,6 +2,10 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
 }
+#fallback {
+  position: fixed;
+  bottom: -70px;
+}
 
 #form {
   background: rgba(0, 0, 0, 0.15);
@@ -45,9 +49,11 @@ body {
 }
 
 #FromBot,
-#FromMe,
-#time {
+#FromMe {
   font-size: 14px;
+}
+#time {
+  font-size: 12px;
 }
 
 #msgFromBot,

@@ -82,18 +82,19 @@ function SideBar(props) {
                 Packages
                 <Link to="/packages" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/users'} icon={<RiUserSettingsLine />}>
-                Users
-                <Link to="/users" />
+              <MenuItem active={location.pathname === '/leads'} icon={<HiUserGroup />}>
+                Leads
+                <Link to="/leads" />
               </MenuItem>
               <MenuItem active={location.pathname === '/chats'} icon={<BiChat />}>
                 Chats
                 <Link to="/chats" />
               </MenuItem>
-              <MenuItem active={location.pathname === '/leads'} icon={<HiUserGroup />}>
-                Leads
-                <Link to="/leads" />
+              <MenuItem active={location.pathname === '/users'} icon={<RiUserSettingsLine />}>
+                Users
+                <Link to="/users" />
               </MenuItem>
+
             </Menu>
           </SidebarContent>
           <SidebarFooter>

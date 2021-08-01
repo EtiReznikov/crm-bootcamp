@@ -26,13 +26,17 @@
       const socket = io();
       let room = localStorage.getItem("chatRoom");
       const isFromLead = true;
+      let userFirstMessage = true;
       if (room) {
         socket.emit("create", room, isFromLead, false);
+        userFirstMessage = false;
       } else {
         room = "room" + Date.now() + Math.random();
         localStorage.setItem("chatRoom", room);
         socket.emit("create", room, isFromLead, true);
+        userFirstMessage = true;
       }
+    
 
       let messages = document.getElementById("messages");
       let form = document.getElementById("form");
@@ -47,6 +51,7 @@
               room: room,
               from: "lead",
               msgValue: input.value,
+              userFirstMessage: userFirstMessage,
             },
             allMsgsHistory
           );
@@ -58,7 +63,6 @@
         messages.innerHTML = "";
         allMsgsHistory = allMsgs;
         allMsgs.forEach((element) => {
-          console.log(element);
           let item = document.createElement("li");
           let messageSender = document.createElement("div");
           let messageContact = document.createElement("div");
@@ -82,7 +86,6 @@
           item.appendChild(time);
           messages.appendChild(item);
         });
-        window.scrollTo(0, document.body.scrollHeight);
       };
 
       input.addEventListener("keyup", (e) => {
@@ -125,8 +128,11 @@
         fallback.innerHTML = `<p>Crossfit REL is typing...</p>`;
       });
 
-      socket.on("getLeadData", function (room) {
-        window.parent.postMessage({ type: "leadDataReq", room: room }, "*");
+      socket.on("getLeadData", function (room, isNewLead) {
+        window.parent.postMessage(
+          { type: "leadDataReq", room: room, isNewLead: isNewLead },
+          "*"
+        );
       });
     </script>
     <script>
@@ -153,6 +159,7 @@
             socket.emit("addLead", {
               room: room,
               data: evt.data.leadData,
+              isNewLead: evt.data.isNewLead,
             });
             break;
         }

@@ -9,7 +9,10 @@
   </head>
   <body>
     <div id="chat-wrapper">
-      <button id="addLead" onclick="addLead()">
+      <button id="addLead" onclick="addLeadOrUser(true)">
+        <i class="fa fa-address-book"></i>
+      </button>
+      <button id="addLead" onclick="addLeadOrUser(false)">
         <i class="fa fa-user-plus"></i>
       </button>
       <ul id="messages"></ul>
@@ -18,7 +21,6 @@
         <input id="input" autocomplete="off" /><button>Send</button>
       </form>
     </div>
-
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const url_string = window.location.href;
@@ -55,16 +57,26 @@
         allMsgsHistory = allMsgs;
         allMsgs.forEach((element) => {
           let item = document.createElement("li");
+          let messageSender = document.createElement("div");
           let messageContact = document.createElement("div");
           let time = document.createElement("div");
-          messageContact.textContent =
-            (element.isFromCrm ? "Crossfit REL: " : "You: ") + element.msg;
+          messageContact.textContent = element.msg;
+          messageSender.textContent = element.isFromCrm ? "You: " : "Lead: ";
+          messageSender.setAttribute(
+            "id",
+            element.isFromCrm ? "FromCrm" : "FromLead"
+          );
+          messageContact.setAttribute(
+            "id",
+            element.isFromCrm ? "msgFromCrm" : "msgFromLead"
+          );
           time.textContent = element.time;
+          time.setAttribute("id", "time");
+          item.appendChild(messageSender);
           item.appendChild(messageContact);
           item.appendChild(time);
           messages.appendChild(item);
         });
-        window.scrollTo(0, document.body.scrollHeight);
       };
 
       socket.on("new room", function (room) {
@@ -108,19 +120,28 @@
       });
 
       socket.on("leadData", function (leadData) {
-        window.parent.postMessage({ type: "newLead", leadData: leadData }, "*");
+        if (leadData.isNewLead)
+          window.parent.postMessage(
+            { type: "newLead", leadData: leadData },
+            "*"
+          );
+        else
+          window.parent.postMessage(
+            { type: "newUser", leadData: leadData },
+            "*"
+          );
       });
 
       socket.on("disconnected", function (room) {
         if (room !== "crm" && room.substring(0, 4) === "room") {
-          console.log("disconnected");
           window.parent.postMessage({ type: "disconnected", room: room }, "*");
         }
       });
     </script>
+    <script src="./controllers/chat.js"></script>
     <script>
-      function addLead() {
-        socket.emit("addLeadReq", room);
+      function addLeadOrUser(isNewLead) {
+        socket.emit("addLeadOrUserReq", room, isNewLead);
       }
     </script>
   </body>

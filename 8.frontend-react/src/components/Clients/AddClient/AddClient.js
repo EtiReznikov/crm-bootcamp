@@ -9,8 +9,8 @@ import Loader from "react-loader-spinner";
 import { phoneValidation, nameValidation, phoneLengthValidation, nameLengthValidation } from '../../../tools/validation';
 function AddClient(props) {
     const [formState, setState] = useState({
-        name: props.isEdit ? props.clientData.client_name : "",
-        phone: props.isEdit ? props.clientData.client_phone : "",
+        name: props.isEdit ? props.clientData.client_name : (props.isFromLandingPage ? props.clientData.name : ""),
+        phone: props.isEdit ? props.clientData.client_phone : (props.isFromLandingPage ? (props.clientData.phone === '050' ? "" : props.clientData.phone) : ""),
         nameValid: 0,
         phoneValid: 0,
         selectedPackage: [],
@@ -19,7 +19,7 @@ function AddClient(props) {
     const [errorMsg, setErrorMsg] = useState(false);
     const [data, setData] = useState([]);
     const [btnActive, setBtnActive] = useState(true);
-  
+
 
 
 
@@ -102,14 +102,14 @@ function AddClient(props) {
                     });
             }
         }
-        else{
+        else {
             setBtnActive(true);
         }
         e.preventDefault();
     }
 
 
-    
+
     return (
         <div className="form_wrapper">
 
@@ -169,7 +169,7 @@ function AddClient(props) {
                         (formState.phoneValid === 1 && <ErrorMsg text="Phone number can only contain digits" />) ||
                         (formState.phoneValid === 2 && <ErrorMsg text="Phone number should exactly 10 digits" />)
                     }
-                 
+
                     {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
                         onClick={(e) => {
                             setBtnActive(false);

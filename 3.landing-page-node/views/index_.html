@@ -147,12 +147,14 @@
                 : "",
             updatesConfirm: document.getElementById("email-permission").checked,
           };
-          document
-            .getElementById("chat")
-            .contentWindow.postMessage(
-              { type: "leadData", leadData: data },
-              "*"
-            );
+          document.getElementById("chat").contentWindow.postMessage(
+            {
+              type: "leadData",
+              leadData: data,
+              isNewLead: evt.data.isNewLead,
+            },
+            "*"
+          );
           break;
       }
     }
