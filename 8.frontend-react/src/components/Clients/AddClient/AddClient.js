@@ -21,28 +21,27 @@ function AddClient(props) {
     const [btnActive, setBtnActive] = useState(true);
 
 
-
-
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://localhost:991/packages/getPackages/', {
-                business_id: localStorage.getItem('business_id'),
+    async function addClient() {
+        axios.post('http://localhost:991/packages/getPackages/', {
+            business_id: localStorage.getItem('business_id'),
+        })
+            .then((response) => {
+                let data = []
+                for (const packageValue of response.data) {
+                    data.push({
+                        value: packageValue.package_id,
+                        label: packageValue.package_name,
+                    })
+                }
+                setData(data);
             })
-                .then((response) => {
-                    let data = []
-                    for (const packageValue of response.data) {
-                        data.push({
-                            value: packageValue.package_id,
-                            label: packageValue.package_name,
-                        })
-                    }
-                    setData(data);
-                })
-                .catch(function (error) {
+            .catch(function (error) {
 
-                });
+            });
+    }
 
-        })();
+    useEffect(async () => {
+        await addClient();
     }, []);
 
     /* when add user button is submitted*/

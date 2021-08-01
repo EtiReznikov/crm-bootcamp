@@ -24,28 +24,29 @@ function PackageSell(props) {
     const [dateDiff, setDateDiff] = useState(diffDate(startDate, endDate))
     const [errorDate, setErrorDate] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
-   
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://localhost:991/packages/getPackages/', {
-                business_id: localStorage.getItem('business_id'),
-            })
-                .then((response) => {
-                    let data = []
-                    for (const packageValue of response.data) {
-                        data.push({
-                            value: packageValue.package_id,
-                            label: packageValue.package_name,
-                            price: packageValue.price
-                        })
-                    }
-                    setData(data);
-                })
-                .catch(function (error) {
 
-                });
-        })();
-    },[]);
+    async function getPackages() {
+        axios.post('http://localhost:991/packages/getPackages/', {
+            business_id: localStorage.getItem('business_id'),
+        })
+            .then((response) => {
+                let data = []
+                for (const packageValue of response.data) {
+                    data.push({
+                        value: packageValue.package_id,
+                        label: packageValue.package_name,
+                        price: packageValue.price
+                    })
+                }
+                setData(data);
+            })
+            .catch(function (error) {
+
+            });
+    }
+    useEffect(async () => {
+        await getPackages();
+    }, []);
 
 
 
@@ -125,11 +126,11 @@ function PackageSell(props) {
                     <label className="classes-picker">
                         Pick start Date:
                     </label>
-                    
+
                     <div id="date-time-wrapper">
                         <DatePicker style={{ "z-index": 100000 }} popperModifiers={{
-                            name : "style",
-                            options : {"z-index": 100000}
+                            name: "style",
+                            options: { "z-index": 100000 }
 
                         }} dateFormat="dd-MM-yyyy" selected={startDate} onChange={(startDate) => {
                             setErrorDate(false)
@@ -165,7 +166,7 @@ function PackageSell(props) {
 
         </div>
     )
-} 
+}
 
 export default PackageSell;
 

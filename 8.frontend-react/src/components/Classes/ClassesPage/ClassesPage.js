@@ -45,7 +45,7 @@ function Classes(props) {
             Header: 'Time',
             accessor: "time"
         },
-       
+
         {
             Header: 'Update & Delete',
             width: '1em',
@@ -113,48 +113,50 @@ function Classes(props) {
             });
     };
 
+    async function getClasses() {
+        axios.post('http://localhost:991/classes/getClassesWithTrainer/', {
+            business_id: localStorage.getItem('business_id'),
+        })
+            .then((response) => {
+                if (response.data === "")
+                    setData([]);
 
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://localhost:991/classes/getClassesWithTrainer/', {
-                business_id: localStorage.getItem('business_id'),
-            })
-                .then((response) => {
-                    if (response.data === "")
-                        setData([]);
+                else if (Array.isArray(response.data)) {
 
-                    else if (Array.isArray(response.data)) {
-
-                        setError(false)
-                        let data = []
-                        for (const classValue of response.data) {
-                            let obj = JSON.parse(classValue.days_and_time)
-                            let days = obj.days.join(', ')
-                            let address = JSON.parse(classValue.location).address
-                            let temp = {
-                                class_id: classValue.class_id,
-                                class_name: classValue.class_name,
-                                description: classValue.description,
-                                gym_id: classValue.gym_id,
-                                color: classValue.color,
-                                days: days,
-                                time: obj.hours + ":" + obj.min,
-                                location: classValue.location,
-                                address: address,
-                                trainer: classValue.user_name
-                            }
-                            data.push(temp)
+                    setError(false)
+                    let data = []
+                    for (const classValue of response.data) {
+                        let obj = JSON.parse(classValue.days_and_time)
+                        let days = obj.days.join(', ')
+                        let address = JSON.parse(classValue.location).address
+                        let temp = {
+                            class_id: classValue.class_id,
+                            class_name: classValue.class_name,
+                            description: classValue.description,
+                            gym_id: classValue.gym_id,
+                            color: classValue.color,
+                            days: days,
+                            time: obj.hours + ":" + obj.min,
+                            location: classValue.location,
+                            address: address,
+                            trainer: classValue.user_name
                         }
-                        setData(data);
+                        data.push(temp)
                     }
-                    else {
-                        setError(true);
-                    }
-                })
-                .catch(function (error) {
+                    setData(data);
+                }
+                else {
                     setError(true);
-                });
-        })();
+                }
+            })
+            .catch(function (error) {
+                setError(true);
+            });
+
+    }
+
+    useEffect(async () => {
+        getClasses();
     }, [dataHasChanged]);
 
     const OnAddClassClick = () => {
@@ -173,7 +175,7 @@ function Classes(props) {
                         </button>
                     </div>
                     <div id="table-wrapper">
-                        <Table columns={columns} data={data} isPagination={true} isSort={true}/>
+                        <Table columns={columns} data={data} isPagination={true} isSort={true} />
                     </div>
                     <Modal
                         isOpen={modalIsOpenAddClass}

@@ -17,7 +17,7 @@ function Clients(props) {
     const [modalIsOpenRemoveClient, setIsOpenRemoveClientModal] = useState(false);
     const [modalIsOpenAddImg, setIsOpenAddImgModal] = useState(false);
     const [modalIsOpenStore, setIsOpenStoreModal] = useState(false);
-    const [modalIsOpenPaymentHistory,  setIsOpenPaymentHistoryModal] =useState (false)
+    const [modalIsOpenPaymentHistory, setIsOpenPaymentHistoryModal] = useState(false)
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -69,7 +69,7 @@ function Clients(props) {
                 <div id="row-button-wrapper">
                     <button className="row-button" onClick={() => {
                         setRow(row.original);
-                        openModalStore ();
+                        openModalStore();
                     }}>
                         {<i className="fa fa-cart-plus"></i>}
                     </button>
@@ -81,7 +81,7 @@ function Clients(props) {
                 <div id="row-button-wrapper">
                     <button className="row-button" onClick={() => {
                         setRow(row.original);
-                        openModalPaymentHistory ();
+                        openModalPaymentHistory();
                     }}>
                         {<i className="fa fa-clipboard"></i>}
                     </button>
@@ -118,7 +118,7 @@ function Clients(props) {
         setIsOpenAddImgModal(false);
     }
 
-    const openModalStore= () => {
+    const openModalStore = () => {
         setIsOpenStoreModal(true);
     }
 
@@ -127,50 +127,52 @@ function Clients(props) {
     }
 
 
-    const openModalPaymentHistory= () => {
+    const openModalPaymentHistory = () => {
         setIsOpenPaymentHistoryModal(true);
     }
 
-    const closeModalPaymentHistory= () => {
+    const closeModalPaymentHistory = () => {
         setIsOpenPaymentHistoryModal(false);
     }
 
-    useEffect(() => {
+    async function getClients() {
         let data = [];
-        (async () => {
-            await axios.post('http://localhost:991/clients/getClients/', {
-                business_id: localStorage.getItem('business_id'),
-            })
-                .then((response) => {
-                    if (response.data === "")
-                        setData([]);
-                    else if (Array.isArray(response.data)) {
+        axios.post('http://localhost:991/clients/getClients/', {
+            business_id: localStorage.getItem('business_id'),
+        })
+            .then((response) => {
+                if (response.data === "")
+                    setData([]);
+                else if (Array.isArray(response.data)) {
 
-                        for (const clientValue of response.data) {
-                            let temp = {
-                                client_id: clientValue.client_id,
-                                client_name:clientValue.client_name,
-                                client_name_avatar: <div id="avatar-wrapper">
-                                    <Avatar className="avatar" name={clientValue.client_name} src={'http://localhost:8005/uploads/' + clientValue.file} size="60" round={true} />
-                                    <div id="name-row">{clientValue.client_name}</div>
-                                </div>,
-                                gym_id: clientValue.gym_id,
-                                client_phone: clientValue.client_phone,
-                            }
-                            data.push(temp)
+                    for (const clientValue of response.data) {
+                        let temp = {
+                            client_id: clientValue.client_id,
+                            client_name: clientValue.client_name,
+                            client_name_avatar: <div id="avatar-wrapper">
+                                <Avatar className="avatar" name={clientValue.client_name} src={'http://localhost:8005/uploads/' + clientValue.file} size="60" round={true} />
+                                <div id="name-row">{clientValue.client_name}</div>
+                            </div>,
+                            gym_id: clientValue.gym_id,
+                            client_phone: clientValue.client_phone,
                         }
-                        setError(false);
-                        setData(data);
+                        data.push(temp)
+                    }
+                    setError(false);
+                    setData(data);
 
-                    }
-                    else {
-                        setError(true);
-                    }
-                })
-                .catch(function (error) {
+                }
+                else {
                     setError(true);
-                });
-        })();
+                }
+            })
+            .catch(function (error) {
+                setError(true);
+            });
+    }
+
+    useEffect(async () => {
+        await getClients();
     }, [dataHasChanged]);
 
 
@@ -211,10 +213,10 @@ function Clients(props) {
                             Add Client
                         </button>
                     </div>
-              
+
                     <div id="table-wrapper">
 
-                        <Table columns={columns} data={data}  isPagination={true} isSort={true}/>
+                        <Table columns={columns} data={data} isPagination={true} isSort={true} />
                     </div>
                     <Modal
                         isOpen={modalIsOpenAddClient}
@@ -250,7 +252,7 @@ function Clients(props) {
                         className="modal"
                         ariaHideApp={false}
                     >
-                        <StoreWrapper closeModal={closeModalStore} clientData={row} changeDataState={changeDataState}/>
+                        <StoreWrapper closeModal={closeModalStore} clientData={row} changeDataState={changeDataState} />
                     </Modal>
                     <Modal
                         isOpen={modalIsOpenPaymentHistory}
@@ -259,7 +261,7 @@ function Clients(props) {
                         className="modal"
                         ariaHideApp={false}
                     >
-                        <PaymentHistory  closeModal={closeModalPaymentHistory} clientData={row} />
+                        <PaymentHistory closeModal={closeModalPaymentHistory} clientData={row} />
                     </Modal>
                 </>
             }

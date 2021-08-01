@@ -23,38 +23,40 @@ function PaymentHistory(props) {
         },
     ]
 
-    useEffect(() => {
+    async function getPaymentsByClient() {
         let data = [];
-        (async () => {
-            await axios.post('http://localhost:991/payments/getPaymentsByClient/', {
-                clientId: props.clientData.client_id
-            })
-                .then((response) => {
+        axios.post('http://localhost:991/payments/getPaymentsByClient/', {
+            clientId: props.clientData.client_id
+        })
+            .then((response) => {
 
-                    if (response.data === "")
-                        setData([]);
-                    else if (Array.isArray(response.data)) {
-                        for (const paymentValue of response.data) {
-                            let startDate = moment(paymentValue.start_date).format("DD/MM/YY");
-                            let endDate = moment(paymentValue.end_date).format("DD/MM/YY");
-                            let temp = {
-                                type: paymentValue.type === 'package' ? `Package | ${paymentValue.name} | ${startDate}-${endDate} ` : `Personal Training | ${paymentValue.name} |  ${startDate}`,
-                                price: paymentValue.price,
-                                payment_date: paymentValue.date
-                            }
-                            data.push(temp)
+                if (response.data === "")
+                    setData([]);
+                else if (Array.isArray(response.data)) {
+                    for (const paymentValue of response.data) {
+                        let startDate = moment(paymentValue.start_date).format("DD/MM/YY");
+                        let endDate = moment(paymentValue.end_date).format("DD/MM/YY");
+                        let temp = {
+                            type: paymentValue.type === 'package' ? `Package | ${paymentValue.name} | ${startDate}-${endDate} ` : `Personal Training | ${paymentValue.name} |  ${startDate}`,
+                            price: paymentValue.price,
+                            payment_date: paymentValue.date
                         }
-                        setError(false);
-                        setData(data);
+                        data.push(temp)
                     }
-                    else {
-                        setError(true);
-                    }
-                })
-                .catch(function (error) {
+                    setError(false);
+                    setData(data);
+                }
+                else {
                     setError(true);
-                });
-        })();
+                }
+            })
+            .catch(function (error) {
+                setError(true);
+            });
+    }
+
+    useEffect(async () => {
+        await getPaymentsByClient()
     }, []);
 
     return (

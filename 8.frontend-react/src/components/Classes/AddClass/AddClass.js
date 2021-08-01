@@ -47,47 +47,53 @@ function AddClass(props) {
     const [trainers, setTrainers] = useState([]);
     const [errorTrainer, setErrorTrainer] = useState(false);
 
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
-                businessId: localStorage.getItem('business_id'),
+
+    async function getUsersList() {
+        axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
+            businessId: localStorage.getItem('business_id'),
+        })
+            .then((response) => {
+                let data = []
+                for (const userValue of response.data) {
+                    if (userValue.permission_id === 1)
+                        data.push({
+                            value: userValue.user_id,
+                            label: userValue.user_name,
+                        })
+                }
+                setTrainers(data);
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+    }
+
+    async function getTrainerOfClass() {
+        if (props.isEdit) {
+            await axios.post('http://localhost:991/classes/getTrainerOfClass/', {
+                classId: props.classData.class_id,
             })
                 .then((response) => {
-                    let data = []
-                    for (const userValue of response.data) {
-                        if (userValue.permission_id === 1)
-                            data.push({
-                                value: userValue.user_id,
-                                label: userValue.user_name,
-                            })
+                    let trainer = []
+                    for (const trainerValue of response.data) {
+                        trainer.push({
+                            value: trainerValue.user_id,
+                            label: trainerValue.user_name,
+                        })
                     }
-                    setTrainers(data);
+                    setState({
+                        ...formState,
+                        selectedTrainer: trainer
+                    })
                 })
                 .catch(function (error) {
-
+                    console.log(error)
                 });
-            if (props.isEdit) {
-                await axios.post('http://localhost:991/classes/getTrainerOfClass/', {
-                    classId: props.classData.class_id,
-                })
-                    .then((response) => {
-                        let trainer = []
-                        for (const trainerValue of response.data) {
-                            trainer.push({
-                                value: trainerValue.user_id,
-                                label: trainerValue.user_name,
-                            })
-                        }
-                        setState({
-                            ...formState,
-                            selectedTrainer: trainer
-                        })
-                    })
-                    .catch(function (error) {
-
-                    });
-            }
-        })();
+        }
+    };
+    useEffect(async () => {
+        await getUsersList();
+        await getTrainerOfClass();
     }, []);
 
 
@@ -118,7 +124,7 @@ function AddClass(props) {
                         classDescription: formState.classDescription,
                         color: formState.classColor,
                         classId: props.classData.class_id,
-                        trainer: formState.selectedTrainer[0].value,
+                        trainer: formState.selectedTrainer.value,
                         dayAndTime: JSON.stringify({
                             hours: formState.hours,
                             min: formState.minutes,
@@ -367,7 +373,7 @@ function AddClass(props) {
                                                     handleCheckClick(e, { day })
                                                 }}
                                             />
-                                            <label htmlFor={`weekday-'${day}'`}>
+                                            <label htmlFor={`weekday-'${day}'`} id={`weekday-'${day}'-label`}  >
                                                 {day.charAt(0).toUpperCase()}
                                             </label>
                                         </>

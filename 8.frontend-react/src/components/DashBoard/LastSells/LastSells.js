@@ -57,8 +57,6 @@ function LastSells(props) {
 
     useEffect(async () => {
         const totalPayment = await getLastSells();
-        // setDataset([totalPayment, packagesPayment, personalTrainingsPayments])
-        // setDataset ([personalTrainingsPayments, packagesPayment])
     }, [])
 
 

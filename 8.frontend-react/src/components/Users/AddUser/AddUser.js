@@ -36,13 +36,15 @@ function AddUser(props) {
                 token: localStorage.getItem('user_token'),
                 headers: { authentication: localStorage.getItem('user_token') }
             }).then(function (response) {
+                console.log(response)
                 setState({
                     ...formState,
                     successStatus: response.data.status
                 })
-                props.changeDataState();
+                setBtnActive(true);
             })
                 .catch(function (error) {
+                    console.log(error)
                     setState({
                         ...formState,
                         successStatus: error.response.data.status
@@ -104,7 +106,7 @@ function AddUser(props) {
                     {/* <input className="button" type="submit" value="Submit" onClick={addUser} /> */}
                 </form>
             </div>
-            {formState.successStatus === 0 && <Text text="Your employee will get an invitation soon."/> }
+            {formState.successStatus === 0 && <Text text="Your employee will get an invitation soon." />}
 
             {formState.successStatus === 10 && <Redirect to={{
                 pathname: "/msgPage",

@@ -54,40 +54,42 @@ function Users(props) {
     ], []
     )
 
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
-                businessId: localStorage.getItem('business_id'),
-                headers: {
-                    authentication: {
-                        token: localStorage.getItem('user_token'),
+    async function getUsers() {
+        axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
+            businessId: localStorage.getItem('business_id'),
+            headers: {
+                authentication: {
+                    token: localStorage.getItem('user_token'),
 
-                    }
                 }
+            }
+        })
+            .then((response) => {
+                let data = []
+                for (const userValue of response.data) {
+                    let temp = {
+                        user_name: userValue.user_name,
+                        user_phone: userValue.user_phone,
+                        permission_id: userValue.permission_id === 0 ? 'Manager' : 'Trainer',
+                        user_email: userValue.user_email,
+                        user_id: userValue.user_id
+                    }
+                    data.push(temp)
+                }
+                setData(data);
             })
-                .then((response) => {
-                    let data = []
-                    for (const userValue of response.data) {
-                        let temp = {
-                            user_name: userValue.user_name,
-                            user_phone: userValue.user_phone,
-                            permission_id: userValue.permission_id === 0 ? 'Manager' : 'Trainer',
-                            user_email: userValue.user_email,
-                            user_id: userValue.user_id
-                        }
-                        data.push(temp)
-                    }
-                    setData(data);
-                })
-                .catch(function (error) {
+            .catch(function (error) {
 
-                    if (error.response.data.status === 10) {
-                        localStorage.removeItem('user_token');
-                        localStorage.removeItem('business_id');
-                    }
-                    setSuccessStatus(error.response.data.status);
-                });
-        })();
+                if (error.response.data.status === 10) {
+                    localStorage.removeItem('user_token');
+                    localStorage.removeItem('business_id');
+                }
+                setSuccessStatus(error.response.data.status);
+            });
+    }
+
+    useEffect(async () => {
+        await getUsers();
     }, [dataHasChanged]);
 
     function changeDataState() {
@@ -117,9 +119,9 @@ function Users(props) {
             token: localStorage.getItem('user_token'),
             headers: { authentication: localStorage.getItem('user_token') }
         }).then(function (response) {
-                setErrorDelete(false);
-                closeModalRemoveUser();
-                changeDataState();
+            setErrorDelete(false);
+            closeModalRemoveUser();
+            changeDataState();
         })
 
             .catch(function (error) {
@@ -142,7 +144,7 @@ function Users(props) {
 
             <div id="table-wrapper">
 
-                <Table columns={columns} data={data}  isPagination={true} isSort={true}/>
+                <Table columns={columns} data={data} isPagination={true} isSort={true} />
                 {/* {addUser && <Redirect to="/addUser" />} */}
                 {successStatus === 10 && <Redirect to={{
                     pathname: "/msgPage",

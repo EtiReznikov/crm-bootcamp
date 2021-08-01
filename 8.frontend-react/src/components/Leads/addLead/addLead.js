@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ErrorMsg from '../../SubComponents/ErrorMsg/ErrorMsg';
 import '../../../Views/Form.scss';
 import './addLead.scss'

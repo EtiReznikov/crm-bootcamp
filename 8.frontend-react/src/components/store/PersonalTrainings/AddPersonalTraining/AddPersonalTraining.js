@@ -28,26 +28,28 @@ function AddPersonalTraining(props) {
     const [btnActive, setBtnActive] = useState(true);
     const [errorTrainer, setErrorTrainer] = useState(false);
     const [errorClient, setErrorClient] = useState(false);
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
-                businessId: localStorage.getItem('business_id'),
-            })
-                .then((response) => {
-                    let data = []
-                    for (const userValue of response.data) {
-                        if (userValue.permission_id === 1)
-                            data.push({
-                                value: userValue.user_id,
-                                label: userValue.user_name,
-                            })
-                    }
-                    setData(data);
-                })
-                .catch(function (error) {
 
-                });
-        })();
+    async function getUsers() {
+        await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
+            businessId: localStorage.getItem('business_id'),
+        })
+            .then((response) => {
+                let data = []
+                for (const userValue of response.data) {
+                    if (userValue.permission_id === 1)
+                        data.push({
+                            value: userValue.user_id,
+                            label: userValue.user_name,
+                        })
+                }
+                setData(data);
+            })
+            .catch(function (error) {
+
+            });
+    }
+    useEffect(async () => {
+        await getUsers();
     }, []);
 
 
