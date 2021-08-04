@@ -22,7 +22,7 @@ import {
 import LoginWrapper from './components/authentication/LoginWrapper/LoginWrapper'
 import { useState, useEffect } from 'react';
 import CalendarPage from './components/CalendarPage/CalendarPage';
-
+import { listenToEvent, listenToEvents } from './EventsTracker/eventTracker'
 
 function App(props) {
   const [userState, setState] = useState(localStorage.getItem('user_token'));
@@ -39,6 +39,7 @@ function App(props) {
   }
 
   useEffect((props) => {
+    listenToEvents(window)
     const pathArray = window.location.pathname.split('/');
     const path = pathArray[1];
     if (!userState && (path !== 'forgotPassword' && path !== 'resetPassword' && path !== 'loginSignup' && path !== 'inviteUser')) {

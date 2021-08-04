@@ -34,7 +34,7 @@ function FileUploadModal(props) {
                 }
             };
             // data.append('client_id', props.clientData.client_id)
-            axios.post('http://crossfit.com:8005/Files/addImgToClient', data, config, {
+            axios.post('http://localhost:8005/Files/addImgToClient', data, config, {
                 clientId: props.clientData.clientId
             }
             ).then(function (response) {

@@ -49,7 +49,7 @@ function AddClass(props) {
 
 
     async function getUsersList() {
-        axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
+        axios.post('http://localhost:8005/Accounts/getUsersList', {
             businessId: localStorage.getItem('business_id'),
         })
             .then((response) => {

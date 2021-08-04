@@ -97,15 +97,15 @@ function formValidation(e) {
     if (Object.keys(fieldStatus).some(key => !fieldStatus[key])) {
         e.preventDefault();
     }
-    axios.post('http://crossfit.com:8004', {
-            name: document.getElementById("name").value,
-            phone: document.getElementById("area-code").value + document.getElementById("phone").value,
-            email: document.getElementById("email").value,
-            gender: form.querySelector('input[name=gender]:checked') != null ? form.querySelector('input[name=gender]:checked').value : '',
-            moreInfo: document.getElementById("more-info") != null ? document.getElementById("more-info").value : '',
-            updatesConfirm: document.getElementById("email-permission").checked
-        })
-        .then(function(response) {
+    axios.post('http://localhost:8004', {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("area-code").value + document.getElementById("phone").value,
+        email: document.getElementById("email").value,
+        gender: form.querySelector('input[name=gender]:checked') != null ? form.querySelector('input[name=gender]:checked').value : '',
+        moreInfo: document.getElementById("more-info") != null ? document.getElementById("more-info").value : '',
+        updatesConfirm: document.getElementById("email-permission").checked
+    })
+        .then(function (response) {
             console.log(response)
             if (!response.data.flag) {
                 console.log("error");
@@ -117,7 +117,7 @@ function formValidation(e) {
                 console.log(response);
             }
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log(error);
         });
 }

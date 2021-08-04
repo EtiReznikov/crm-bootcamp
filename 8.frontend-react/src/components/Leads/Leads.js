@@ -55,7 +55,7 @@ function Leads(props) {
 
     const getLeads = () => {
         return new Promise(resolve => {
-            axios.post('http://crossfit.com:8004/leads', "", {
+            axios.post('http://localhost:8004/leads', "", {
                 business_id: localStorage.getItem('business_id'),
             })
                 .then((response) => {
@@ -67,11 +67,10 @@ function Leads(props) {
                             email: leadsValue.email,
                             gender: leadsValue.gender === 'f' ? <i id="gender-icon" className="fa fa-female"></i> : <i id="gender-icon" className="fa fa-male"></i>,
                             more_info: leadsValue.more_info,
-                            update_confirm: leadsValue.update_confirm === 't' ? <i id="confirm-msg-icon" className="fa fa-check"></i> :  <i id="confirm-msg-icon" className="fa fa-times"></i> 
+                            update_confirm: leadsValue.update_confirm === 't' ? <i id="confirm-msg-icon" className="fa fa-check"></i> : <i id="confirm-msg-icon" className="fa fa-times"></i>
                         }
                         data.push(temp)
                     }
-                    console.log(data)
                     setData(data);
                     resolve(data);
                 })

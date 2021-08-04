@@ -95,7 +95,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat message', (msg, allMsgs) => {
-        console.log(msg.userFirstMessage)
         newMessage(msg, allMsgs, false);
         if (msg.userFirstMessage && msg.msgValue === '1') {
             serverMsg = {

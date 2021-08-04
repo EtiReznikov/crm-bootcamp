@@ -19,7 +19,7 @@ connection.connect(function (err) {
     if (err) throw (err);
 });
 
-console.log(this.route)
+
 /*
 Post request from reset password page
 */

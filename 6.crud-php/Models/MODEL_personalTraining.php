@@ -41,3 +41,4 @@ class Model_personalTraining extends Model
         return $trainings;
     }
 }
+

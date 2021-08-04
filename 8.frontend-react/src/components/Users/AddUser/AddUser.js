@@ -31,12 +31,11 @@ function AddUser(props) {
         })
         //only if email is valid
         if (emailValid === 0) {
-            axios.post('http://crossfit.com:8005/Accounts/addUser', {
+            axios.post('http://localhost:8005/Accounts/addUser', {
                 email: formState.email,
                 token: localStorage.getItem('user_token'),
                 headers: { authentication: localStorage.getItem('user_token') }
             }).then(function (response) {
-                console.log(response)
                 setState({
                     ...formState,
                     successStatus: response.data.status

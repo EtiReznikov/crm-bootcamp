@@ -25,7 +25,7 @@ function ForgotPassword(props) {
       setBtnActive(true);
     }
     else {
-      axios.post('http://crossfit.com:8005/Password/ResetPasswordReq', {
+      axios.post('http://localhost:8005/Password/ResetPasswordReq', {
         email: formState.email,
       })
         .then(function (response) {

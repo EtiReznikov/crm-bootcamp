@@ -11,7 +11,7 @@ import { phoneValidation, nameValidation, phoneLengthValidation, nameLengthValid
 function AddLead(props) {
     const [formState, setState] = useState({
         name: props.isFromLandingPage ? props.leadData.name : "",
-        phone: props.isFromLandingPage ? (props.leadData.phone === '050' ? "" : props.leadData.phone ) : "",
+        phone: props.isFromLandingPage ? (props.leadData.phone === '050' ? "" : props.leadData.phone) : "",
         email: props.isFromLandingPage ? props.leadData.email : "",
         moreInfo: props.isFromLandingPage ? props.leadData.moreInfo : "",
         gender: props.isFromLandingPage ? props.leadData.gender : "",
@@ -40,7 +40,7 @@ function AddLead(props) {
         })
         setErrorMsg(false);
         if (valid) {
-            axios.post('http://crossfit.com:8004', {
+            axios.post('http://localhost:8004', {
                 name: formState.name,
                 phone: formState.phone,
                 email: formState.email,
@@ -49,7 +49,6 @@ function AddLead(props) {
                 updatesConfirm: formState.updateConfirm
             })
                 .then(function (response) {
-                    console.log(response)
                     if (!response.data.flag) {
                         setErrorMsg(true);
                         setBtnActive(true);

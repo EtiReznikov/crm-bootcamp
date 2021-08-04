@@ -55,7 +55,7 @@ function Users(props) {
     )
 
     async function getUsers() {
-        axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
+        axios.post('http://localhost:8005/Accounts/getUsersList', {
             businessId: localStorage.getItem('business_id'),
             headers: {
                 authentication: {
@@ -114,7 +114,7 @@ function Users(props) {
 
     const DeleteUser = () => {
 
-        axios.post('http://crossfit.com:8005/Accounts/removeUser/', {
+        axios.post('http://localhost:8005/Accounts/removeUser/', {
             userId: row.user_id,
             token: localStorage.getItem('user_token'),
             headers: { authentication: localStorage.getItem('user_token') }

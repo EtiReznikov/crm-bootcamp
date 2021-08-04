@@ -31,7 +31,7 @@ function Login(props) {
       emailValid: valid
     })
     if (valid === 0) {
-      axios.post('http://crossfit.com:8005/Auth/Login', {
+      axios.post('http://localhost:8005/Auth/Login', {
         email: formState.email,
         password: formState.password
       })

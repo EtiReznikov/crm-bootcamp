@@ -40,6 +40,10 @@ body {
   color: #fff;
 }
 
+#exit-button {
+  cursor: pointer;
+}
+
 #messages {
   list-style-type: none;
   margin: 0;

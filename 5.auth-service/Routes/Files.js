@@ -41,9 +41,7 @@ let upload = multer({
 }).single('file');
 
 router.post('/addImgToClient', function (req, res) {
-
     upload(req, res, function (err) {
-        console.log(err)
         if (err instanceof multer.MulterError) {
             return res.status(500).json({ status: 3, err })
         } else if (err) {

@@ -30,7 +30,7 @@ function AddPersonalTraining(props) {
     const [errorClient, setErrorClient] = useState(false);
 
     async function getUsers() {
-        await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
+        await axios.post('http://localhost:8005/Accounts/getUsersList', {
             businessId: localStorage.getItem('business_id'),
         })
             .then((response) => {

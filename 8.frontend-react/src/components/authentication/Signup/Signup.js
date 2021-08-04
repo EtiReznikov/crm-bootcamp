@@ -52,7 +52,7 @@ function Signup(props) {
     const valid = (nameValid === 0 && phoneValid === 0 && emailValid === 0 &&
       (passwordValid === 1 || passwordValid === 2 || passwordValid === 3) && passwordMatchValid === 0 && businessValid)
     if (valid) {
-      axios.post('http://crossfit.com:8005/Auth/CreateUser', {
+      axios.post('http://localhost:8005/Auth/CreateUser', {
         name: formState.name,
         phone: formState.phone,
         email: formState.email,
