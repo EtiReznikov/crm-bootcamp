@@ -1,6 +1,3 @@
-
-
-
 const express = require('express');
 require('dotenv').config();
 let cors = require('cors');
@@ -10,9 +7,34 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
+var redis = require("redis");
+var publisher = redis.createClient();
+
+
+
 const routes = require('./routes')
 app.use('/api/v1', routes)
 
+app.post('/sendEmails', async (req, result) => {
+    req.body.type = "EMAIL"
+    publisher.publish("messages", JSON.stringify(req.body), function () {
+        result.send("sent emails");
+    });
+    // publisher.publish("messages", "test", function () {
+    //     process.exit(0);
+    // });
+});
+
+app.post('/sendSms', async (req, result) => {
+    console.log(req)
+    req.body.type = "SMS"
+    publisher.publish("messages", JSON.stringify(req.body), function () {
+        result.send("sent sms");
+    });
+    // publisher.publish("messageSending", "SMS",  JSON.stringify(req.body), function () {
+    //     result.send("sent sms");
+    // });
+});
 
 app.listen(3030, () => {
     console.log(`Server running at http: //localhost:${3030}/`);

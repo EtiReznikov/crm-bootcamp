@@ -6,7 +6,6 @@ const listenToEvents = (window) => {
     const sendEvents = () => {
         let copyEvents = events.slice();
         events = [];
-        console.log(copyEvents)
         axios.post('http://localhost:3030/api/v1/multipleEvents', {
             events: copyEvents
         })
@@ -21,7 +20,7 @@ const listenToEvents = (window) => {
     const insertAll = () => {
         const interval = setInterval(() => {
             sendEvents();
-        }, 10000);
+        }, 20000);
         return () => clearInterval(interval);
     }
     insertAll();

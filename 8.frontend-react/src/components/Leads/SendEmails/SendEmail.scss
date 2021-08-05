@@ -1,0 +1,15 @@
+@import "../../../Views/colors.scss";
+.exit {
+  background: none;
+  // background-color: black;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+#exit-wind {
+  color: #000000;
+}
+
+#content {
+  height: 120px;
+}

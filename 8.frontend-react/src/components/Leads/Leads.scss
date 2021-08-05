@@ -1,10 +1,26 @@
 @import "../../Views/colors.scss";
-#leads-page{
-    #confirm-msg-icon, #gender-icon{
-        opacity: 0.8;
-        font-size: 25px;
-        padding: 5px;
- }
+#leads-page {
+  #confirm-msg-icon,
+  #gender-icon {
+    opacity: 0.8;
+    font-size: 25px;
+    padding: 5px;
+  }
+  #confirm-msg-icon-green {
+    opacity: 0.8;
+    font-size: 25px;
+    padding: 5px;
+    color: #00ff00;
+  }
+  #confirm-msg-icon-red {
+    opacity: 0.8;
+    font-size: 25px;
+    padding: 5px;
+    color: #ff0033;
+  }
+  #button-wrapper{
+    
+  }
 }
 #table-wrapper {
   display: flex;

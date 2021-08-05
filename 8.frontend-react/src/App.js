@@ -22,9 +22,10 @@ import {
 import LoginWrapper from './components/authentication/LoginWrapper/LoginWrapper'
 import { useState, useEffect } from 'react';
 import CalendarPage from './components/CalendarPage/CalendarPage';
-import { listenToEvent, listenToEvents } from './EventsTracker/eventTracker'
+import {  listenToEvents } from './EventsTracker/eventTracker'
 
 function App(props) {
+
   const [userState, setState] = useState(localStorage.getItem('user_token'));
   //logout the user
   const logout = () => {

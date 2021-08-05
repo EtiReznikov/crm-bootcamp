@@ -1,17 +1,21 @@
+
 var redis = require("redis");
 var subscriber = redis.createClient();
 const { Client } = require('@elastic/elasticsearch')
 const client = new Client({ node: 'http://localhost:9200' })
 
+
+
+
 subscriber.on("message", function (channel, message) {
     let events = JSON.parse(message);
     let eventsArr = []
     for (let event of events) {
-        eventsArr .push(event)
+        eventsArr.push(event)
     }
 
     client.bulk({
-        body:  eventsArr ,
+        body: eventsArr,
     }, function (err, resp, status) {
         if (resp)
             console.log(resp);
@@ -22,3 +26,4 @@ subscriber.on("message", function (channel, message) {
 });
 
 subscriber.subscribe("events");
+
