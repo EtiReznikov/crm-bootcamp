@@ -27,9 +27,6 @@ const client = new Client({ node: 'http://localhost:9200' })
 
 
 io.adapter(redisAdapter({ host: 'localhost', port: 6379 }));
-// subscriber.on("message", function (channel, message) {
-//   console.log("Message: " + message + " on channel: " + channel + " is arrive!");
-// });
 
 subscriber.on("message", function (channel, body) {
   body = JSON.parse(body);

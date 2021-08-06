@@ -15,8 +15,7 @@ let connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
-    //* TODO ask Yonatan
-    if (err) throw (err);
+    if (err) console.log(err)
 });
 
 /**add user to business post request */
@@ -139,5 +138,4 @@ router.post('/getUsersList', function (req, res) {
     });
 });
 
-//TODO: add remove user
 module.exports = router;

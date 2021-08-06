@@ -41,8 +41,6 @@ function SideBar(props) {
       <div id="menu-wrapper">
         <ProSidebar collapsed={menuCollapse}>
           <SidebarHeader>
-            { //TODO: changeLOGO 
-            }
             <div className="logo-text">
               <p>{menuCollapse ?
                 <img id="logo" src={logo} alt="logo" /> :

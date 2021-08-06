@@ -17,8 +17,7 @@ let connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
-  //* TODO ask Yonatan
-  if (err) throw (err);
+  if (err) console.log(err)
 });
 
 /*
@@ -69,7 +68,6 @@ const userMySql = (sql) => {
   });
 }
 router.post('/CreateUser', async (req, result) => {
-  //* TODO async await
   const name = req.body.name;
   const email = req.body.email;
   const phone = req.body.phone;

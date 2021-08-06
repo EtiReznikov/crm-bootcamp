@@ -6,7 +6,6 @@ import Modal from 'react-modal';
 import AddLead from '../Leads/addLead/addLead'
 import './ChatPage.scss'
 import AddClient from '../Clients/AddClient/AddClient'
-import { map } from 'async';
 function ChatPage(props) {
     const [allConnections, setAllConnections] = useState(() => new Set());
     const [activeChatsData, setActiveChatsData] = useState([])
@@ -143,11 +142,14 @@ function ChatPage(props) {
     }, [allChats, oldChatsHasChanged]);
 
 
-    useEffect(async () => {
-        window.addEventListener("message", receiveMessage, false);
-        getAllConnections();
-        let rooms = await getAllRooms();
-        setAllChats(rooms);
+    useEffect(() => {
+        async function fetchData() {
+            window.addEventListener("message", receiveMessage, false);
+            getAllConnections();
+            let rooms = await getAllRooms();
+            setAllChats(rooms);
+        }
+        fetchData();
     }, []);
 
     useEffect(() => {

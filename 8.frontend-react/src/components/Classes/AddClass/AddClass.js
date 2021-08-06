@@ -91,9 +91,12 @@ function AddClass(props) {
                 });
         }
     };
-    useEffect(async () => {
-        await getUsersList();
-        await getTrainerOfClass();
+    useEffect(() => {
+        async function fetchData() {
+            await getUsersList();
+            await getTrainerOfClass();
+        }
+        fetchData();
     }, []);
 
 

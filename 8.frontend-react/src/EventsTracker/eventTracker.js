@@ -1,6 +1,5 @@
 import axios from "axios";
 let events = []
-let messages = [];
 const listenToEvents = (window) => {
 
     const sendEvents = () => {

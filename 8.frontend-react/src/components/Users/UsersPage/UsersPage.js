@@ -125,7 +125,7 @@ function Users(props) {
         })
 
             .catch(function (error) {
-                setErrorDelete(false);
+                setErrorDelete(true);
             });
     };
 

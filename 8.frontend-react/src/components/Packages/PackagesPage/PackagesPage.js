@@ -14,6 +14,7 @@ function PackagesPage(props) {
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+    const [ErrorDelete, setErrorDelete] = useState(false);
     const columns = useMemo(() => [
         {
             Header: "Package Name",
@@ -76,11 +77,10 @@ function PackagesPage(props) {
         }).then(function (response) {
             closeModalRemovePackage();
             changeDataState();
-            //TODO: handle error
         })
 
             .catch(function (error) {
-                console.log(error)
+                setErrorDelete(true);
             });
     };
 
@@ -146,7 +146,7 @@ function PackagesPage(props) {
                         className="modal"
                         ariaHideApp={false}
                     >
-                        <ConfirmModal onConfirm={DeletePackage} onDismiss={closeModalRemovePackage} text={`Are you sure you want to delete ${row.class_name}?`} />
+                        <ConfirmModal onConfirm={DeletePackage} onDismiss={closeModalRemovePackage} errorMsg={ErrorDelete} text={`Are you sure you want to delete ${row.class_name}?`} />
                     </Modal>
                 </>
             }

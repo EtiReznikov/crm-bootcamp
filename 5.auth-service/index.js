@@ -26,8 +26,7 @@ let connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
-  //* TODO ask Yonatan
-  if (err) throw (err);
+  if (err) console.log(err)
 });
 
 
@@ -63,7 +62,6 @@ app.use(function (req, res, next) {
           else if (result.length === 0) {
             //token data mot valid
             return res.status(403).send({
-              //* TODO: remove token form jwt/
               status: 10,
               success: false,
               message: 'token invalid'

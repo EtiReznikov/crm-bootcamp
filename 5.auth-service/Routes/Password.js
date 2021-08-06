@@ -15,8 +15,7 @@ let connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
-    //* TODO ask Yonatan
-    if (err) throw (err);
+    if (err) console.log(err)
 });
 
 
@@ -86,7 +85,6 @@ router.post('/NewPassword', function (req, res) {
                 connection.query(sql, function (err, result) {
                     if (err) res.status(505).json({ successStatus: 1, message: 'Failed to update DB' })
                     else {
-                        //* TODO: remove token form jwt/
                         return res.status(200).json({ successStatus: 0 })
                     }
                 });

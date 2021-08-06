@@ -35,11 +35,14 @@ function CalendarPage(props) {
   const [event, setEvent] = useState("");
   const [slot, setSlot] = useState("");
 
-  useEffect(async () => {
-
-    const classes = await getClasses();
-    const personalTrainings = await getPersonalTrainings();
-  }, [dataHasChanged]);
+  useEffect(
+    () => {
+      async function fetchData() {
+        await getClasses();
+        await getPersonalTrainings();
+      }
+      fetchData();
+    }, [dataHasChanged]);
 
   //get classes dates
   const getClasses = () => {

@@ -42,7 +42,6 @@ class Model_packages extends Model
             ->query("DELETE FROM packages WHERE package_id=$packageId");
         $removePackageClasses  =  $this->getDB()
             ->query("DELETE FROM package_classes WHERE package_id=$packageId");
-        //*TODO remove clients-packages
         return ($removePackage && $removePackageClasses);
     }
 

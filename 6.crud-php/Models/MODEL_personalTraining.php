@@ -30,7 +30,7 @@ class Model_personalTraining extends Model
 
     public function getAllPersonalTrainings($gymId)
     {
-        //* TODO sql injection prevent
+        $gymId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $gymId);
         $trainings = $this->getDB()
             ->query("SELECT clients.client_id, clients.client_name, users.user_id, users.user_name, personal_trainings.date
             FROM  personal_trainings JOIN users ON  users.user_id = personal_trainings.user_id JOIN
@@ -41,4 +41,3 @@ class Model_personalTraining extends Model
         return $trainings;
     }
 }
-

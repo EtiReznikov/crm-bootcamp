@@ -59,7 +59,6 @@ function ResetPassword(props) {
         }
         e.preventDefault();
     }
-    /*TODO: check that link is valid*/
     return (
         <div className="form_wrapper" id="reset-pass-form">
             <div className="form_container">

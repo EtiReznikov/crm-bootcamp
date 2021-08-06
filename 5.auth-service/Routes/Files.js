@@ -13,8 +13,7 @@ let connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
-    //* TODO ask Yonatan
-    if (err) throw (err);
+    if (err) console.log(err)
 });
 
 // const DIR = '/public/uploads/';
