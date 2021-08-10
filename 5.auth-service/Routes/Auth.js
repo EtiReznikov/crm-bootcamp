@@ -129,14 +129,15 @@ router.post('/Login', function (req, res) {
       if (resultSelectPassword[0].user_password === password) {
         const businessId = resultSelectPassword[0].gym_id;
         const name = resultSelectPassword[0].user_name;
+        const userId = resultSelectPassword[0].user_id;
         const token = jwt.sign({ userId: resultSelectPassword[0].user_id, userEmail: email, businessId: resultSelectPassword[0].gym_id, name: resultSelectPassword[0].user_name }, process.env.ACCESS_TOKEN_SECRET);
         status = 2; //log in
-        res.status(200).json({ token, status, message: 'Logged in successfully', businessId, name });
+        res.status(200).json({ token, status, message: 'Logged in successfully', businessId, name , userId});
       }
       else {
         //password incorrect
         status = 0;
-        res.status(409).json({ status, message: 'password incurrent' });
+        res.status(409).json({ status, message: 'password incorrect' });
       }
     }
   });

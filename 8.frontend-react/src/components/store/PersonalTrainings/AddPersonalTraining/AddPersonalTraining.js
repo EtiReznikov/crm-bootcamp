@@ -23,6 +23,7 @@ function AddPersonalTraining(props) {
     }
     );
     const [startDate, setStartDate] = useState(props.fromCalendar ? props.slot.start : new Date());
+    //  const [startDate, setStartDate] = useState(props.fromCalendar ? props.slot.start : new Date().toLocaleString("he-IL"));
     const [errorMsg, setErrorMsg] = useState(false);
     const [data, setData] = useState([]);
     const [btnActive, setBtnActive] = useState(true);
@@ -71,11 +72,12 @@ function AddPersonalTraining(props) {
 
     /* when add user button is submitted*/
     const onSubmit = (details) => {
+        let date = new Date(startDate.setHours(formState.hours, formState.minutes, 0));
         setErrorMsg(false);
         axios.post('http://localhost:991/personalTraining/addPersonalTraining/', {
             userId: formState.selectedTrainers.value,
             clientId: props.fromCalendar ? formState.selectedClient.value : props.clientData.client_id,
-            date: new Date(startDate.setHours(formState.hours, formState.minutes, 0)),
+            date: date,
             business_id: localStorage.getItem('business_id'),
             totalPrice: formState.price,
             transaction: details.id,

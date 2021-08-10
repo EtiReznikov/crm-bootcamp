@@ -10,8 +10,13 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.5",
+    "@react-native-community/datetimepicker": "^3.5.2",
+    "axios": "^0.21.1",
+    "moment": "^2.29.1",
     "react": "17.0.1",
-    "react-native": "0.64.2",
+    "react-native": "^0.64.2",
+    "react-native-date-picker": "^3.3.2",
     "react-native-navigation": "^7.18.1"
   },
   "devDependencies": {
@@ -22,6 +27,7 @@
     "eslint": "7.14.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.64.0",
+    "react-devtools": "^4.14.0",
     "react-test-renderer": "17.0.1"
   },
   "jest": {
