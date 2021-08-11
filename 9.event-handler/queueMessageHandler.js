@@ -6,8 +6,6 @@ const app = express();
 const server = http.createServer(app);
 
 
-
-
 const io = require("socket.io")(4002, {
   cors: {
     origin: [
@@ -76,15 +74,16 @@ async function sendEmail(usersList, subject, message) {
 
 async function sendSms(usersList, content) {
   const twilio = require('twilio');
-  const accountSid = process.env.TWILLLO_SID
-  const authToken = process.env.AUTH_TOKEN
+  const accountSid = process.env.TWILLLO_SID;
+
+  const authToken = process.env.AUTH_TOKEN;
   const twilioClient = new twilio(accountSid, authToken);
   for (user of usersList) {
     await twilioClient.messages
       .create({
         body: content,
         to: '+972' + user.phoneNumber, // Text this number
-        from: '+18185729816', // From a valid Twilio number
+        from: '+12312254892', // From a valid Twilio number
       })
       .then((message) => { io.emit("emailStatus", user.id, true) })
       .catch((error) => {
@@ -92,12 +91,6 @@ async function sendSms(usersList, content) {
         io.emit("emailStatus", user.id, false)
       })
   }
-
-  // let mailGun = new Mailgun({
-  //   apiKey: process.env.MAILGUN_KEY,
-  //   domain: process.env.MAILGUN_ADMIN
-  // });
-
 
 }
 

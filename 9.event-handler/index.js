@@ -20,20 +20,13 @@ app.post('/sendEmails', async (req, result) => {
     publisher.publish("messages", JSON.stringify(req.body), function () {
         result.send("sent emails");
     });
-    // publisher.publish("messages", "test", function () {
-    //     process.exit(0);
-    // });
 });
 
 app.post('/sendSms', async (req, result) => {
-    console.log(req)
     req.body.type = "SMS"
     publisher.publish("messages", JSON.stringify(req.body), function () {
         result.send("sent sms");
     });
-    // publisher.publish("messageSending", "SMS",  JSON.stringify(req.body), function () {
-    //     result.send("sent sms");
-    // });
 });
 
 app.listen(3030, () => {

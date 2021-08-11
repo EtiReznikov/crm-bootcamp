@@ -91,7 +91,6 @@ function Leads(props) {
                 business_id: localStorage.getItem('business_id'),
             })
                 .then((response) => {
-
                     let data = [];
                     let confirmEmails = [];
                     let confirmSms = [];
@@ -139,22 +138,21 @@ function Leads(props) {
         setIsOpenSendSmsModal(false);
     }
 
-
-
     return (
         <div id="leads-page" className="page-wrapper">
             {!errorMsg &&
                 <>
-
                     <div id="btn-head-wrapper">
                         <Headline id="leads-page-head" text="Leads" />
                         <div id="button-wrapper">
                             <button className="add-row" onClick={() => {
+                                setDataHasChanged(!dataHasChanged)
                                 openModalSendEmail();
                             }}>
                                 Send Email
                             </button>
                             <button className="add-row" onClick={() => {
+                                setDataHasChanged(!dataHasChanged)
                                 openModalSendSms();
                             }}>
                                 Send SMS
