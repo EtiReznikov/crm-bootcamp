@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/stylesCrm.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <div id="chat-wrapper">
+      <button id="addLead" onclick="addLeadOrUser(true)">
+        <i class="fa fa-address-book"></i>
+      </button>
+      <button id="addLead" onclick="addLeadOrUser(false)">
+        <i class="fa fa-user-plus"></i>
+      </button>
+      <ul id="messages"></ul>
+      <div id="fallback"></div>
+      <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+      </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const url_string = window.location.href;
+      const url = new URL(url_string);
+      let room = url.searchParams.get("room");
+      let socket = io();
+      socket.emit("create", "crm", false, false);
+      if (room) socket.emit("create", room, false, false);
+      else socket.emit("create", "crm", false, false);
+      let allRooms = ["crm"];
+      let messages = document.getElementById("messages");
+      let form = document.getElementById("form");
+      let input = document.getElementById("input");
+      let allMsgsHistory = [];
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit(
+            "server message",
+            {
+              room: room,
+              from: "crm",
+              msgValue: input.value,
+            },
+            allMsgsHistory
+          );
+          input.value = "";
+        }
+      });
+
+      const newMessageArrived = (msg, allMsgs) => {
+        messages.innerHTML = "";
+        allMsgsHistory = allMsgs;
+        allMsgs.forEach((element) => {
+          let item = document.createElement("li");
+          let messageSender = document.createElement("div");
+          let messageContact = document.createElement("div");
+          let time = document.createElement("div");
+          messageContact.textContent = element.msg;
+          messageSender.textContent = element.isFromCrm ? "You: " : "Lead: ";
+          messageSender.setAttribute(
+            "id",
+            element.isFromCrm ? "FromCrm" : "FromLead"
+          );
+          messageContact.setAttribute(
+            "id",
+            element.isFromCrm ? "msgFromCrm" : "msgFromLead"
+          );
+          time.textContent = element.time;
+          time.setAttribute("id", "time");
+          item.appendChild(messageSender);
+          item.appendChild(messageContact);
+          item.appendChild(time);
+          messages.appendChild(item);
+        });
+      };
+
+      socket.on("new room", function (room) {
+        if (room !== "crm" && room.substring(0, 4) === "room") {
+          window.parent.postMessage({ type: "newRoom", room: room }, "*");
+        }
+
+        if (!allRooms.includes(room)) {
+          room = room;
+          allRooms.push(room);
+          socket.emit("create", room);
+        }
+      });
+
+      socket.on("server message", function (msg, allMsgs) {
+        newMessageArrived(msg, allMsgs);
+      });
+
+      socket.on("chat message", function (msg, allMsgs) {
+        newMessageArrived(msg, allMsgs);
+      });
+
+      input.addEventListener("keyup", (e) => {
+        e.preventDefault();
+        socket.emit("typing", {
+          isServer: true,
+          isTyping: input.value.length > 0,
+          nick: "userName",
+        });
+      });
+
+      socket.on("typing", function (data) {
+        const { isTyping, nick, isServer } = data;
+
+        if (!isTyping || isServer) {
+          fallback.innerHTML = "";
+          return;
+        }
+
+        fallback.innerHTML = `<p>client is typing...</p>`;
+      });
+
+      socket.on("leadData", function (leadData) {
+        if (leadData.isNewLead)
+          window.parent.postMessage(
+            { type: "newLead", leadData: leadData },
+            "*"
+          );
+        else
+          window.parent.postMessage(
+            { type: "newUser", leadData: leadData },
+            "*"
+          );
+      });
+
+      socket.on("disconnected", function (room) {
+        if (room !== "crm" && room.substring(0, 4) === "room") {
+          window.parent.postMessage({ type: "disconnected", room: room }, "*");
+        }
+      });
+    </script>
+    <script src="./controllers/chat.js"></script>
+    <script>
+      function addLeadOrUser(isNewLead) {
+        socket.emit("addLeadOrUserReq", room, isNewLead);
+      }
+    </script>
+  </body>
+</html>

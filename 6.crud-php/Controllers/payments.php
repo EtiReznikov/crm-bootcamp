@@ -10,7 +10,7 @@ class payments extends controller
         parent::__construct();
     }
 
-    //get all classes post request
+    
     public function getPaymentsByClient()
     {
         $clientId = $this->data->clientId;
@@ -18,6 +18,5 @@ class payments extends controller
         $this->response["payments"] = $payments;
         return $payments;
     }
-
-
+   
 }

@@ -7,7 +7,8 @@ import axios from 'axios';
 function AddPersonalTrainerFromCalendar(props) {
     const [paymentSuccess, setPaymentSuccess] = useState(0);
     const [clients, setClients] =  useState([]);
-    useEffect(() => {
+
+    async function getClients(){
         axios.post('http://localhost:991/clients/getClients/', {
             business_id: localStorage.getItem('business_id'),
         })
@@ -32,6 +33,9 @@ function AddPersonalTrainerFromCalendar(props) {
             .catch(function (error) {
                 
             });
+    }
+    useEffect(() => {
+       getClients();
     },[]);
 
     return (

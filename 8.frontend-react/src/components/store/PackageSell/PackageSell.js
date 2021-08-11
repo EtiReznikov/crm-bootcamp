@@ -24,29 +24,29 @@ function PackageSell(props) {
     const [dateDiff, setDateDiff] = useState(diffDate(startDate, endDate))
     const [errorDate, setErrorDate] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
-   
 
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://localhost:991/packages/getPackages/', {
-                business_id: localStorage.getItem('business_id'),
+    async function getPackages() {
+        axios.post('http://localhost:991/packages/getPackages/', {
+            business_id: localStorage.getItem('business_id'),
+        })
+            .then((response) => {
+                let data = []
+                for (const packageValue of response.data) {
+                    data.push({
+                        value: packageValue.package_id,
+                        label: packageValue.package_name,
+                        price: packageValue.price
+                    })
+                }
+                setData(data);
             })
-                .then((response) => {
-                    let data = []
-                    for (const packageValue of response.data) {
-                        data.push({
-                            value: packageValue.package_id,
-                            label: packageValue.package_name,
-                            price: packageValue.price
-                        })
-                    }
-                    setData(data);
-                })
-                .catch(function (error) {
+            .catch(function (error) {
 
-                });
-        })();
-    },[]);
+            });
+    }
+    useEffect(async () => {
+        await getPackages();
+    }, []);
 
 
 
@@ -75,8 +75,6 @@ function PackageSell(props) {
 
 
     const onSubmit = (details) => {
-      
-
         axios.post('http://localhost:991/packageClient/addPackageSell/', {
             packageId: formState.selectedPackage.value,
             clientId: props.clientData.client_id,
@@ -100,16 +98,8 @@ function PackageSell(props) {
                 setErrorMsg(true);
                 console.log(error)
             });
-
-        // }
-
-        // e.preventDefault();
     }
 
-
-    const onError = () => {
-
-    }
 
     return (
         <div className="form_container" id="personal-training-form">
@@ -128,11 +118,11 @@ function PackageSell(props) {
                     <label className="classes-picker">
                         Pick start Date:
                     </label>
-                    
+
                     <div id="date-time-wrapper">
                         <DatePicker style={{ "z-index": 100000 }} popperModifiers={{
-                            name : "style",
-                            options : {"z-index": 100000}
+                            name: "style",
+                            options: { "z-index": 100000 }
 
                         }} dateFormat="dd-MM-yyyy" selected={startDate} onChange={(startDate) => {
                             setErrorDate(false)
@@ -168,7 +158,7 @@ function PackageSell(props) {
 
         </div>
     )
-} 
+}
 
 export default PackageSell;
 

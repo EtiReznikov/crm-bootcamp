@@ -22,9 +22,8 @@ function AddPackage(props) {
     const [btnActive, setBtnActive] = useState(true);
     const [errorClass, setErrorClass] = useState(false);
 
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://localhost:991/classes/getClasses/', {
+    async function getClasses () {
+        await axios.post('http://localhost:991/classes/getClasses/', {
                 business_id: localStorage.getItem('business_id'),
             })
                 .then((response) => {
@@ -40,34 +39,39 @@ function AddPackage(props) {
                 .catch(function (error) {
 
                 });
+    }
 
-            if (props.isEdit) {
-                await axios.post('http://localhost:991/packagesClasses/getClassesByPackage/', {
-                    package_id: props.packageData.package_id,
-                })
-                    .then((response) => {
-                        let classes = []
-                        for (const classValue of response.data) {
-                            classes.push({
-                                value: classValue.class_id,
-                                label: classValue.class_name,
-                            })
-                        }
-                        setState({
-                            ...formState,
-                            selectedClasses: classes
+    async function getClassesByPackage(){
+        if (props.isEdit) {
+            await axios.post('http://localhost:991/packagesClasses/getClassesByPackage/', {
+                package_id: props.packageData.package_id,
+            })
+                .then((response) => {
+                    let classes = []
+                    for (const classValue of response.data) {
+                        classes.push({
+                            value: classValue.class_id,
+                            label: classValue.class_name,
                         })
+                    }
+                    setState({
+                        ...formState,
+                        selectedClasses: classes
                     })
-                    .catch(function (error) {
+                })
+                .catch(function (error) {
 
-                    });
-            }
-        })();
+                });
+        }
+    }
+
+    useEffect(async () => {
+       await getClasses();
+       await getClassesByPackage();
     }, []);
 
 
     const onClassesSelect = (selectedOptions) => {
-        console.log(selectedOptions);
         setState({
             ...formState,
             selectedClasses: selectedOptions
@@ -130,7 +134,6 @@ function AddPackage(props) {
                         else {
                             setErrorMsg(true);
                             setBtnActive(true);
-                            //             setErrorMsg(true);
                         }
                     })
                         .catch(function (error) {
@@ -197,7 +200,7 @@ function AddPackage(props) {
                     {!errorClass && <ErrorMsg />}
                     <div className="input_field" id="price-picker" >
                         <span>
-                            <i aria-hidden="true" className="fa fa-dollar"></i>
+                            <i aria-hidden="true" className="fa fa-shekel"></i>
                         </span>
                         <input
                             name="price"

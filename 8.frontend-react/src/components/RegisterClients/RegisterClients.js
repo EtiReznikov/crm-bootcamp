@@ -14,11 +14,9 @@ function RegisterClients(props) {
 
     ]
 
-
-    useEffect(() => {
+    async function getClients(){
         let data = [];
-        (async () => {
-            await axios.post('http://localhost:991/classes/getRegisterToClass/', {
+        axios.post('http://localhost:991/classes/getRegisterToClass/', {
                 classId: props.event.id,
                 business_id: localStorage.getItem('business_id'),
             })
@@ -34,7 +32,6 @@ function RegisterClients(props) {
                                 client_name_avatar: <div id="avatar-wrapper">
                                     <Avatar className="avatar" name={clientValue.client_name} src={'http://localhost:8005/uploads/' + clientValue.file} size="60" round={true} />
                                     <div id="name-row">{clientValue.client_name}</div>
-
                                 </div>,
                             }
                             data.push(temp)
@@ -49,7 +46,11 @@ function RegisterClients(props) {
                 .catch(function (error) {
                     setError(true);
                 });
-        })();
+    }
+
+
+    useEffect(async () => {
+        await getClients();
     }, []);
 
     return (

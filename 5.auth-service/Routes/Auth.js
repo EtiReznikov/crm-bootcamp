@@ -1,15 +1,15 @@
 
 const express = require('express');
-var Mailgun = require('mailgun-js');
-var md5 = require('md5');
+let Mailgun = require('mailgun-js');
+let md5 = require('md5');
 require('dotenv').config();
 const validators = require('../tools/validation');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-var mysql = require('mysql');
+let mysql = require('mysql');
 // DB connection
-var connection = mysql.createConnection({
+let connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
@@ -17,8 +17,7 @@ var connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
-  //* TODO ask Yonatan
-  if (err) throw (err);
+  if (err) console.log(err)
 });
 
 /*
@@ -69,7 +68,6 @@ const userMySql = (sql) => {
   });
 }
 router.post('/CreateUser', async (req, result) => {
-  //* TODO async await
   const name = req.body.name;
   const email = req.body.email;
   const phone = req.body.phone;
@@ -131,14 +129,15 @@ router.post('/Login', function (req, res) {
       if (resultSelectPassword[0].user_password === password) {
         const businessId = resultSelectPassword[0].gym_id;
         const name = resultSelectPassword[0].user_name;
+        const userId = resultSelectPassword[0].user_id;
         const token = jwt.sign({ userId: resultSelectPassword[0].user_id, userEmail: email, businessId: resultSelectPassword[0].gym_id, name: resultSelectPassword[0].user_name }, process.env.ACCESS_TOKEN_SECRET);
         status = 2; //log in
-        res.status(200).json({ token, status, message: 'Logged in successfully', businessId, name });
+        res.status(200).json({ token, status, message: 'Logged in successfully', businessId, name , userId});
       }
       else {
         //password incorrect
         status = 0;
-        res.status(409).json({ status, message: 'password incurrent' });
+        res.status(409).json({ status, message: 'password incorrect' });
       }
     }
   });

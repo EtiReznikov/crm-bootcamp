@@ -3,22 +3,22 @@ const fieldStatus = {
     phone: true,
     email: true
 }
-var mysql = require('mysql');
-var connection = mysql.createConnection({
+let mysql = require('mysql');
+let connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'landingpage'
 });
 
-connection.connect(function(err) {
+connection.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");
 });
 
 const express = require('express');
 const app = express();
-var cors = require('cors')
+let cors = require('cors')
 
 const bodyParser = require('body-parser')
 app.use(express.json());
@@ -28,29 +28,25 @@ app.use(express.urlencoded());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
-app.post('/leads', function(req, res) {
-    console.log(req.body);
+app.post('/leads', function (req, res) {
 
     let flag;
     let data = {
         leads: {}
     };
     const orderBy = req.body.orderBy ? req.body.orderBy : ''
-    console.log("order by", orderBy);
     const sql = `SELECT * FROM leads ${orderBy}`;
-    console.log(sql);
-    connection.query(sql, function(err, result, fields) {
+    connection.query(sql, function (err, result, fields) {
         res.send(result);
-
     });
 
 });
 
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.send('hello there');
 });
-app.post('/', function(req, res) {
+app.post('/', function (req, res) {
     const name = req.body.name;
     const phone = req.body.phone;
     const email = req.body.email;
@@ -74,8 +70,8 @@ app.post('/', function(req, res) {
     }
     if (data.flag) {
         const genderBin = gender == '' ? '' : gender == 'male' ? 'm' : 'f';
-        const sql = `INSERT INTO leads (name, phone_number,email, gender, more_info, update_confirm) VALUES ('${name}', '${phone}', '${email}', '${gender}', '${moreInfo}', '${updatesConfirm }')`;
-        connection.query(sql, function(err, result) {
+        const sql = `INSERT INTO leads (name, phone_number,email, gender, more_info, update_confirm) VALUES ('${name}', '${phone}', '${email}', '${gender}', '${moreInfo}', '${updatesConfirm}')`;
+        connection.query(sql, function (err, result) {
             if (err) throw err;
             console.log("1 record inserted");
         });
@@ -115,7 +111,7 @@ function nameValidation(name) {
  */
 function phoneValidation(phoneNumber) {
     const isOnlyDigit = /^\d+$/.test(phoneNumber);
-    if (phoneNumber.length != 7) {
+    if (phoneNumber.length != 10) {
         fieldStatus.phone = false;
     } else if (isOnlyDigit) {
         fieldStatus.phone = true;

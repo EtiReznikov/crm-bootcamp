@@ -1,0 +1,83 @@
+@import "../../Views/colors.scss";
+#leads-page {
+  #confirm-msg-icon,
+  #gender-icon {
+    opacity: 0.8;
+    font-size: 25px;
+    padding: 5px;
+  }
+  #confirm-msg-icon-green {
+    opacity: 0.8;
+    font-size: 25px;
+    padding: 5px;
+    color: #00ff00;
+  }
+  #confirm-msg-icon-red {
+    opacity: 0.8;
+    font-size: 25px;
+    padding: 5px;
+    color: #ff0033;
+  }
+  #button-wrapper{
+    
+  }
+}
+#table-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.avatar {
+  object-fit: cover;
+}
+
+.row-button {
+  background: none;
+  color: $menu-background;
+  font-size: 20px;
+  padding: none;
+}
+
+#name-head {
+  margin: 0 auto;
+}
+#name-wrapper {
+  margin: 0 auto;
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+#btn-head-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.add-row {
+  border-radius: 3px;
+  padding: 8px 12px;
+}
+
+#client-page-head {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  margin-top: 8px;
+  color: #000408;
+  font-weight: bold;
+  line-height: 10px;
+}
+
+#avatar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#name-row {
+  font-size: 14px;
+}

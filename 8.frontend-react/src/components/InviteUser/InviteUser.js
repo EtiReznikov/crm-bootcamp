@@ -56,7 +56,7 @@ function InviteUser(props) {
         const valid = (nameValid === 0 && phoneValid === 0 &&
             (passwordValid === 1 || passwordValid === 2 || passwordValid === 3) && passwordMatchValid === 0)
         if (valid) {
-            axios.post('http://crossfit.com:8005/Accounts/CreateUserByInvite', {
+            axios.post('http://localhost:8005/Accounts/CreateUserByInvite', {
                 name: formState.name,
                 phone: formState.phone,
                 password: formState.password,

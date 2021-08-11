@@ -8,7 +8,6 @@ import './LocationSearchInput.scss'
 
 class LocationSearchInput extends React.Component {
   constructor(props) {
-    console.log(props)
     super(props);
     this.state = { address: props.address };
     this.onLocationChange = props.onLocationChange.bind(this);

@@ -17,37 +17,40 @@ function AddPersonalTraining(props) {
     const [formState, setState] = useState({
         selectedTrainers: [],
         selectClient: props.fromCalendar ? [] : props.clientData.client_id,
-        hours: props.fromCalendar ?  (props.slot.start.getHours() < 10 ? "0"+props.slot.start.getHours() : props.slot.start.getHours() ): "10",
-        minutes: props.fromCalendar ? (props.slot.start.getMinutes() <10 ? "0" + props.slot.start.getMinutes() : props.slot.start.getMinutes()) : "00",
+        hours: props.fromCalendar ? (props.slot.start.getHours() < 10 ? "0" + props.slot.start.getHours() : props.slot.start.getHours()) : "10",
+        minutes: props.fromCalendar ? (props.slot.start.getMinutes() < 10 ? "0" + props.slot.start.getMinutes() : props.slot.start.getMinutes()) : "00",
         price: 150
     }
     );
     const [startDate, setStartDate] = useState(props.fromCalendar ? props.slot.start : new Date());
+    //  const [startDate, setStartDate] = useState(props.fromCalendar ? props.slot.start : new Date().toLocaleString("he-IL"));
     const [errorMsg, setErrorMsg] = useState(false);
     const [data, setData] = useState([]);
     const [btnActive, setBtnActive] = useState(true);
     const [errorTrainer, setErrorTrainer] = useState(false);
     const [errorClient, setErrorClient] = useState(false);
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
-                businessId: localStorage.getItem('business_id'),
-            })
-                .then((response) => {
-                    let data = []
-                    for (const userValue of response.data) {
-                        if (userValue.permission_id === 1)
-                            data.push({
-                                value: userValue.user_id,
-                                label: userValue.user_name,
-                            })
-                    }
-                    setData(data);
-                })
-                .catch(function (error) {
 
-                });
-        })();
+    async function getUsers() {
+        await axios.post('http://localhost:8005/Accounts/getUsersList', {
+            businessId: localStorage.getItem('business_id'),
+        })
+            .then((response) => {
+                let data = []
+                for (const userValue of response.data) {
+                    if (userValue.permission_id === 1)
+                        data.push({
+                            value: userValue.user_id,
+                            label: userValue.user_name,
+                        })
+                }
+                setData(data);
+            })
+            .catch(function (error) {
+
+            });
+    }
+    useEffect(async () => {
+        await getUsers();
     }, []);
 
 
@@ -69,17 +72,16 @@ function AddPersonalTraining(props) {
 
     /* when add user button is submitted*/
     const onSubmit = (details) => {
+        let date = new Date(startDate.setHours(formState.hours, formState.minutes, 0));
         setErrorMsg(false);
         axios.post('http://localhost:991/personalTraining/addPersonalTraining/', {
             userId: formState.selectedTrainers.value,
             clientId: props.fromCalendar ? formState.selectedClient.value : props.clientData.client_id,
-            date: new Date(startDate.setHours(formState.hours, formState.minutes, 0)),
+            date: date,
             business_id: localStorage.getItem('business_id'),
             totalPrice: formState.price,
             transaction: details.id,
             createTime: details.create_time
-
-
         })
             .then(function (response) {
                 if (response.data === true) {
@@ -114,7 +116,7 @@ function AddPersonalTraining(props) {
     }
 
     const hourUp = () => {
-        var hh = parseInt(formState.hours);
+        let hh = parseInt(formState.hours);
         if (hh === 23) hh = 0;
         else hh++;
         if (0 <= hh && hh <= 9)
@@ -126,7 +128,7 @@ function AddPersonalTraining(props) {
     }
 
     const hourDown = () => {
-        var hh = parseInt(formState.hours);
+        let hh = parseInt(formState.hours);
         if (hh === 0) hh = 23;
         else hh--;
         if (0 <= hh && hh <= 9)
@@ -138,7 +140,7 @@ function AddPersonalTraining(props) {
     }
 
     const minutesUp = () => {
-        var mm = parseInt(formState.minutes);
+        let mm = parseInt(formState.minutes);
         if (mm === 59) mm = 0;
         else mm++;
         if (0 <= mm && mm <= 9)
@@ -150,7 +152,7 @@ function AddPersonalTraining(props) {
     }
 
     const minutesDown = () => {
-        var mm = parseInt(formState.minutes);
+        let mm = parseInt(formState.minutes);
         if (mm === 0) mm = 59;
         else mm--;
         if (0 <= mm && mm <= 9)
@@ -186,7 +188,7 @@ function AddPersonalTraining(props) {
                 </div>
                 <div className="input_field" id="price-picker" >
                     <span>
-                        <i aria-hidden="true" className="fa fa-dollar"></i>
+                        <i aria-hidden="true" className="fa fa-shekel"></i>
                     </span>
                     <input
                         name="price"

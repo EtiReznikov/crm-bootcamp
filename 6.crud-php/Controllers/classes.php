@@ -71,4 +71,10 @@ class classes extends controller
         $this->response["registers"] = $registers;
         return $registers;
     }
+
+    public function getTrainerOfClass(){
+        $classId = $this->data->classId;
+        $trainer = $this->model->getTrainer($classId);
+        return $trainer;
+    }
 }

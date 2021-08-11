@@ -14,6 +14,7 @@ function PackagesPage(props) {
     const [row, setRow] = useState("");
     const [dataHasChanged, setDataHasChanged] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+    const [ErrorDelete, setErrorDelete] = useState(false);
     const columns = useMemo(() => [
         {
             Header: "Package Name",
@@ -25,7 +26,7 @@ function PackagesPage(props) {
         },
 
         {
-            Header: 'UUpdate & Delete',
+            Header: 'Update & Delete',
             width: '1em',
             Cell: ({ row }) => (
                 <div id="row-button-wrapper">
@@ -76,27 +77,28 @@ function PackagesPage(props) {
         }).then(function (response) {
             closeModalRemovePackage();
             changeDataState();
-            //TODO: handle error
         })
 
             .catch(function (error) {
-                console.log(error)
+                setErrorDelete(true);
             });
     };
 
 
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://localhost:991/packages/getPackages/', {
-                business_id: localStorage.getItem('business_id'),
+    async function getPackages() {
+        axios.post('http://localhost:991/packages/getPackages/', {
+            business_id: localStorage.getItem('business_id'),
+        })
+            .then((response) => {
+                setData(response.data);
             })
-                .then((response) => {
-                    setData(response.data);
-                })
-                .catch(function (error) {
+            .catch(function (error) {
+                console.log(error)
+            });
+    }
 
-                });
-        })();
+    useEffect(async () => {
+        await getPackages();
     }, [dataHasChanged]);
 
     const OnAddPackageClick = () => {
@@ -107,17 +109,17 @@ function PackagesPage(props) {
     return (
         <div id="package-page" className="page-wrapper">
             {
-            // !errorMsg &&
+                // !errorMsg &&
                 <>
                     <div id="btn-head-wrapper">
                         <Headline id="client-page-head" text="Packages" />
-                        <button className="add-row" onClick={ OnAddPackageClick}>
+                        <button className="add-row" onClick={OnAddPackageClick}>
                             Add Package
                         </button>
                     </div>
 
-            <div id="table-wrapper">
-                {/* <div id="button-wrapper">
+                    <div id="table-wrapper">
+                        {/* <div id="button-wrapper">
                     <Button
                         className="add-class-btn"
                         onClick={
@@ -126,29 +128,29 @@ function PackagesPage(props) {
                         text={<i className="fa fa-calendar-plus-o"></i>}
                     />
                 </div> */}
-                <Table columns={columns} data={data} />
-            </div>
-            <Modal
-                isOpen={modalIsOpenAddPackage}
-                onRequestClose={closeModalAddPackage}
-                contentLabel="Add Class Modal"
-                className="modal"
-                ariaHideApp={false}
-            >
-                <AddPackage closeModal={closeModalAddPackage} changeDataState={changeDataState} packageData={row} isEdit={isEdit} />
-            </Modal>
-            <Modal
-                isOpen={modalIsOpenRemovePackage}
-                onRequestClose={closeModalRemovePackage}
-                contentLabel="Remove Package Modal"
-                className="modal"
-                ariaHideApp={false}
-            >
-                <ConfirmModal onConfirm={DeletePackage} onDismiss={closeModalRemovePackage} text={`Are you sure you want to delete ${row.class_name}?`}  />
-            </Modal>
-            </>
-}
-{/* {errorMsg &&
+                        <Table columns={columns} data={data} isPagination={true} isSort={true} />
+                    </div>
+                    <Modal
+                        isOpen={modalIsOpenAddPackage}
+                        onRequestClose={closeModalAddPackage}
+                        contentLabel="Add Class Modal"
+                        className="modal"
+                        ariaHideApp={false}
+                    >
+                        <AddPackage closeModal={closeModalAddPackage} changeDataState={changeDataState} packageData={row} isEdit={isEdit} />
+                    </Modal>
+                    <Modal
+                        isOpen={modalIsOpenRemovePackage}
+                        onRequestClose={closeModalRemovePackage}
+                        contentLabel="Remove Package Modal"
+                        className="modal"
+                        ariaHideApp={false}
+                    >
+                        <ConfirmModal onConfirm={DeletePackage} onDismiss={closeModalRemovePackage} errorMsg={ErrorDelete} text={`Are you sure you want to delete ${row.class_name}?`} />
+                    </Modal>
+                </>
+            }
+            {/* {errorMsg &&
                 <>
                     <Headline id="user-page-header" text="Clients" />
                     <ErrorComponent text="Error" />

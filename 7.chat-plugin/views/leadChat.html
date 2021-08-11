@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/stylesLead.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <div id="chat-wrapper">
+      <button id="exit-button" onclick="closeChat()">
+        <i class="fa fa-times"></i>
+      </button>
+      <ul id="messages"></ul>
+      <div id="fallback"></div>
+      <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+      </form>
+    </div>
+    <button id="chat-button" onclick="openChat()">
+      <i class="fa fa-comment"></i>
+    </button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      let room = localStorage.getItem("chatRoom");
+      const isFromLead = true;
+      let userFirstMessage = true;
+      if (room) {
+        socket.emit("create", room, isFromLead, false);
+        userFirstMessage = false;
+      } else {
+        room = "room" + Date.now() + Math.random();
+        localStorage.setItem("chatRoom", room);
+        socket.emit("create", room, isFromLead, true);
+        userFirstMessage = true;
+      }
+    
+
+      let messages = document.getElementById("messages");
+      let form = document.getElementById("form");
+      let input = document.getElementById("input");
+      let allMsgsHistory = [];
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit(
+            "chat message",
+            {
+              room: room,
+              from: "lead",
+              msgValue: input.value,
+              userFirstMessage: userFirstMessage,
+            },
+            allMsgsHistory
+          );
+          input.value = "";
+        }
+      });
+
+      const newMessageArrived = (msg, allMsgs) => {
+        messages.innerHTML = "";
+        allMsgsHistory = allMsgs;
+        allMsgs.forEach((element) => {
+          let item = document.createElement("li");
+          let messageSender = document.createElement("div");
+          let messageContact = document.createElement("div");
+          let time = document.createElement("div");
+          messageContact.textContent = element.msg;
+          messageSender.textContent = element.isFromCrm
+            ? "Crossfit REL: "
+            : "You: ";
+          messageSender.setAttribute(
+            "id",
+            element.isFromCrm ? "FromBot" : "FromMe"
+          );
+          messageContact.setAttribute(
+            "id",
+            element.isFromCrm ? "msgFromBot" : "msgFromMe"
+          );
+          time.textContent = element.time;
+          time.setAttribute("id", "time");
+          item.appendChild(messageSender);
+          item.appendChild(messageContact);
+          item.appendChild(time);
+          messages.appendChild(item);
+        });
+      };
+
+      input.addEventListener("keyup", (e) => {
+        e.preventDefault();
+        socket.emit("typing", {
+          room: room,
+          isClient: true,
+          isTyping: input.value.length > 0,
+          nick: "userName",
+        });
+      });
+
+      socket.on("chat message", function (msg, allMsgs) {
+        newMessageArrived(msg, allMsgs);
+      });
+
+      socket.on("server message", function (msg, allMsgs) {
+        newMessageArrived(msg, allMsgs);
+      });
+
+      socket.on("typing", function (data) {
+        const { isTyping, nick, isClient } = data;
+
+        if (!isTyping || isClient) {
+          fallback.innerHTML = "";
+          return;
+        }
+
+        fallback.innerHTML = `<p>Crossfit REL is typing...</p>`;
+      });
+
+      socket.on("typing", function (data) {
+        const { isTyping, nick, isClient } = data;
+
+        if (!isTyping || isClient) {
+          fallback.innerHTML = "";
+          return;
+        }
+
+        fallback.innerHTML = `<p>Crossfit REL is typing...</p>`;
+      });
+
+      socket.on("getLeadData", function (room, isNewLead) {
+        window.parent.postMessage(
+          { type: "leadDataReq", room: room, isNewLead: isNewLead },
+          "*"
+        );
+      });
+    </script>
+    <script>
+      document
+        .querySelector("#chat-button")
+        .addEventListener("click", openChat);
+      document
+        .querySelector("#exit-button")
+        .addEventListener("click", closeChat);
+      function openChat() {
+        document.querySelector("#chat-button").style.display = "none";
+        document.querySelector("#chat-wrapper").style.display = "block";
+      }
+      function closeChat() {
+        document.querySelector("#chat-button").style.display = "block";
+        document.querySelector("#chat-wrapper").style.display = "none";
+      }
+    </script>
+    <script>
+      window.addEventListener("message", receiveMessage, false);
+      function receiveMessage(evt) {
+        switch (evt.data.type) {
+          case "leadData":
+            socket.emit("addLead", {
+              room: room,
+              data: evt.data.leadData,
+              isNewLead: evt.data.isNewLead,
+            });
+            break;
+        }
+      }
+    </script>
+  </body>
+</html>

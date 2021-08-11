@@ -13,7 +13,6 @@ import Select from 'react-select';
 
 import { timeValidation, nameLengthValidation, hourValidation, minValidation } from '../../../tools/validation';
 function AddClass(props) {
-
     const daysObjTemp = {};
     if (props.isEdit) {
         const daysTemp = props.classData.days.split(', ');
@@ -39,6 +38,7 @@ function AddClass(props) {
         },
         selectedTrainer: []
     })
+
     const [location, setLocation] = useState(props.isEdit ? JSON.parse(props.classData.location) : { address: "" });
     const [hhValid, setHHValid] = useState(true);
     const [mmValid, setMMValid] = useState(true);
@@ -47,26 +47,56 @@ function AddClass(props) {
     const [trainers, setTrainers] = useState([]);
     const [errorTrainer, setErrorTrainer] = useState(false);
 
-    useEffect(() => {
-        (async () => {
-            await axios.post('http://crossfit.com:8005/Accounts/getUsersList', {
-                businessId: localStorage.getItem('business_id'),
+
+    async function getUsersList() {
+        axios.post('http://localhost:8005/Accounts/getUsersList', {
+            businessId: localStorage.getItem('business_id'),
+        })
+            .then((response) => {
+                let data = []
+                for (const userValue of response.data) {
+                    if (userValue.permission_id === 1)
+                        data.push({
+                            value: userValue.user_id,
+                            label: userValue.user_name,
+                        })
+                }
+                setTrainers(data);
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+    }
+
+    async function getTrainerOfClass() {
+        if (props.isEdit) {
+            await axios.post('http://localhost:991/classes/getTrainerOfClass/', {
+                classId: props.classData.class_id,
             })
                 .then((response) => {
-                    let data = []
-                    for (const userValue of response.data) {
-                        if (userValue.permission_id === 1)
-                            data.push({
-                                value: userValue.user_id,
-                                label: userValue.user_name,
-                            })
+                    let trainer = []
+                    for (const trainerValue of response.data) {
+                        trainer.push({
+                            value: trainerValue.user_id,
+                            label: trainerValue.user_name,
+                        })
                     }
-                    setTrainers(data);
+                    setState({
+                        ...formState,
+                        selectedTrainer: trainer
+                    })
                 })
                 .catch(function (error) {
-
+                    console.log(error)
                 });
-        })();
+        }
+    };
+    useEffect(() => {
+        async function fetchData() {
+            await getUsersList();
+            await getTrainerOfClass();
+        }
+        fetchData();
     }, []);
 
 
@@ -79,73 +109,79 @@ function AddClass(props) {
     }
 
     const onSubmit = (e) => {
-        const nameValid = nameLengthValidation(formState.className);
-        setState({
-            ...formState,
-            classValid: nameValid,
-        })
-        setErrorMsg(false);
-        if (nameValid === 0) {
-            if (props.isEdit) {
-                axios.post('http://localhost:991/classes/editClassData/', {
-                    className: formState.className,
-                    classDescription: formState.classDescription,
-                    color: formState.classColor,
-                    classId: props.classData.class_id,
-                    dayAndTime: JSON.stringify({
-                        hours: formState.hours,
-                        min: formState.minutes,
-                        days: chosenDays()
-                    }),
-                    location: JSON.stringify(location),
-                    trainer: formState.selectedTrainer.value
-                }).then(function (response) {
-                    if (response.data === true) {
-                        props.closeModal();
-                        props.changeDataState();
-                    }
-                    else {
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                    }
-                })
-                    .catch(function (error) {
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                    });
-            }
-            else {
-                axios.post('http://localhost:991/classes/addClass/', {
-                    className: formState.className,
-                    classDescription: formState.classDescription,
-                    color: formState.classColor,
-                    business_id: localStorage.getItem('business_id'),
-                    dayAndTime: JSON.stringify({
-                        hours: formState.hours,
-                        min: formState.minutes,
-                        days: chosenDays()
-                    }),
-                    location: JSON.stringify(location),
-                    trainer: formState.selectedTrainer.value
-                }).then(function (response) {
-                    if (response.data === true) {
-                        props.closeModal();
-                        props.changeDataState();
-                    }
-                    else {
-                        console.log("error")
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                    }
-                })
-                    .catch(function (error) {
-                        setErrorMsg(true);
-                        setBtnActive(true);
-                    });
-            }
+        if (formState.selectedTrainer.length === 0) {
+            setErrorTrainer(true);
+            setBtnActive(true);
         }
         else {
-            setBtnActive(true);
+            const nameValid = nameLengthValidation(formState.className);
+            setState({
+                ...formState,
+                classValid: nameValid,
+            })
+            setErrorMsg(false);
+            if (nameValid === 0) {
+                if (props.isEdit) {
+                    axios.post('http://localhost:991/classes/editClassData/', {
+                        className: formState.className,
+                        classDescription: formState.classDescription,
+                        color: formState.classColor,
+                        classId: props.classData.class_id,
+                        trainer: formState.selectedTrainer.value,
+                        dayAndTime: JSON.stringify({
+                            hours: formState.hours,
+                            min: formState.minutes,
+                            days: chosenDays()
+                        }),
+                        location: JSON.stringify(location),
+
+                    }).then(function (response) {
+                        if (response.data === true) {
+                            props.closeModal();
+                            props.changeDataState();
+                        }
+                        else {
+                            setErrorMsg(true);
+                            setBtnActive(true);
+                        }
+                    })
+                        .catch(function (error) {
+                            setErrorMsg(true);
+                            setBtnActive(true);
+                        });
+                }
+                else {
+                    axios.post('http://localhost:991/classes/addClass/', {
+                        className: formState.className,
+                        classDescription: formState.classDescription,
+                        color: formState.classColor,
+                        business_id: localStorage.getItem('business_id'),
+                        dayAndTime: JSON.stringify({
+                            hours: formState.hours,
+                            min: formState.minutes,
+                            days: chosenDays()
+                        }),
+                        location: JSON.stringify(location),
+                        trainer: formState.selectedTrainer.value
+                    }).then(function (response) {
+                        if (response.data === true) {
+                            props.closeModal();
+                            props.changeDataState();
+                        }
+                        else {
+                            setErrorMsg(true);
+                            setBtnActive(true);
+                        }
+                    })
+                        .catch(function (error) {
+                            setErrorMsg(true);
+                            setBtnActive(true);
+                        });
+                }
+            }
+            else {
+                setBtnActive(true);
+            }
         }
         e.preventDefault();
     }
@@ -169,7 +205,7 @@ function AddClass(props) {
     }
 
     const hourUp = () => {
-        var hh = parseInt(formState.hours);
+        let hh = parseInt(formState.hours);
         if (hh === 23) hh = 0;
         else hh++;
         if (0 <= hh && hh <= 9)
@@ -181,7 +217,7 @@ function AddClass(props) {
     }
 
     const hourDown = () => {
-        var hh = parseInt(formState.hours);
+        let hh = parseInt(formState.hours);
         if (hh === 0) hh = 23;
         else hh--;
         if (0 <= hh && hh <= 9)
@@ -193,7 +229,7 @@ function AddClass(props) {
     }
 
     const minutesUp = () => {
-        var mm = parseInt(formState.minutes);
+        let mm = parseInt(formState.minutes);
         if (mm === 59) mm = 0;
         else mm++;
         if (0 <= mm && mm <= 9)
@@ -205,7 +241,7 @@ function AddClass(props) {
     }
 
     const minutesDown = () => {
-        var mm = parseInt(formState.minutes);
+        let mm = parseInt(formState.minutes);
         if (mm === 0) mm = 59;
         else mm--;
         if (0 <= mm && mm <= 9)
@@ -248,7 +284,7 @@ function AddClass(props) {
         return days;
     }
     return (
-        <div className="form_wrapper">
+        <div className="form_wrapper" id="add-class">
             <button className="exit" onClick={props.closeModal} >
                 <i id="exit-wind" className="fa fa-times"></i>
             </button>
@@ -268,10 +304,12 @@ function AddClass(props) {
                             placeholder="Class Name"
                             value={formState.className}
                             onChange={e => {
+
                                 setErrorMsg(false);
                                 setState({
                                     ...formState,
                                     className: e.target.value,
+                                    classValid: 0
                                 })
                             }
                             }
@@ -303,7 +341,7 @@ function AddClass(props) {
                         <label className="classes-picker">
                             Pick Trainer:
                         </label>
-                        <Select name="trainer" isSearchable={true} value={formState.selectedTrainers} onChange={onTrainerSelect} options={trainers} className="trainer-selector"
+                        <Select name="trainer" isSearchable={true} value={formState.selectedTrainer} onChange={onTrainerSelect} options={trainers} className="trainer-selector"
                             classNamePrefix="select" />
                         {errorTrainer && <ErrorMsg text="You must choose a trainer" />}
                         {!errorTrainer && <ErrorMsg />}
@@ -338,7 +376,7 @@ function AddClass(props) {
                                                     handleCheckClick(e, { day })
                                                 }}
                                             />
-                                            <label htmlFor={`weekday-'${day}'`}>
+                                            <label htmlFor={`weekday-'${day}'`} id={`weekday-'${day}'-label`}  >
                                                 {day.charAt(0).toUpperCase()}
                                             </label>
                                         </>

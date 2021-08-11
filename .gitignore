@@ -1,2 +1,3 @@
 data/mysql/*
 node_modules
+.env

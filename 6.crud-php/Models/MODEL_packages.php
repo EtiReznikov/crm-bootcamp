@@ -12,18 +12,20 @@ class Model_packages extends Model
 
     public function getAllPackages($gymId)
     {
-        //* TODO sql injection prevent
+        $gymId = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $gymId);
         $packages = $this->getDB()
             ->query("SELECT * FROM  packages WHERE gym_id=$gymId")
             ->fetch_all(MYSQLI_ASSOC);
-
-        return $packages;
+        if ($packages) {
+            return $packages;
+        } else {
+            return  $this->getDB()->error;
+        }
     }
 
     public function addNewPackage($gymId, $name, $price, $selectedClasses)
     {
-
-        $addPackage = $this->getDB()
+          $addPackage = $this->getDB()
             ->query("INSERT INTO packages (package_name,price, gym_id) VALUES ('$name', '$price', '$gymId')");
         if ($addPackage) {
             $lastId = mysqli_insert_id($this->getDB());
@@ -40,7 +42,6 @@ class Model_packages extends Model
             ->query("DELETE FROM packages WHERE package_id=$packageId");
         $removePackageClasses  =  $this->getDB()
             ->query("DELETE FROM package_classes WHERE package_id=$packageId");
-        //*TODO remove clients-packages
         return ($removePackage && $removePackageClasses);
     }
 
@@ -48,16 +49,15 @@ class Model_packages extends Model
     {
         $editPackage = $this->getDB()
             ->query("UPDATE packages set package_name='$name', price='$price' WHERE package_id=$packageId");
-        
+
         $removePackageClasses  =  $this->getDB()
             ->query("DELETE FROM package_classes WHERE package_id=$packageId");
-       
+
         // if ($editPackage & $removePackageClasses)
         foreach ($selectedClasses as $class) {
             $addClassToPackage = $this->getDB()
                 ->query("INSERT INTO package_classes (package_id,class_id) VALUES ('$packageId', '$class->value')");
-       
         }
-        return  ($editPackage & $removePackageClasses);
+        return ($editPackage & $removePackageClasses);
     }
 }

@@ -35,7 +35,7 @@ function ResetPassword(props) {
 
         //passwords validation
         if (passwordValid !== 0 && passwordMatchValid === 0) {
-            axios.post('http://crossfit.com:8005/Password/NewPassword', {
+            axios.post('http://localhost:8005/Password/NewPassword', {
                 password: formState.password,
                 conform: formState.confirm,
                 token: token
@@ -59,7 +59,6 @@ function ResetPassword(props) {
         }
         e.preventDefault();
     }
-    /*TODO: check that link is valid*/
     return (
         <div className="form_wrapper" id="reset-pass-form">
             <div className="form_container">
@@ -124,7 +123,7 @@ function ResetPassword(props) {
                         }
                         } />}
                     {!btnActive && <Loader className="button-div" type="Oval" color="white" height="30" width="30" />}
-                    {formState.successStatus === 0 && <> <Text  text="Your password has been reset." />
+                    {formState.successStatus === 0 && <> <Text text="Your password has been reset." />
                         <a id="link-signIn" href="/loginSignup" > click here to login </a>
                     </>}
                 </form>

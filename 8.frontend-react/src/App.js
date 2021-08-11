@@ -1,5 +1,5 @@
 import './App.scss';
-import Home from './components/Home/Home';
+import Home from './components/DashBoard/Home/Home';
 import Users from './components/Users/UsersPage/UsersPage';
 import ForgotPassword from './components/authentication/ForgotPassword/FogotPassword';
 import ResetPassword from './components/authentication/ResetPassword/ResetPassword';
@@ -11,7 +11,8 @@ import Clients from './components/Clients/ClientsPage/ClientsPage';
 import Classes from './components/Classes/ClassesPage/ClassesPage';
 import PackagesPage from './components/Packages/PackagesPage/PackagesPage';
 import Map from './components/Map/Map';
-import GoogleApiWrapper from './components/Map/Map';
+import ChatPage from './components/ChatPage/ChatPage';
+import Leads from './components/Leads/Leads';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
   BrowserRouter as Router,
@@ -21,9 +22,10 @@ import {
 import LoginWrapper from './components/authentication/LoginWrapper/LoginWrapper'
 import { useState, useEffect } from 'react';
 import CalendarPage from './components/CalendarPage/CalendarPage';
-
+import {  listenToEvents } from './EventsTracker/eventTracker'
 
 function App(props) {
+
   const [userState, setState] = useState(localStorage.getItem('user_token'));
   //logout the user
   const logout = () => {
@@ -38,6 +40,7 @@ function App(props) {
   }
 
   useEffect((props) => {
+    listenToEvents(window)
     const pathArray = window.location.pathname.split('/');
     const path = pathArray[1];
     if (!userState && (path !== 'forgotPassword' && path !== 'resetPassword' && path !== 'loginSignup' && path !== 'inviteUser')) {
@@ -87,7 +90,13 @@ function App(props) {
             <PackagesPage />
           </Route>
           <Route path="/map">
-            <Map/>
+            <Map />
+          </Route>
+          <Route path="/chats">
+            <ChatPage />
+          </Route>
+          <Route path="/leads">
+            <Leads />
           </Route>
         </Switch>
       </div>

@@ -25,7 +25,7 @@ function ForgotPassword(props) {
       setBtnActive(true);
     }
     else {
-      axios.post('http://crossfit.com:8005/Password/ResetPasswordReq', {
+      axios.post('http://localhost:8005/Password/ResetPasswordReq', {
         email: formState.email,
       })
         .then(function (response) {
@@ -68,7 +68,7 @@ function ForgotPassword(props) {
             {formState.errorStatus === 2 && <ErrorMsg text="Email is required" />}
             {formState.errorStatus === 1 && <ErrorMsg text="User is not exists" />}
             {formState.errorStatus !== 1 && <ErrorMsg />}
-          
+
             {btnActive && <input className="button" type="submit" value="Submit" disabled={!btnActive}
               onClick={(e) => {
                 setBtnActive(false);
@@ -80,8 +80,6 @@ function ForgotPassword(props) {
           </form>
         </div>
         {formState.errorStatus === 0 && <Text className="forgot-pass-text" text="A Link to reset password sent to your email." />}
-
-        
       </div>
     </div>
 
